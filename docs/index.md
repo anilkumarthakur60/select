@@ -34,7 +34,7 @@ features:
     details: All design tokens are CSS custom properties under the `.vselect` scope. Light / dark / auto themes plus accent presets.
   - icon: ⚡
     title: Tiny + tree-shakeable
-    details: ~10.7 kB gzipped JS, ~2.8 kB CSS, zero runtime deps beyond `@floating-ui/vue`. ESM, CJS, and a Nuxt module ship in the tarball.
+    details: ~10.5 kB gzipped JS, ~2.7 kB CSS, zero runtime deps beyond `@floating-ui/vue`. ESM, CJS, and a Nuxt module ship in the tarball.
 ---
 
 <script setup lang="ts">

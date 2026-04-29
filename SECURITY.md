@@ -19,11 +19,15 @@ anonymous.
 
 ## Scope
 
+The package is in initial development and has not yet been published to npm,
+so for now the only target in scope is this repository's source. Once the
+first version ships, the published artefacts below will also be in scope.
+
 In scope:
 
-- The published `vue3-select` package on npm
 - Source code in this repository
-- The shipped Nuxt module (`vue3-select/nuxt`)
+- Once published: the `@anilkumarthakur/vue3-select` package on npm
+- Once published: the bundled Nuxt module (`@anilkumarthakur/vue3-select/nuxt`)
 
 Out of scope:
 

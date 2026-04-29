@@ -76,9 +76,8 @@ CI runs all of the above automatically on every PR.
 ## Commits
 
 We use [Conventional Commits](https://www.conventionalcommits.org/), enforced
-by `commitlint` both locally (via [Husky](https://typicode.github.io/husky/)
-on `commit-msg`) and in CI (`.github/workflows/commitlint.yml` lints every
-commit on the PR plus the PR title).
+locally by `commitlint` via the [Husky](https://typicode.github.io/husky/)
+`commit-msg` hook installed on `npm install`.
 
 Format:
 
@@ -138,9 +137,9 @@ Two hooks fire locally:
 
 - **`pre-commit`** runs `npm run lint` (oxlint + cached eslint — typically
   under 1 s). Skip with `git commit --no-verify` for WIP commits.
-- **`commit-msg`** runs `commitlint --edit` against your message. There's no
-  bypass for this one because the CI workflow lints every commit on the PR
-  anyway — skipping locally just means failing later.
+- **`commit-msg`** runs `commitlint --edit` against your message, so PR
+  reviewers see consistent commit subjects. Bypass with `--no-verify` if you
+  really need to, but please rewrite the history before opening the PR.
 
 To reinstall the hooks (e.g. if you cloned with `npm ci --ignore-scripts`):
 
@@ -158,8 +157,24 @@ Hook scripts live in `.husky/`:
 
 ## Releasing (maintainers only)
 
+The package has not been published to npm yet. The first cut will be `0.1.0`
+once the API surface is locked. Releases are driven by
+[`commit-and-tag-version`](https://github.com/absolute-version/commit-and-tag-version),
+which derives the version bump and the `CHANGELOG.md` entries from the
+Conventional Commit history:
+
 ```bash
-npm version patch   # or minor / major — updates package.json + CHANGELOG
+npm run release           # auto-derived bump from commits
+# or pin the bump explicitly:
+npm run release:patch     # 0.0.x → 0.0.(x+1)
+npm run release:minor
+npm run release:major
+npm run release:dry       # preview the bump + changelog without writing
+```
+
+After the script writes the bump and tag locally:
+
+```bash
 git push --follow-tags
 ```
 
