@@ -1,0 +1,63 @@
+@mixin styles {
+  .vselect-menu {
+    background: var(--vselect-menu-bg);
+    border: var(--vselect-border-width) solid var(--vselect-border);
+    border-radius: var(--vselect-radius);
+    box-shadow: var(--vselect-shadow-menu);
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: var(--vselect-z-menu);
+    animation: vselect-menu-in 120ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 4px;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--vselect-border);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--vselect-border-hover);
+    }
+  }
+
+  .vselect-empty {
+    padding: 12px;
+    color: var(--vselect-text-muted);
+    text-align: center;
+    font-size: 0.95em;
+  }
+
+  .vselect-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    color: var(--vselect-text-muted);
+  }
+
+  .vselect-create {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-radius: var(--vselect-radius-sm);
+    color: var(--vselect-accent);
+    font-weight: 500;
+    cursor: pointer;
+    border-top: var(--vselect-border-width) solid var(--vselect-border);
+    margin-top: 4px;
+
+    &:hover {
+      background: var(--vselect-accent-soft);
+    }
+
+    strong {
+      color: var(--vselect-text);
+      font-weight: 600;
+    }
+  }
+}

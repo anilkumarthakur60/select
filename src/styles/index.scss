@@ -1,0 +1,45 @@
+// Public stylesheet entry. Every rule is wrapped in `@layer vselect` so
+// consumer overrides — even those written without `@layer` themselves —
+// naturally win the cascade without specificity wars.
+
+@use 'tokens' as tokens;
+@use 'base/animations' as animations;
+@use 'base/root' as root;
+@use 'parts/control' as control;
+@use 'parts/tag' as tag;
+@use 'parts/search' as search;
+@use 'parts/indicator' as indicator;
+@use 'parts/menu' as menu;
+@use 'parts/option' as option;
+@use 'parts/group' as group;
+@use 'parts/tree' as tree;
+
+@layer vselect {
+  @include animations.styles;
+  @include root.styles;
+  @include control.styles;
+  @include tag.styles;
+  @include search.styles;
+  @include indicator.styles;
+  @include menu.styles;
+  @include option.styles;
+  @include group.styles;
+  @include tree.styles;
+
+  // Default tokens applied to the component root. Scoped to `.vselect` so
+  // the custom properties don't leak into surrounding CSS.
+  .vselect {
+    @include tokens.tokens;
+  }
+
+  // Theme variants — apply via class on the root.
+  .vselect--dark {
+    @include tokens.dark-tokens;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .vselect--auto {
+      @include tokens.dark-tokens;
+    }
+  }
+}

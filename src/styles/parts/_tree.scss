@@ -1,0 +1,182 @@
+@mixin styles {
+  .vselect-tree {
+    padding: 4px;
+  }
+
+  .vselect-tree-empty {
+    padding: 12px;
+    color: var(--vselect-text-muted);
+    text-align: center;
+    font-size: 0.95em;
+  }
+
+  .vselect-tree-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px 8px;
+    border-bottom: var(--vselect-border-width) solid var(--vselect-border);
+    margin-bottom: 4px;
+    color: var(--vselect-text-muted);
+    font-size: 0.85em;
+  }
+
+  .vselect-tree-toolbar-action {
+    background: transparent;
+    border: 0;
+    padding: 4px 8px;
+    border-radius: var(--vselect-radius-sm);
+    color: var(--vselect-accent);
+    cursor: pointer;
+    font: inherit;
+    transition:
+      color var(--vselect-transition),
+      background-color var(--vselect-transition);
+
+    &:hover:not(:disabled) {
+      background: var(--vselect-accent-soft);
+    }
+
+    &:disabled {
+      color: var(--vselect-text-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  .vselect-tree-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    border-radius: var(--vselect-radius-sm);
+    color: var(--vselect-text);
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background-color var(--vselect-transition),
+      color var(--vselect-transition);
+    font-size: var(--vselect-font-size);
+    line-height: var(--vselect-line-height);
+
+    &:hover:not(.is-disabled) {
+      background: var(--vselect-option-active-bg);
+    }
+
+    &.is-active {
+      background: var(--vselect-option-active-bg);
+    }
+
+    &.is-disabled {
+      color: var(--vselect-text-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  .vselect-tree-expander {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 4px;
+    color: var(--vselect-text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition:
+      color var(--vselect-transition),
+      transform var(--vselect-transition);
+
+    &:hover {
+      color: var(--vselect-text);
+    }
+
+    &.is-leaf {
+      visibility: hidden;
+    }
+
+    &.is-open svg {
+      transform: rotate(180deg);
+    }
+
+    svg {
+      width: 12px;
+      height: 12px;
+      transition: transform var(--vselect-transition);
+    }
+  }
+
+  .vselect-tree-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: var(--vselect-border-width) solid var(--vselect-border);
+    border-radius: 4px;
+    background: var(--vselect-bg);
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition:
+      border-color var(--vselect-transition),
+      background-color var(--vselect-transition);
+
+    &:hover:not(:disabled) {
+      border-color: var(--vselect-accent);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--vselect-focus-ring);
+    }
+
+    &:checked,
+    &:indeterminate {
+      background: var(--vselect-accent);
+      border-color: var(--vselect-accent);
+    }
+
+    &:checked::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='4 11 8 15 16 6'/></svg>");
+      background-size: 12px 12px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    &:indeterminate::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background: white;
+      border-radius: 1px;
+      height: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .vselect-tree-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vselect-tree-children {
+    // Indentation is applied to the row via inline padding-left so the
+    // hover/active background extends the full menu width while the label
+    // remains visually nested.
+  }
+}

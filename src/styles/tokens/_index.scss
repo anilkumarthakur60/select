@@ -1,0 +1,118 @@
+// Design tokens exposed as CSS custom properties on the component root.
+// Consumers override at any cascade level — no SCSS recompile required.
+// Every token is `--vselect-*` so it never collides with consumer styles.
+//
+// Color strategy: surfaces stay solid for legibility, but borders and rings
+// are tuned to feel at home on neutral, tinted, and inverted page
+// backgrounds — neither too washed-out on warm grays nor too heavy on
+// cool whites. Accent colors are isolated to focus, selection, and the
+// check glyph, so swapping the accent in a preset (`emerald`, `rose`,
+// custom) is a one-line change.
+
+@mixin tokens {
+  color-scheme: light;
+
+  // Sizing
+  --vselect-radius: 8px;
+  --vselect-radius-sm: 6px;
+  --vselect-border-width: 1px;
+  --vselect-control-min-height: 40px;
+  --vselect-control-min-height-sm: 32px;
+  --vselect-control-min-height-lg: 48px;
+  --vselect-control-padding-x: 12px;
+  --vselect-control-padding-y: 6px;
+  --vselect-gap: 6px;
+  --vselect-font-size: 14px;
+  --vselect-font-size-sm: 13px;
+  --vselect-font-size-lg: 16px;
+  --vselect-line-height: 1.4;
+
+  // Surface colors
+  --vselect-bg: #ffffff;
+  --vselect-bg-hover: #f1f5f9;
+  --vselect-bg-disabled: #f1f5f9;
+  --vselect-menu-bg: #ffffff;
+
+  // Border colors — slate-300 at rest reads cleanly on white *and* on
+  // tinted page backgrounds (warm grays, soft blues) without looking
+  // smudged. Hover/focus step up in contrast, not saturation.
+  --vselect-border: #cbd5e1;
+  --vselect-border-hover: #94a3b8;
+  --vselect-border-focus: var(--vselect-accent, #6366f1);
+
+  // Text colors
+  --vselect-text: #0f172a;
+  --vselect-text-muted: #64748b;
+  --vselect-text-placeholder: #94a3b8;
+  --vselect-text-disabled: #94a3b8;
+
+  // Accent colors
+  --vselect-accent: #6366f1;
+  --vselect-accent-soft: #eef2ff;
+  --vselect-accent-text: #ffffff;
+  --vselect-danger: #ef4444;
+  --vselect-danger-soft: #fef2f2;
+
+  // Option states
+  --vselect-option-active-bg: #f1f5f9;
+  --vselect-option-selected-bg: #eef2ff;
+  --vselect-option-selected-text: #4338ca;
+
+  // Tags
+  --vselect-tag-bg: #f1f5f9;
+  --vselect-tag-text: #0f172a;
+  --vselect-tag-remove: #64748b;
+  --vselect-tag-remove-hover: #ef4444;
+
+  // Focus ring — rgba so it glows cleanly over any background tint.
+  --vselect-focus-ring: 0 0 0 1px rgba(99, 102, 241, 0.22);
+
+  // Elevation
+  --vselect-shadow-menu:
+    0 10px 28px -12px rgba(15, 23, 42, 0.22), 0 2px 6px -2px rgba(15, 23, 42, 0.08);
+
+  // Layering
+  --vselect-z-menu: 1000;
+
+  // Motion
+  --vselect-transition: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@mixin dark-tokens {
+  color-scheme: dark;
+
+  // Surface — slate-800 instead of slate-900. The previous near-black
+  // surface read as a hole on every dark page that wasn't pure black;
+  // slate-800 sits naturally on slate/zinc/gray dark backgrounds.
+  --vselect-bg: #1e293b;
+  --vselect-bg-hover: #334155;
+  --vselect-bg-disabled: #0f172a;
+  --vselect-menu-bg: #1e293b;
+
+  --vselect-border: #475569;
+  --vselect-border-hover: #64748b;
+  --vselect-border-focus: var(--vselect-accent, #818cf8);
+
+  --vselect-text: #f1f5f9;
+  --vselect-text-muted: #cbd5e1;
+  --vselect-text-placeholder: #94a3b8;
+  --vselect-text-disabled: #64748b;
+
+  --vselect-accent: #818cf8;
+  --vselect-accent-soft: #312e81;
+  --vselect-accent-text: #ffffff;
+  --vselect-danger: #f87171;
+  --vselect-danger-soft: #7f1d1d;
+
+  --vselect-option-active-bg: #334155;
+  --vselect-option-selected-bg: #312e81;
+  --vselect-option-selected-text: #c7d2fe;
+
+  --vselect-tag-bg: #334155;
+  --vselect-tag-text: #e2e8f0;
+  --vselect-tag-remove: #cbd5e1;
+  --vselect-tag-remove-hover: #f87171;
+
+  --vselect-focus-ring: 0 0 0 1px rgba(129, 140, 248, 0.35);
+  --vselect-shadow-menu: 0 12px 28px -10px rgba(0, 0, 0, 0.55), 0 2px 6px -2px rgba(0, 0, 0, 0.35);
+}

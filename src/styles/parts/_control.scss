@@ -1,0 +1,84 @@
+@mixin styles {
+  .vselect-control {
+    display: flex;
+    align-items: center;
+    gap: var(--vselect-gap);
+    width: 100%;
+    min-height: var(--vselect-control-min-height);
+    padding: var(--vselect-control-padding-y) var(--vselect-control-padding-x);
+    background: var(--vselect-bg);
+    border: var(--vselect-border-width) solid var(--vselect-border);
+    border-radius: var(--vselect-radius);
+    color: var(--vselect-text);
+    font-size: var(--vselect-font-size);
+    line-height: var(--vselect-line-height);
+    cursor: pointer;
+    transition:
+      border-color var(--vselect-transition),
+      box-shadow var(--vselect-transition),
+      background-color var(--vselect-transition);
+
+    .vselect:hover:not(.is-disabled) & {
+      border-color: var(--vselect-border-hover);
+    }
+
+    .vselect.is-focused & {
+      border-color: var(--vselect-border-focus);
+      box-shadow: var(--vselect-focus-ring);
+    }
+
+    .vselect.is-searchable & {
+      cursor: text;
+    }
+
+    .vselect.is-disabled & {
+      background: var(--vselect-bg-disabled);
+      color: var(--vselect-text-disabled);
+      cursor: not-allowed;
+    }
+
+    .vselect--sm & {
+      min-height: var(--vselect-control-min-height-sm);
+      font-size: var(--vselect-font-size-sm);
+    }
+
+    .vselect--lg & {
+      min-height: var(--vselect-control-min-height-lg);
+      font-size: var(--vselect-font-size-lg);
+    }
+  }
+
+  .vselect-values {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--vselect-gap);
+    min-width: 0;
+  }
+
+  .vselect-placeholder {
+    color: var(--vselect-text-placeholder);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .vselect-single {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vselect-indicators {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    color: var(--vselect-text-muted);
+    // Override the searchable control's text cursor so the gap between the
+    // clear/chevron buttons doesn't read as a typeable area.
+    cursor: pointer;
+  }
+}

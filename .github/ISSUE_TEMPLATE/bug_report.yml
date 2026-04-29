@@ -1,0 +1,81 @@
+name: 🐛 Bug Report
+description: Report a reproducible bug in vue3-select.
+title: '[Bug] '
+labels: ['bug', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report. A minimal, runnable
+        reproduction is by far the most useful thing you can include — a
+        StackBlitz / CodeSandbox link beats a code snippet, which beats a
+        prose description.
+
+  - type: input
+    id: version
+    attributes:
+      label: vue3-select version
+      placeholder: 0.0.1
+    validations:
+      required: true
+
+  - type: input
+    id: vue-version
+    attributes:
+      label: Vue version
+      placeholder: 3.5.x
+    validations:
+      required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      options:
+        - Plain Vite + Vue
+        - Nuxt 3
+        - Nuxt 4
+        - Vue CLI
+        - Other (please describe in steps below)
+    validations:
+      required: true
+
+  - type: input
+    id: reproduction
+    attributes:
+      label: Reproduction URL
+      description: StackBlitz / CodeSandbox / a small public repo. The faster we can run it, the faster we can fix it.
+      placeholder: https://stackblitz.com/edit/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the reproduction
+        2. Click …
+        3. Observe …
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Browser version, error stack, screenshots, related issues — whatever feels relevant.

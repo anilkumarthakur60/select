@@ -1,0 +1,16 @@
+@mixin styles {
+  .vselect-group {
+    padding: 8px 10px 4px;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--vselect-text-muted);
+
+    &:not(:first-child) {
+      border-top: var(--vselect-border-width) solid var(--vselect-border);
+      margin-top: 4px;
+      padding-top: 12px;
+    }
+  }
+}

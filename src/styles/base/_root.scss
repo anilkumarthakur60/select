@@ -1,0 +1,39 @@
+@mixin styles {
+  .vselect {
+    position: relative;
+    display: block;
+    width: 100%;
+    font-family: inherit;
+    color: var(--vselect-text);
+    box-sizing: border-box;
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+  }
+
+  .vselect-hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vselect *,
+    .vselect-menu,
+    .vselect-spinner {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

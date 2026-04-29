@@ -1,0 +1,6 @@
+export { default as VSelect } from '@/components/VSelect'
+export { default as VSelectOption } from '@/components/VSelectOption'
+export { default as VSelectTag } from '@/components/VSelectTag'
+export { default as VTreeSelect } from '@/components/VTreeSelect'
+export { default as VTreeSelectNode } from '@/components/VTreeSelectNode'
+export * from '@/components/icons'

@@ -1,0 +1,40 @@
+name: ✨ Feature Request
+description: Suggest a new prop, slot, composable, or behavior.
+title: '[Feat] '
+labels: ['enhancement', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening a feature request, please check that an existing prop,
+        slot, or composable doesn't already cover what you need. The library
+        leans toward "give consumers primitives, don't add prop-explosion" —
+        if your use case can be solved by an existing slot or by reusing one
+        of the headless composables, that's usually the answer.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the user-facing problem first, before any specific solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: API sketch — props, events, slots, composable shape. TypeScript signatures appreciated.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What else did you try? Why didn't it work?
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?

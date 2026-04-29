@@ -1,0 +1,9 @@
+// Emerald accent preset. Apply by adding `vselect--emerald` to the root.
+.vselect--emerald {
+  --vselect-accent: #10b981;
+  --vselect-accent-soft: #ecfdf5;
+  --vselect-border-focus: #10b981;
+  --vselect-option-selected-bg: #ecfdf5;
+  --vselect-option-selected-text: #065f46;
+  --vselect-focus-ring: 0 0 0 1px rgba(16, 185, 129, 0.18);
+}

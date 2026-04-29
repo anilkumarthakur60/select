@@ -1,0 +1,66 @@
+@mixin styles {
+  .vselect-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: var(--vselect-radius-sm);
+    color: var(--vselect-text);
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background-color var(--vselect-transition),
+      color var(--vselect-transition);
+    font-size: var(--vselect-font-size);
+    line-height: var(--vselect-line-height);
+
+    &.is-active {
+      background: var(--vselect-option-active-bg);
+    }
+
+    &.is-selected {
+      background: var(--vselect-option-selected-bg);
+      color: var(--vselect-option-selected-text);
+      font-weight: 500;
+    }
+
+    &.is-disabled {
+      color: var(--vselect-text-disabled);
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  }
+
+  .vselect-option-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vselect-option-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    // Inherit the selected option's text color rather than the raw accent —
+    // `--vselect-option-selected-text` is the colour designed to read on
+    // `--vselect-option-selected-bg`, so the glyph stays legible in both
+    // light and dark themes without a separate token.
+    color: inherit;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .vselect-option-hint {
+    flex-shrink: 0;
+    color: var(--vselect-text-muted);
+    font-size: 0.85em;
+  }
+}

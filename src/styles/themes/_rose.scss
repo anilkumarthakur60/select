@@ -1,0 +1,9 @@
+// Rose accent preset. Apply by adding `vselect--rose` to the root.
+.vselect--rose {
+  --vselect-accent: #f43f5e;
+  --vselect-accent-soft: #fff1f2;
+  --vselect-border-focus: #f43f5e;
+  --vselect-option-selected-bg: #fff1f2;
+  --vselect-option-selected-text: #9f1239;
+  --vselect-focus-ring: 0 0 0 1px rgba(244, 63, 94, 0.18);
+}

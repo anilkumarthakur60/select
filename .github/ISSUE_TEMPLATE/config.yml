@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://anilkumarthakur60.github.io/vue3-select/
+    about: Guides, API reference, live examples.
+  - name: 💬 GitHub Discussions
+    url: https://github.com/anilkumarthakur60/vue3-select/discussions
+    about: Questions, ideas, and show-and-tell.
+  - name: 🔒 Report a security issue
+    url: https://github.com/anilkumarthakur60/vue3-select/security/advisories/new
+    about: Use private vulnerability reporting — do not open a public issue.
