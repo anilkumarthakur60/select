@@ -1,7 +1,7 @@
 {
-  "name": "@anilkumarthakur/vue3-select",
+  "name": "@anilkumarthakur/select",
   "version": "0.0.1",
-  "description": "A typed, accessible, headless-friendly select for Vue 3. Single, multi, tags, async, grouped — one component, zero surprises.",
+  "description": "A typed, accessible select component for Vue, React, Svelte, Solid, and Web Components — single, multi, tags, async, grouped. Framework-agnostic core, framework-idiomatic adapters.",
   "author": "Er. Anil Kumar Thakur <anilkumarthakur60@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/anilkumarthakur60/vue3-select#readme",
@@ -17,25 +17,53 @@
     "url": "https://github.com/sponsors/anilkumarthakur60"
   },
   "type": "module",
-  "main": "./dist/vue3-select.cjs",
-  "module": "./dist/vue3-select.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "unpkg": "./dist/vue3-select.mjs",
-  "jsdelivr": "./dist/vue3-select.mjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/vue3-select.mjs",
-      "require": "./dist/vue3-select.cjs",
-      "default": "./dist/vue3-select.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
     },
-    "./nuxt": {
-      "types": "./dist/nuxt.d.ts",
-      "import": "./dist/nuxt.mjs",
-      "require": "./dist/nuxt.cjs",
-      "default": "./dist/nuxt.mjs"
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "import": "./dist/vue.mjs",
+      "require": "./dist/vue.cjs",
+      "default": "./dist/vue.mjs"
     },
-    "./style.css": "./dist/vue3-select.css",
+    "./vue/nuxt": {
+      "types": "./dist/vue/nuxt.d.ts",
+      "import": "./dist/vue/nuxt.mjs",
+      "require": "./dist/vue/nuxt.cjs",
+      "default": "./dist/vue/nuxt.mjs"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react.mjs",
+      "require": "./dist/react.cjs",
+      "default": "./dist/react.mjs"
+    },
+    "./svelte": {
+      "types": "./dist/svelte/index.d.ts",
+      "import": "./dist/svelte.mjs",
+      "require": "./dist/svelte.cjs",
+      "default": "./dist/svelte.mjs"
+    },
+    "./solid": {
+      "types": "./dist/solid/index.d.ts",
+      "import": "./dist/solid.mjs",
+      "require": "./dist/solid.cjs",
+      "default": "./dist/solid.mjs"
+    },
+    "./web-component": {
+      "types": "./dist/web-component/index.d.ts",
+      "import": "./dist/web-component.mjs",
+      "require": "./dist/web-component.cjs",
+      "default": "./dist/web-component.mjs"
+    },
+    "./style.css": "./dist/select.css",
     "./scss": "./src/styles/index.scss",
     "./scss/*": "./src/styles/*",
     "./package.json": "./package.json"
@@ -54,6 +82,11 @@
   "keywords": [
     "vue",
     "vue3",
+    "react",
+    "svelte",
+    "solid",
+    "web-components",
+    "custom-element",
     "select",
     "combobox",
     "multiselect",
@@ -67,14 +100,24 @@
     "dropdown",
     "tree",
     "tree-select",
-    "treeselect"
+    "framework-agnostic"
   ],
   "scripts": {
-    "dev": "vite --config vite.config.dev.ts",
-    "preview": "vite preview --config vite.config.dev.ts --outDir dist-demo",
+    "dev": "npm run dev:vue",
+    "dev:vue": "vite --config playground/vue/vite.config.ts",
+    "dev:react": "vite --config playground/react/vite.config.ts",
+    "dev:svelte": "vite --config playground/svelte/vite.config.ts",
+    "dev:solid": "vite --config playground/solid/vite.config.ts",
+    "dev:wc": "vite --config playground/web-component/vite.config.ts",
+    "preview": "vite preview --config playground/vue/vite.config.ts --outDir ../../dist-demo",
     "build": "run-s type-check build:lib",
     "build:lib": "vite build",
-    "build:demo": "vite build --config vite.config.dev.ts --outDir dist-demo",
+    "build:demo": "run-s build:demo:*",
+    "build:demo:vue": "vite build --config playground/vue/vite.config.ts --outDir ../../dist-demo/vue --emptyOutDir",
+    "build:demo:react": "vite build --config playground/react/vite.config.ts --outDir ../../dist-demo/react --emptyOutDir",
+    "build:demo:svelte": "vite build --config playground/svelte/vite.config.ts --outDir ../../dist-demo/svelte --emptyOutDir",
+    "build:demo:solid": "vite build --config playground/solid/vite.config.ts --outDir ../../dist-demo/solid --emptyOutDir",
+    "build:demo:wc": "vite build --config playground/web-component/vite.config.ts --outDir ../../dist-demo/web-component --emptyOutDir",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
@@ -87,7 +130,7 @@
     "lint:eslint": "eslint . --fix --cache",
     "size": "size-limit",
     "size:why": "size-limit --why",
-    "format": "prettier --write --experimental-cli \"src/**/*.{ts,tsx,scss}\" \"playground/**/*.{ts,vue}\" \"tests/**/*.ts\"",
+    "format": "prettier --write --experimental-cli \"src/**/*.{ts,tsx,scss}\" \"playground/**/*.{ts,tsx,vue,svelte}\" \"tests/**/*.{ts,tsx}\"",
     "commitlint": "commitlint --edit",
     "release": "commit-and-tag-version",
     "release:dry": "commit-and-tag-version --dry-run",
@@ -106,6 +149,10 @@
   "peerDependencies": {
     "@nuxt/kit": "^3.0.0 || ^4.0.0",
     "nuxt": "^3.0.0 || ^4.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "solid-js": "^1.8.0",
+    "svelte": "^5.0.0",
     "vue": "^3.3.0"
   },
   "peerDependenciesMeta": {
@@ -116,24 +163,40 @@
       "optional": true
     },
     "vue": {
-      "optional": false
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "solid-js": {
+      "optional": true
     }
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.2",
     "@commitlint/config-conventional": "^20.5.0",
-    "commit-and-tag-version": "^12.7.1",
     "@nuxt/kit": "^4.4.2",
     "@nuxt/schema": "^4.4.2",
     "@size-limit/preset-small-lib": "^12.1.0",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.12.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.1",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vitejs/plugin-vue-jsx": "^5.1.5",
     "@vitest/coverage-v8": "^4.1.5",
     "@vue/eslint-config-typescript": "^14.7.0",
     "@vue/test-utils": "^2.4.8",
     "@vue/tsconfig": "^0.9.1",
+    "commit-and-tag-version": "^12.7.1",
     "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-oxlint": "~1.60.0",
@@ -144,11 +207,17 @@
     "npm-run-all2": "^8.0.4",
     "oxlint": "~1.60.0",
     "prettier": "3.8.3",
+    "prettier-plugin-svelte": "^3.5.1",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
     "sass": "^1.99.0",
     "size-limit": "^12.1.0",
+    "solid-js": "1.9.12",
+    "svelte": "5.55.5",
     "typescript": "~6.0.0",
     "vite": "^8.0.8",
     "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-solid": "^2.11.12",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vitepress": "^1.6.4",
     "vitest": "^4.1.5",
@@ -160,55 +229,108 @@
   },
   "size-limit": [
     {
-      "name": "ESM (main entry, gzipped)",
-      "path": "dist/vue3-select.mjs",
+      "name": "Core (framework-free, gzipped)",
+      "path": "dist/index.mjs",
       "import": "*",
-      "limit": "12 kB",
+      "limit": "5 kB"
+    },
+    {
+      "name": "Vue adapter (gzipped)",
+      "path": "dist/vue.mjs",
+      "import": "*",
+      "limit": "13 kB",
       "ignore": [
         "vue",
         "@floating-ui/vue"
       ]
+    },
+    {
+      "name": "React adapter (gzipped)",
+      "path": "dist/react.mjs",
+      "import": "*",
+      "limit": "8 kB",
+      "ignore": [
+        "react",
+        "react-dom"
+      ]
+    },
+    {
+      "name": "Svelte adapter (gzipped)",
+      "path": "dist/svelte.mjs",
+      "import": "*",
+      "limit": "6 kB",
+      "ignore": [
+        "svelte"
+      ]
+    },
+    {
+      "name": "Solid adapter (gzipped)",
+      "path": "dist/solid.mjs",
+      "import": "*",
+      "limit": "6 kB",
+      "ignore": [
+        "solid-js"
+      ]
+    },
+    {
+      "name": "Web Component (gzipped)",
+      "path": "dist/web-component.mjs",
+      "import": "*",
+      "limit": "8 kB"
     },
     {
       "name": "CSS (gzipped)",
-      "path": "dist/vue3-select.css",
+      "path": "dist/select.css",
       "limit": "3.5 kB"
-    },
-    {
-      "name": "Tree-shaken: <VSelect> only",
-      "path": "dist/vue3-select.mjs",
-      "import": "{ VSelect }",
-      "limit": "11 kB",
-      "ignore": [
-        "vue",
-        "@floating-ui/vue"
-      ]
-    },
-    {
-      "name": "Tree-shaken: useSelection only",
-      "path": "dist/vue3-select.mjs",
-      "import": "{ useSelection }",
-      "limit": "1 kB",
-      "ignore": [
-        "vue",
-        "@floating-ui/vue"
-      ]
     }
   ],
   "commit-and-tag-version": {
     "header": "# Changelog\n\nAll notable changes to this project will be documented in this file.\n\nThe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),\nand this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n",
     "types": [
-      { "type": "feat", "section": "Features" },
-      { "type": "fix", "section": "Bug Fixes" },
-      { "type": "perf", "section": "Performance" },
-      { "type": "refactor", "section": "Refactors" },
-      { "type": "revert", "section": "Reverts" },
-      { "type": "docs", "section": "Documentation" },
-      { "type": "build", "hidden": true },
-      { "type": "ci", "hidden": true },
-      { "type": "chore", "hidden": true },
-      { "type": "style", "hidden": true },
-      { "type": "test", "hidden": true }
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "perf",
+        "section": "Performance"
+      },
+      {
+        "type": "refactor",
+        "section": "Refactors"
+      },
+      {
+        "type": "revert",
+        "section": "Reverts"
+      },
+      {
+        "type": "docs",
+        "section": "Documentation"
+      },
+      {
+        "type": "build",
+        "hidden": true
+      },
+      {
+        "type": "ci",
+        "hidden": true
+      },
+      {
+        "type": "chore",
+        "hidden": true
+      },
+      {
+        "type": "style",
+        "hidden": true
+      },
+      {
+        "type": "test",
+        "hidden": true
+      }
     ]
   }
 }

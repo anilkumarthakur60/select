@@ -1,4 +1,4 @@
-# Why @anilkumarthakur/vue3-select?
+# Why @anilkumarthakur/select?
 
 There are plenty of select components for Vue. This one earns its place by
 sweating the parts that other libraries leave fuzzy.
@@ -58,7 +58,7 @@ import {
   useOutsideClick,
   useControlFocus,
   useFormBinding,
-} from '@anilkumarthakur/vue3-select'
+} from '@anilkumarthakur/select'
 ```
 
 ## Themed without specificity wars

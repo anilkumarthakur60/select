@@ -60,8 +60,8 @@ const v2 = ref('Vue')
 Two accent presets ship as separate SCSS files. Import the one you want:
 
 ```scss
-@use '@anilkumarthakur/vue3-select/scss/themes/emerald';
-@use '@anilkumarthakur/vue3-select/scss/themes/rose';
+@use '@anilkumarthakur/select/scss/themes/emerald';
+@use '@anilkumarthakur/select/scss/themes/rose';
 ```
 
 Then apply via class:

@@ -3,11 +3,17 @@
   "include": [
     "env.d.ts",
     "src/**/*",
-    "playground/**/*",
-    "playground/**/*.vue",
+    "playground/shared/**/*",
+    "playground/vue/**/*",
+    "playground/vue/**/*.vue",
     "tests/**/*"
   ],
-  "exclude": [],
+  "exclude": [
+    "playground/react/**/*",
+    "playground/svelte/**/*",
+    "playground/solid/**/*",
+    "playground/web-component/**/*"
+  ],
   "compilerOptions": {
     "noUncheckedIndexedAccess": true,
     "paths": {

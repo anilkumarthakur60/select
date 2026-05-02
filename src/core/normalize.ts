@@ -1,4 +1,4 @@
-import type { NormalizedOption, OptionAccessor, OptionLike } from '@/types/option'
+import type { NormalizedOption, OptionAccessor, OptionLike } from '@/core/types/option'
 import { isPrimitive, readAccessor } from '@/core/accessor'
 
 interface NormalizeConfig<T> {

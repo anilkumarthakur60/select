@@ -1,4 +1,4 @@
-import type { OptionAccessor } from '@/types/option'
+import type { OptionAccessor } from '@/core/types/option'
 
 /**
  * Reads a property or computes a derived value. Accepts a string key OR a

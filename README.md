@@ -1,17 +1,12 @@
-# @anilkumarthakur/vue3-select
+# @anilkumarthakur/select
 
 A typed, accessible, headless-friendly select for Vue 3.
 Single, multi, tags, async, grouped — one component, zero surprises.
 
-[![status](https://img.shields.io/badge/status-pre--release-orange)](#status)
+[![npm](https://img.shields.io/npm/v/@anilkumarthakur/select.svg)](https://www.npmjs.com/package/@anilkumarthakur/select)
 [![bundle](https://img.shields.io/badge/bundle-~10.5kb%20gz-blue)](#)
 [![types](https://img.shields.io/badge/types-included-3178c6)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
-
-> **Status:** in initial development — **not yet published to npm**. The
-> install snippet below will start working from the first release. Until
-> then, clone the repo and `npm link` (or use `npm pack`) if you want to
-> try it locally.
 
 - ✅ Vue 3 + TypeScript with full generics over your option type
 - ✅ Single, multiple, and tags modes (with create-on-Enter)
@@ -30,7 +25,7 @@ Single, multi, tags, async, grouped — one component, zero surprises.
 ## Install
 
 ```bash
-npm i @anilkumarthakur/vue3-select
+npm i @anilkumarthakur/select
 ```
 
 `@floating-ui/vue` is a regular dependency, so npm pulls it in automatically.
@@ -44,7 +39,7 @@ Rollup, esbuild, Bun, etc.).
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import '@anilkumarthakur/vue3-select/style.css'
+import '@anilkumarthakur/select/style.css'
 
 createApp(App).mount('#app')
 ```
@@ -52,7 +47,7 @@ createApp(App).mount('#app')
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/vue3-select'
+import { VSelect } from '@anilkumarthakur/select'
 
 const fruit = ref<string | null>(null)
 const fruits = ['Apple', 'Banana', 'Cherry']
@@ -70,7 +65,7 @@ const fruits = ['Apple', 'Banana', 'Cherry']
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/vue3-select'
+import { VSelect } from '@anilkumarthakur/select'
 
 interface Country { code: string; name: string; region: string }
 const countries: Country[] = [/* … */]
@@ -95,7 +90,7 @@ const selected = ref<string[]>([])
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/vue3-select'
+import { VSelect } from '@anilkumarthakur/select'
 
 const results = ref([])
 const loading = ref(false)
@@ -152,7 +147,7 @@ parent state is always derived, so you never have to reconcile it manually.
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VTreeSelect } from '@anilkumarthakur/vue3-select'
+import { VTreeSelect } from '@anilkumarthakur/select'
 
 interface Cat { id: number; name: string; children: Cat[] }
 const categories: Cat[] = [
@@ -202,16 +197,16 @@ import {
   // Core helpers (pure functions, framework-free)
   normalize,
   normalizeTree,
-} from '@anilkumarthakur/vue3-select'
+} from '@anilkumarthakur/select'
 ```
 
 ## Nuxt 3 / 4
 
-`@anilkumarthakur/vue3-select` ships a first-class Nuxt module. Add it to `nuxt.config.ts`:
+`@anilkumarthakur/select` ships a first-class Nuxt module. Add it to `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/vue3-select/nuxt'],
+  modules: ['@anilkumarthakur/select/nuxt'],
 })
 ```
 
@@ -223,7 +218,7 @@ Module options live under `vue3Select`:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/vue3-select/nuxt'],
+  modules: ['@anilkumarthakur/select/nuxt'],
   vue3Select: {
     /** Disable to keep tree-shaken named imports only. Default: true */
     components: true,
@@ -231,7 +226,7 @@ export default defineNuxtConfig({
     prefix: '',
     /** Auto-import the headless composables too. Default: false */
     composables: false,
-    /** Inject '@anilkumarthakur/vue3-select/style.css' into Nuxt's CSS array. Default: true */
+    /** Inject '@anilkumarthakur/select/style.css' into Nuxt's CSS array. Default: true */
     css: true,
   },
 })
@@ -242,8 +237,8 @@ file in `plugins/`:
 
 ```ts
 // plugins/vue3-select.ts
-import { VueSelectPlugin } from '@anilkumarthakur/vue3-select'
-import '@anilkumarthakur/vue3-select/style.css'
+import { VueSelectPlugin } from '@anilkumarthakur/select'
+import '@anilkumarthakur/select/style.css'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueSelectPlugin)
@@ -360,8 +355,8 @@ Built-in dark mode:
 Accent presets ship as separate SCSS files:
 
 ```scss
-@use '@anilkumarthakur/vue3-select/scss/themes/emerald';
-@use '@anilkumarthakur/vue3-select/scss/themes/rose';
+@use '@anilkumarthakur/select/scss/themes/emerald';
+@use '@anilkumarthakur/select/scss/themes/rose';
 ```
 
 ```vue
@@ -392,3 +387,5 @@ npm run build:demo   # static playground build
 ```
 
 ## License
+
+[MIT](./LICENSE) © Er. Anil Kumar Thakur

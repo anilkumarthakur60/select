@@ -50,7 +50,7 @@ import {
   useKeyboardNav,
   useDebounced,
   normalize,
-} from '@anilkumarthakur/vue3-select'
+} from '@anilkumarthakur/select'
 
 const props = defineProps<{ options: string[] }>()
 const modelValue = defineModel<unknown>()

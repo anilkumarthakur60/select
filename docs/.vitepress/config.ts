@@ -36,7 +36,7 @@ export default defineConfig({
         text: 'v0.1.0',
         items: [
           { text: 'Changelog', link: 'https://github.com/anilkumarthakur60/vue3-select/blob/main/CHANGELOG.md' },
-          { text: 'npm', link: 'https://www.npmjs.com/package/@anilkumarthakur/vue3-select' },
+          { text: 'npm', link: 'https://www.npmjs.com/package/@anilkumarthakur/select' },
         ],
       },
     ],
