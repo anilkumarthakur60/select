@@ -18,50 +18,50 @@
   },
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs",
-      "default": "./dist/index.mjs"
+      "default": "./dist/index.js"
     },
     "./vue": {
       "types": "./dist/vue/index.d.ts",
-      "import": "./dist/vue.mjs",
+      "import": "./dist/vue.js",
       "require": "./dist/vue.cjs",
-      "default": "./dist/vue.mjs"
+      "default": "./dist/vue.js"
     },
     "./vue/nuxt": {
       "types": "./dist/vue/nuxt.d.ts",
-      "import": "./dist/vue/nuxt.mjs",
+      "import": "./dist/vue/nuxt.js",
       "require": "./dist/vue/nuxt.cjs",
-      "default": "./dist/vue/nuxt.mjs"
+      "default": "./dist/vue/nuxt.js"
     },
     "./react": {
       "types": "./dist/react/index.d.ts",
-      "import": "./dist/react.mjs",
+      "import": "./dist/react.js",
       "require": "./dist/react.cjs",
-      "default": "./dist/react.mjs"
+      "default": "./dist/react.js"
     },
     "./svelte": {
       "types": "./dist/svelte/index.d.ts",
-      "import": "./dist/svelte.mjs",
+      "import": "./dist/svelte.js",
       "require": "./dist/svelte.cjs",
-      "default": "./dist/svelte.mjs"
+      "default": "./dist/svelte.js"
     },
     "./solid": {
       "types": "./dist/solid/index.d.ts",
-      "import": "./dist/solid.mjs",
+      "import": "./dist/solid.js",
       "require": "./dist/solid.cjs",
-      "default": "./dist/solid.mjs"
+      "default": "./dist/solid.js"
     },
     "./web-component": {
       "types": "./dist/web-component/index.d.ts",
-      "import": "./dist/web-component.mjs",
+      "import": "./dist/web-component.js",
       "require": "./dist/web-component.cjs",
-      "default": "./dist/web-component.mjs"
+      "default": "./dist/web-component.js"
     },
     "./style.css": "./dist/select.css",
     "./scss": "./src/styles/index.scss",
@@ -235,13 +235,13 @@
   "size-limit": [
     {
       "name": "Core (framework-free, gzipped)",
-      "path": "dist/index.mjs",
+      "path": "dist/index.js",
       "import": "*",
       "limit": "5 kB"
     },
     {
       "name": "Vue adapter (gzipped)",
-      "path": "dist/vue.mjs",
+      "path": "dist/vue.js",
       "import": "*",
       "limit": "13 kB",
       "ignore": [
@@ -251,7 +251,7 @@
     },
     {
       "name": "React adapter (gzipped)",
-      "path": "dist/react.mjs",
+      "path": "dist/react.js",
       "import": "*",
       "limit": "8 kB",
       "ignore": [
@@ -261,7 +261,7 @@
     },
     {
       "name": "Svelte adapter (gzipped)",
-      "path": "dist/svelte.mjs",
+      "path": "dist/svelte.js",
       "import": "*",
       "limit": "6 kB",
       "ignore": [
@@ -270,7 +270,7 @@
     },
     {
       "name": "Solid adapter (gzipped)",
-      "path": "dist/solid.mjs",
+      "path": "dist/solid.js",
       "import": "*",
       "limit": "6 kB",
       "ignore": [
@@ -279,7 +279,7 @@
     },
     {
       "name": "Web Component (gzipped)",
-      "path": "dist/web-component.mjs",
+      "path": "dist/web-component.js",
       "import": "*",
       "limit": "8 kB"
     },

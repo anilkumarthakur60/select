@@ -6,23 +6,10 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 
-// Library-build config — produces what consumers install via npm:
-//   ESM (.mjs) for Vite / Webpack / Rollup / Bun / esbuild / modern Node
-//   CJS (.cjs) for tools that still resolve `require(...)` (Jest, older Node)
-//   .d.ts for full TypeScript intellisense
-//
-// Multi-framework adapters:
-//   /         — root, framework-free core (createSelectMachine + helpers)
-//   /vue      — Vue 3 + Nuxt module
-//   /react    — React 18+ adapter
-//   /svelte   — Svelte 5 adapter
-//   /solid    — Solid adapter
-//   /web-component — framework-free custom element (covers Angular, Lit, Alpine, vanilla)
-//
-// Vue and React JSX live side-by-side in the source tree, so the JSX
-// transforms are scoped by file pattern: vue-jsx only sees src/vue/*.tsx,
-// react only sees src/react/*.tsx. Without the scoping, vue-jsx tries to
-// transform React components into Vue createVNode calls and the build dies.
+// Vue and React JSX share the same source tree, so the JSX transforms are
+// scoped by file pattern: vue-jsx only sees src/vue/*.tsx, react only sees
+// src/react/*.tsx. Without the scoping, vue-jsx tries to transform React
+// components into Vue createVNode calls and the build dies.
 
 const here = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
@@ -44,8 +31,7 @@ export default defineConfig({
     alias: { '@/': here('./src/') },
   },
 
-  // The lib build must not copy `public/` into `dist/` — that's the dev
-  // server's favicon, and it would otherwise ship inside the tarball.
+  // The lib build must not copy `public/` into `dist/`.
   publicDir: false,
 
   build: {
@@ -59,22 +45,12 @@ export default defineConfig({
         solid: here('./src/solid/index.ts'),
         'web-component': here('./src/web-component/index.ts'),
       },
-      fileName: (format, entryName) =>
-        `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
-      formats: ['es', 'cjs'],
     },
-
-    // Sourcemaps help downstream consumers debug into the published code.
     sourcemap: true,
     cssCodeSplit: false,
-
-    // Always start from a clean slate so renamed/removed files never linger
-    // in dist between builds (relied on by `npm pack` and the publish flow).
     emptyOutDir: true,
 
     rollupOptions: {
-      // Externalise framework peers so consumers' package managers resolve
-      // them and bundlers tree-shake the unused adapters.
       external: [
         'vue',
         '@floating-ui/vue',
@@ -93,12 +69,12 @@ export default defineConfig({
         'solid-js/web',
       ],
       output: {
-        globals: { vue: 'Vue', '@floating-ui/vue': 'FloatingUIVue', react: 'React', 'react-dom': 'ReactDOM' },
-        assetFileNames: (asset) => {
-          const name = asset.names?.[0]
-          return name === 'style.css' ? 'select.css' : (name ?? 'asset')
+        globals: {
+          vue: 'Vue',
+          '@floating-ui/vue': 'FloatingUIVue',
+          react: 'React',
+          'react-dom': 'ReactDOM',
         },
-        exports: 'named',
       },
     },
   },
