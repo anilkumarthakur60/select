@@ -7,6 +7,8 @@ export default defineConfig({
   root: here('.'),
   base: process.env.BASE_URL ?? '/',
 
+  cacheDir: here('../../node_modules/.vite-wc'),
+
   resolve: {
     alias: [
       { find: /^@\/(.*)$/, replacement: here('../../src/$1') },
@@ -14,5 +16,5 @@ export default defineConfig({
     ],
   },
 
-  server: { port: 5177, host: '127.0.0.1', strictPort: false },
+  server: { port: 5177, host: '127.0.0.1', strictPort: true },
 })

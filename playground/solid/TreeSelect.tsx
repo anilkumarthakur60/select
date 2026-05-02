@@ -157,7 +157,7 @@ export default function TreeSelect<T extends TreeOptionLike = TreeOptionLike>(
               autocomplete="off"
               spellcheck={false}
               value={query()}
-              placeholder={hasSelection() ? '' : props.placeholder ?? 'Select…'}
+              placeholder={hasSelection() ? '' : (props.placeholder ?? 'Select…')}
               disabled={props.disabled}
               onInput={(e) => {
                 setQuery(e.currentTarget.value)

@@ -103,12 +103,12 @@
     "framework-agnostic"
   ],
   "scripts": {
-    "dev": "npm run dev:vue",
-    "dev:vue": "vite --config playground/vue/vite.config.ts",
-    "dev:react": "vite --config playground/react/vite.config.ts",
-    "dev:svelte": "vite --config playground/svelte/vite.config.ts",
-    "dev:solid": "vite --config playground/solid/vite.config.ts",
-    "dev:wc": "vite --config playground/web-component/vite.config.ts",
+    "dev": "run-p --print-label dev:vue dev:react dev:svelte dev:solid dev:wc",
+    "dev:vue": "vite --config playground/vue/vite.config.ts --open",
+    "dev:react": "vite --config playground/react/vite.config.ts --open",
+    "dev:svelte": "vite --config playground/svelte/vite.config.ts --open",
+    "dev:solid": "vite --config playground/solid/vite.config.ts --open",
+    "dev:wc": "vite --config playground/web-component/vite.config.ts --open",
     "preview": "npm run preview:vue",
     "preview:vue": "vite preview --config playground/vue/vite.config.ts --outDir ../../dist-demo/vue",
     "preview:react": "vite preview --config playground/react/vite.config.ts --outDir ../../dist-demo/react",

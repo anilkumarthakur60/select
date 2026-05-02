@@ -60,7 +60,12 @@ export const categories: Category[] = [
         name: 'Frontend Development',
         slug: 'frontend-development',
         children: [
-          { id: 3, name: 'HTML, CSS & UI Frameworks', slug: 'html-css-ui-frameworks', children: [] },
+          {
+            id: 3,
+            name: 'HTML, CSS & UI Frameworks',
+            slug: 'html-css-ui-frameworks',
+            children: [],
+          },
           {
             id: 4,
             name: 'JavaScript & Frontend Frameworks',

@@ -8,6 +8,8 @@ export default defineConfig({
   root: here('.'),
   base: process.env.BASE_URL ?? '/',
 
+  cacheDir: here('../../node_modules/.vite-react'),
+
   plugins: [react()],
 
   resolve: {
@@ -17,5 +19,5 @@ export default defineConfig({
     ],
   },
 
-  server: { port: 5174, host: '127.0.0.1', strictPort: false },
+  server: { port: 5174, host: '127.0.0.1', strictPort: true },
 })

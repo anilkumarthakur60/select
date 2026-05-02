@@ -1,11 +1,6 @@
 <script lang="ts" generics="T extends TreeOptionLike = TreeOptionLike">
   import { flattenTree, type NormalizedTreeNode, type TreeOptionLike } from '@/svelte'
-  import {
-    allParentIds,
-    buildTree,
-    searchTree,
-    toggleNode,
-  } from '../shared/tree-helpers'
+  import { allParentIds, buildTree, searchTree, toggleNode } from '../shared/tree-helpers'
   import TreeNode from './TreeNode.svelte'
 
   type Props = {
@@ -197,7 +192,13 @@
       <div class="vselect-tree-empty">{emptyText}</div>
     {:else}
       {#each filtered as node (node.id)}
-        <TreeNode {node} selected={selectedSet} {expanded} onToggle={toggle} onToggleExpand={toggleExpand} />
+        <TreeNode
+          {node}
+          selected={selectedSet}
+          {expanded}
+          onToggle={toggle}
+          onToggleExpand={toggleExpand}
+        />
       {/each}
     {/if}
   </div>

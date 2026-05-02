@@ -36,11 +36,7 @@
   >
     <button
       type="button"
-      class={[
-        'vselect-tree-expander',
-        node.isLeaf ? 'is-leaf' : '',
-        isOpen ? 'is-open' : '',
-      ]
+      class={['vselect-tree-expander', node.isLeaf ? 'is-leaf' : '', isOpen ? 'is-open' : '']
         .filter(Boolean)
         .join(' ')}
       aria-label={isOpen ? 'Collapse' : 'Expand'}

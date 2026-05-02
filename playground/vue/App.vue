@@ -18,7 +18,7 @@ const themeFg = computed(() => (theme.value === 'dark' ? '#e2e8f0' : '#0f172a'))
     <header>
       <div class="brand">
         <span class="logo">▲</span>
-        <h1>@anilkumarthakur/select</h1>
+        <h1>@anilkumarthakur/select. Vue</h1>
         <span class="tag">v0.1.0</span>
       </div>
       <p class="lead">

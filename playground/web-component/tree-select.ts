@@ -88,7 +88,7 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
           ${overflow > 0 ? `<span class="vselect-tag">+${overflow} more</span>` : ''}
           <input type="text" class="vselect-search" autocomplete="off" spellcheck="false"
             value="${escapeAttr(query)}"
-            placeholder="${escapeAttr(hasSelection ? '' : args.placeholder ?? 'Select…')}" />
+            placeholder="${escapeAttr(hasSelection ? '' : (args.placeholder ?? 'Select…'))}" />
         </div>
         <div class="vselect-indicators">
           ${
@@ -132,9 +132,9 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
 
     // Control click → toggle open. Skip when the click landed on the search
     // input or a tag-remove (those have their own handlers).
-    mount.querySelector<HTMLElement>('[data-action="toggle-open"]')!.addEventListener(
-      'mousedown',
-      (e) => {
+    mount
+      .querySelector<HTMLElement>('[data-action="toggle-open"]')!
+      .addEventListener('mousedown', (e) => {
         const tgt = e.target as HTMLElement
         if (tgt.closest('.vselect-search') || tgt.closest('.vselect-tag-remove')) return
         if (tgt.closest('[data-action="clear"]')) return
@@ -146,8 +146,7 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
           const fresh = mount.querySelector<HTMLInputElement>('input.vselect-search')
           fresh?.focus()
         }
-      },
-    )
+      })
 
     search.addEventListener('input', () => {
       query = search.value
@@ -280,10 +279,7 @@ function renderNode<T>(
   `
 }
 
-function findNodeById<T>(
-  tree: NormalizedTreeNode<T>[],
-  id: string,
-): NormalizedTreeNode<T> | null {
+function findNodeById<T>(tree: NormalizedTreeNode<T>[], id: string): NormalizedTreeNode<T> | null {
   for (const node of tree) {
     if (node.id === id) return node
     const inChildren = findNodeById(node.children, id)
