@@ -96,8 +96,8 @@
               onmousedown={(event) => {
                 event.preventDefault()
                 adapter.machine.deselectOption(option)
-              }}
-            >×</button>
+              }}>×</button
+            >
           </span>
         {/each}
       {/if}
@@ -117,7 +117,9 @@
       {#if config.loading}
         <span class="vselect-spinner" aria-hidden="true"></span>
       {:else if config.clearable !== false && hasSelection && !config.disabled}
-        <button {...toSvelteProps(adapter.machine.getClearButtonProps())} class="vselect-indicator">×</button>
+        <button {...toSvelteProps(adapter.machine.getClearButtonProps())} class="vselect-indicator"
+          >×</button
+        >
       {/if}
       <span class="vselect-indicator" aria-hidden="true">▾</span>
     </div>
@@ -136,7 +138,11 @@
         {@const optProps = toSvelteProps(adapter.machine.getOptionProps(option, index))}
         <div {...optProps}>
           {#if renderOption}
-            {@render renderOption(option, state.activeIndex === index, adapter.machine.isSelected(option))}
+            {@render renderOption(
+              option,
+              state.activeIndex === index,
+              adapter.machine.isSelected(option),
+            )}
           {:else}
             <span>{option.label}</span>
           {/if}
@@ -154,7 +160,9 @@
           event.preventDefault()
           adapter.machine.createFromQuery()
         }}
-      >Create <strong>{state.query}</strong></div>
+      >
+        Create <strong>{state.query}</strong>
+      </div>
     {/if}
   </div>
 </div>

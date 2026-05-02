@@ -19,8 +19,8 @@
       <span class="tag">v0.0.1</span>
     </div>
     <p class="lead">
-      Headless Svelte 5 adapter — drop-in <code>Select.svelte</code> example included. Powered by
-      the same framework-agnostic core as the Vue, React, and Web Component builds.
+      Headless Svelte 5 adapter — drop-in <code>Select.svelte</code> example included. Powered by the
+      same framework-agnostic core as the Vue, React, and Web Component builds.
     </p>
     <label class="theme-switch">
       Theme
@@ -54,27 +54,75 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  :global(*) { box-sizing: border-box; }
-  :global(body) { margin: 0; }
+  :global(*) {
+    box-sizing: border-box;
+  }
+  :global(body) {
+    margin: 0;
+  }
   main {
     width: 100vw;
     min-height: 100vh;
     padding: 48px 32px 80px;
-    transition: background 200ms ease, color 200ms ease;
+    transition:
+      background 200ms ease,
+      color 200ms ease;
   }
-  header { margin: 0 0 40px; }
-  .brand { display: flex; align-items: center; gap: 10px; }
-  .brand .logo { font-size: 22px; color: #6366f1; }
-  .brand h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  header {
+    margin: 0 0 40px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand .logo {
+    font-size: 22px;
+    color: #6366f1;
+  }
+  .brand h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
   .brand .tag {
-    font-size: 11px; padding: 2px 8px; border-radius: 999px;
-    background: #eef2ff; color: #4338ca; font-weight: 600;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #4338ca;
+    font-weight: 600;
   }
-  .lead { margin: 12px 0 0; max-width: 620px; opacity: 0.75; line-height: 1.55; }
-  .theme-switch { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 13px; opacity: 0.85; }
-  .theme-switch select { padding: 4px 8px; border-radius: 6px; border: 1px solid currentColor; background: transparent; color: inherit; }
-  .grid { display: flex; flex-direction: column; gap: 20px; }
-  .single-row { width: 100%; }
+  .lead {
+    margin: 12px 0 0;
+    max-width: 620px;
+    opacity: 0.75;
+    line-height: 1.55;
+  }
+  .theme-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+  .theme-switch select {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
+  }
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .single-row {
+    width: 100%;
+  }
   :global(.card) {
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(6px);
@@ -85,18 +133,57 @@
     flex-direction: column;
     gap: 10px;
   }
-  :global(.card h2) { margin: 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.7; }
-  :global(.card p) { margin: 0; font-size: 13px; opacity: 0.7; line-height: 1.5; }
-  :global(.card pre) { margin: 0; padding: 10px 12px; font-size: 12px; background: rgba(15, 23, 42, 0.05); border-radius: 8px; overflow-x: auto; font-family: 'SFMono-Regular', Menlo, monospace; }
-  :global(.stack) { display: flex; flex-direction: column; gap: 8px; }
-  footer { margin: 60px 0 0; font-size: 13px; opacity: 0.65; }
+  :global(.card h2) {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+  }
+  :global(.card p) {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.7;
+    line-height: 1.5;
+  }
+  :global(.card pre) {
+    margin: 0;
+    padding: 10px 12px;
+    font-size: 12px;
+    background: rgba(15, 23, 42, 0.05);
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', Menlo, monospace;
+  }
+  :global(.stack) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  footer {
+    margin: 60px 0 0;
+    font-size: 13px;
+    opacity: 0.65;
+  }
   kbd {
-    font-family: inherit; font-size: 11px; padding: 2px 6px; border-radius: 4px;
-    background: rgba(15, 23, 42, 0.08); border: 1px solid rgba(15, 23, 42, 0.12);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(15, 23, 42, 0.12);
   }
   code {
-    font-family: 'SFMono-Regular', Menlo, monospace; font-size: 0.92em;
-    padding: 1px 5px; border-radius: 4px; background: rgba(15, 23, 42, 0.06);
+    font-family: 'SFMono-Regular', Menlo, monospace;
+    font-size: 0.92em;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: rgba(15, 23, 42, 0.06);
   }
-  :global(.flag) { font-size: 1.2em; line-height: 1; margin-right: 8px; }
+  :global(.flag) {
+    font-size: 1.2em;
+    line-height: 1;
+    margin-right: 8px;
+  }
 </style>
