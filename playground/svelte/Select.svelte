@@ -26,25 +26,26 @@
   })
 
   // $derived.by re-runs whenever any reactive read inside changes —
-  // here the read of `tick` does the work.
+  // `void tick` is the explicit (lint-friendly) way to register that
+  // dependency without producing an "unused expression" warning.
   const state = $derived.by(() => {
-    tick
+    void tick
     return adapter.machine.getState()
   })
   const filtered = $derived.by(() => {
-    tick
+    void tick
     return adapter.machine.getFilteredOptions()
   })
   const selected = $derived.by(() => {
-    tick
+    void tick
     return adapter.machine.getSelectedOptions()
   })
   const isMulti = $derived.by(() => {
-    tick
+    void tick
     return adapter.machine.isMulti()
   })
   const hasSelection = $derived.by(() => {
-    tick
+    void tick
     return adapter.machine.hasSelection()
   })
 

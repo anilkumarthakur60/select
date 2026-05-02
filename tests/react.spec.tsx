@@ -76,9 +76,9 @@ describe('react <Select>', () => {
       setter.call(input, 'ap')
       input.dispatchEvent(new InputEvent('input', { bubbles: true, data: 'ap' }))
     })
-    const labels = Array.from(
-      container.querySelectorAll<HTMLElement>('[role="option"]'),
-    ).map((el) => el.textContent?.trim())
+    const labels = Array.from(container.querySelectorAll<HTMLElement>('[role="option"]')).map(
+      (el) => el.textContent?.trim(),
+    )
     expect(labels).toEqual(['apple', 'apricot'])
   })
 })

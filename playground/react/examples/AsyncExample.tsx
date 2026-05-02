@@ -36,8 +36,8 @@ export default function AsyncExample({ theme }: { theme: 'light' | 'dark' | 'aut
     <article className="card">
       <h2>Async — debounced search</h2>
       <p>
-        Manual debounce in <code>onSearch</code> — the React adapter is headless about timing,
-        so consumers compose their own debouncing strategy.
+        Manual debounce in <code>onSearch</code> — the React adapter is headless about timing, so
+        consumers compose their own debouncing strategy.
       </p>
       <Select
         modelValue={selected}

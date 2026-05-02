@@ -20,9 +20,7 @@ import type { OptionLike } from '@/core/types/option'
 // can `import` it from SSR-rendered code without crashing — actual element
 // behaviour still requires a browser/jsdom runtime via `defineSelectElement`.
 const HTMLElementBase: typeof HTMLElement =
-  typeof HTMLElement !== 'undefined'
-    ? HTMLElement
-    : (class {} as unknown as typeof HTMLElement)
+  typeof HTMLElement !== 'undefined' ? HTMLElement : (class {} as unknown as typeof HTMLElement)
 
 export class SelectElement extends HTMLElementBase {
   static get observedAttributes(): string[] {

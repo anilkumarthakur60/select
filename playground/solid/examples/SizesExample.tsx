@@ -9,7 +9,9 @@ export default function SizesExample(props: { theme: Theme }) {
   return (
     <article class="card">
       <h2>Disabled options &amp; sizes</h2>
-      <p>Enterprise is disabled; <code>size</code> scales the control.</p>
+      <p>
+        Enterprise is disabled; <code>size</code> scales the control.
+      </p>
       <div class="stack">
         <Select
           modelValue={plan()}

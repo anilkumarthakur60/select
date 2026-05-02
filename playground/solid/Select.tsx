@@ -1,10 +1,6 @@
 import { createEffect, createMemo, For, onCleanup, Show, type JSX } from 'solid-js'
 import { createSelect, toSolidProps } from '@/solid'
-import type {
-  NormalizedOption,
-  OptionLike,
-  SelectMachineConfig,
-} from '@/solid'
+import type { NormalizedOption, OptionLike, SelectMachineConfig } from '@/solid'
 
 // Idiomatic Solid Select component built on the headless `createSelect`
 // primitive. Solid's reactivity is fine-grained — wrapping every machine
@@ -13,10 +9,15 @@ import type {
 // This file ships with the playground as a copy-paste reference; the npm
 // package itself stays headless so consumers can wire their own DOM.
 
-export interface SolidSelectProps<T extends OptionLike = OptionLike>
-  extends SelectMachineConfig<T> {
+export interface SolidSelectProps<
+  T extends OptionLike = OptionLike,
+> extends SelectMachineConfig<T> {
   class?: string
-  renderOption?: (option: NormalizedOption<T>, isActive: boolean, isSelected: boolean) => JSX.Element
+  renderOption?: (
+    option: NormalizedOption<T>,
+    isActive: boolean,
+    isSelected: boolean,
+  ) => JSX.Element
   renderValue?: (option: NormalizedOption<T>) => JSX.Element
 }
 
@@ -38,9 +39,14 @@ export default function Select<T extends OptionLike = OptionLike>(
   const isMulti = createMemo(() => (select.tick(), select.machine.isMulti()))
   const hasSelection = createMemo(() => (select.tick(), select.machine.hasSelection()))
 
+  // Callback refs — explicit assignment keeps lint happy and makes the
+  // capture visible without relying on Solid's `ref={var}` JSX transform.
   let rootEl: HTMLDivElement | undefined
   let menuEl: HTMLDivElement | undefined
   let searchEl: HTMLInputElement | undefined
+  const setRoot = (el: HTMLDivElement) => (rootEl = el)
+  const setMenu = (el: HTMLDivElement) => (menuEl = el)
+  const setSearch = (el: HTMLInputElement) => (searchEl = el)
 
   // Outside-click closes the menu.
   createEffect(() => {
@@ -64,7 +70,7 @@ export default function Select<T extends OptionLike = OptionLike>(
   })
 
   return (
-    <div ref={rootEl} {...toSolidProps(select.machine.getRootProps())}>
+    <div ref={setRoot} {...toSolidProps(select.machine.getRootProps())}>
       <div class="vselect-control" {...toSolidProps(select.machine.getControlProps())}>
         <div class="vselect-values">
           <Show when={!isMulti() && selected()[0] && !state().query}>
@@ -99,9 +105,12 @@ export default function Select<T extends OptionLike = OptionLike>(
 
           <Show when={props.searchable !== false}>
             <input
-              ref={searchEl}
+              ref={setSearch}
               {...toSolidProps(select.machine.getSearchProps())}
-              class={['vselect-search', !isMulti() && hasSelection() && !state().query ? 'is-hidden' : '']
+              class={[
+                'vselect-search',
+                !isMulti() && hasSelection() && !state().query ? 'is-hidden' : '',
+              ]
                 .filter(Boolean)
                 .join(' ')}
             />
@@ -124,11 +133,13 @@ export default function Select<T extends OptionLike = OptionLike>(
           >
             <span class="vselect-spinner" aria-hidden="true" />
           </Show>
-          <span class="vselect-indicator" aria-hidden="true">▾</span>
+          <span class="vselect-indicator" aria-hidden="true">
+            ▾
+          </span>
         </div>
       </div>
 
-      <div ref={menuEl} {...toSolidProps(select.machine.getMenuProps())} class="vselect-menu">
+      <div ref={setMenu} {...toSolidProps(select.machine.getMenuProps())} class="vselect-menu">
         <Show
           when={!props.loading}
           fallback={
@@ -144,18 +155,23 @@ export default function Select<T extends OptionLike = OptionLike>(
           >
             <For each={filtered()}>
               {(option, index) => {
-                const optProps = createMemo(() =>
-                  (select.tick(), toSolidProps(select.machine.getOptionProps(option, index()))),
+                const optProps = createMemo(
+                  () => (
+                    select.tick(),
+                    toSolidProps(select.machine.getOptionProps(option, index()))
+                  ),
                 )
                 return (
                   <div {...optProps()}>
-                    {props.renderOption
-                      ? props.renderOption(
-                          option,
-                          state().activeIndex === index(),
-                          select.machine.isSelected(option),
-                        )
-                      : <span>{option.label}</span>}
+                    {props.renderOption ? (
+                      props.renderOption(
+                        option,
+                        state().activeIndex === index(),
+                        select.machine.isSelected(option),
+                      )
+                    ) : (
+                      <span>{option.label}</span>
+                    )}
                   </div>
                 )
               }}

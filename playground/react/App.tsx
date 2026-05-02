@@ -64,8 +64,8 @@ export default function App() {
 
       <footer>
         <p>
-          Press <kbd>↓</kbd>/<kbd>↑</kbd> to navigate, <kbd>Enter</kbd> to select, <kbd>Esc</kbd>{' '}
-          to close, <kbd>⌫</kbd> to remove the last tag.
+          Press <kbd>↓</kbd>/<kbd>↑</kbd> to navigate, <kbd>Enter</kbd> to select, <kbd>Esc</kbd> to
+          close, <kbd>⌫</kbd> to remove the last tag.
         </p>
       </footer>
       <PlaygroundStyles />

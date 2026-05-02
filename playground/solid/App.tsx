@@ -38,18 +38,30 @@ export default function App(): JSX.Element {
       </header>
 
       <section class="grid">
-        <div class="single-row"><BasicExample theme={theme()} /></div>
-        <div class="single-row"><MultiExample theme={theme()} /></div>
-        <div class="single-row"><TagsExample theme={theme()} /></div>
-        <div class="single-row"><AsyncExample theme={theme()} /></div>
-        <div class="single-row"><CustomRenderExample theme={theme()} /></div>
-        <div class="single-row"><SizesExample theme={theme()} /></div>
+        <div class="single-row">
+          <BasicExample theme={theme()} />
+        </div>
+        <div class="single-row">
+          <MultiExample theme={theme()} />
+        </div>
+        <div class="single-row">
+          <TagsExample theme={theme()} />
+        </div>
+        <div class="single-row">
+          <AsyncExample theme={theme()} />
+        </div>
+        <div class="single-row">
+          <CustomRenderExample theme={theme()} />
+        </div>
+        <div class="single-row">
+          <SizesExample theme={theme()} />
+        </div>
       </section>
 
       <footer>
         <p>
-          Press <kbd>↓</kbd>/<kbd>↑</kbd> to navigate, <kbd>Enter</kbd> to select, <kbd>Esc</kbd>{' '}
-          to close, <kbd>⌫</kbd> to remove the last tag.
+          Press <kbd>↓</kbd>/<kbd>↑</kbd> to navigate, <kbd>Enter</kbd> to select, <kbd>Esc</kbd> to
+          close, <kbd>⌫</kbd> to remove the last tag.
         </p>
       </footer>
 
