@@ -3,15 +3,10 @@
 A typed, accessible, headless-friendly select for Vue 3.
 Single, multi, tags, async, grouped — one component, zero surprises.
 
-[![status](https://img.shields.io/badge/status-pre--release-orange)](#status)
+[![npm](https://img.shields.io/npm/v/@anilkumarthakur/vue3-select.svg)](https://www.npmjs.com/package/@anilkumarthakur/vue3-select)
 [![bundle](https://img.shields.io/badge/bundle-~10.5kb%20gz-blue)](#)
 [![types](https://img.shields.io/badge/types-included-3178c6)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
-
-> **Status:** in initial development — **not yet published to npm**. The
-> install snippet below will start working from the first release. Until
-> then, clone the repo and `npm link` (or use `npm pack`) if you want to
-> try it locally.
 
 - ✅ Vue 3 + TypeScript with full generics over your option type
 - ✅ Single, multiple, and tags modes (with create-on-Enter)
@@ -392,3 +387,5 @@ npm run build:demo   # static playground build
 ```
 
 ## License
+
+[MIT](./LICENSE) © Er. Anil Kumar Thakur

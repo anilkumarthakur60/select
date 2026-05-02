@@ -6,13 +6,6 @@ consistent, generic-typed API.
 
 ## Install
 
-::: warning Pre-release
-`@anilkumarthakur/vue3-select` is in initial development and **not yet
-published to npm**. The commands below will start working with the first
-release. Until then, clone the repo and use `npm link` or `npm pack` to try
-it inside your app.
-:::
-
 ::: code-group
 
 ```bash [npm]
