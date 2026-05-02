@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { VSelect } from '@/vue'
-import { countries, flagFor, type Country } from './data'
+import { countries, flagFor, type Country } from '../../shared/data'
 
 defineProps<{ theme: 'light' | 'dark' | 'auto' }>()
 

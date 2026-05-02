@@ -103,11 +103,21 @@
     "framework-agnostic"
   ],
   "scripts": {
-    "dev": "vite --config vite.config.dev.ts",
-    "preview": "vite preview --config vite.config.dev.ts --outDir dist-demo",
+    "dev": "npm run dev:vue",
+    "dev:vue": "vite --config playground/vue/vite.config.ts",
+    "dev:react": "vite --config playground/react/vite.config.ts",
+    "dev:svelte": "vite --config playground/svelte/vite.config.ts",
+    "dev:solid": "vite --config playground/solid/vite.config.ts",
+    "dev:wc": "vite --config playground/web-component/vite.config.ts",
+    "preview": "vite preview --config playground/vue/vite.config.ts --outDir ../../dist-demo",
     "build": "run-s type-check build:lib",
     "build:lib": "vite build",
-    "build:demo": "vite build --config vite.config.dev.ts --outDir dist-demo",
+    "build:demo": "run-s build:demo:*",
+    "build:demo:vue": "vite build --config playground/vue/vite.config.ts --outDir ../../dist-demo/vue --emptyOutDir",
+    "build:demo:react": "vite build --config playground/react/vite.config.ts --outDir ../../dist-demo/react --emptyOutDir",
+    "build:demo:svelte": "vite build --config playground/svelte/vite.config.ts --outDir ../../dist-demo/svelte --emptyOutDir",
+    "build:demo:solid": "vite build --config playground/solid/vite.config.ts --outDir ../../dist-demo/solid --emptyOutDir",
+    "build:demo:wc": "vite build --config playground/web-component/vite.config.ts --outDir ../../dist-demo/web-component --emptyOutDir",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
@@ -120,7 +130,7 @@
     "lint:eslint": "eslint . --fix --cache",
     "size": "size-limit",
     "size:why": "size-limit --why",
-    "format": "prettier --write --experimental-cli \"src/**/*.{ts,tsx,scss}\" \"playground/**/*.{ts,vue}\" \"tests/**/*.ts\"",
+    "format": "prettier --write --experimental-cli \"src/**/*.{ts,tsx,scss}\" \"playground/**/*.{ts,tsx,vue,svelte}\" \"tests/**/*.{ts,tsx}\"",
     "commitlint": "commitlint --edit",
     "release": "commit-and-tag-version",
     "release:dry": "commit-and-tag-version --dry-run",
@@ -139,11 +149,11 @@
   "peerDependencies": {
     "@nuxt/kit": "^3.0.0 || ^4.0.0",
     "nuxt": "^3.0.0 || ^4.0.0",
-    "vue": "^3.3.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
+    "solid-js": "^1.8.0",
     "svelte": "^5.0.0",
-    "solid-js": "^1.8.0"
+    "vue": "^3.3.0"
   },
   "peerDependenciesMeta": {
     "@nuxt/kit": {
@@ -174,6 +184,7 @@
     "@nuxt/kit": "^4.4.2",
     "@nuxt/schema": "^4.4.2",
     "@size-limit/preset-small-lib": "^12.1.0",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.12.2",
     "@types/react": "19.2.14",
@@ -205,6 +216,7 @@
     "typescript": "~6.0.0",
     "vite": "^8.0.8",
     "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-solid": "^2.11.12",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vitepress": "^1.6.4",
     "vitest": "^4.1.5",

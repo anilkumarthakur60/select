@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { VSelect } from '@/vue'
-import { fruits } from './data'
+import { fruits } from '../../shared/data'
 
 defineProps<{ theme: 'light' | 'dark' | 'auto' }>()
 

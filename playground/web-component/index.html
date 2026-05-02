@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@anilkumarthakur/select · Web Component playground</title>
+    <style>
+      :root {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; }
+      main {
+        width: 100vw;
+        min-height: 100vh;
+        padding: 48px 32px 80px;
+        background: var(--bg, #f8fafc);
+        color: var(--fg, #0f172a);
+        transition: background 200ms ease, color 200ms ease;
+      }
+      main.dark { --bg: #0b1220; --fg: #e2e8f0; }
+      header { margin: 0 0 40px; }
+      .brand { display: flex; align-items: center; gap: 10px; }
+      .brand .logo { font-size: 22px; color: #6366f1; }
+      .brand h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+      .brand .tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: #eef2ff; color: #4338ca; font-weight: 600; }
+      .lead { margin: 12px 0 0; max-width: 620px; opacity: 0.75; line-height: 1.55; }
+      .theme-switch { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 13px; opacity: 0.85; }
+      .theme-switch select { padding: 4px 8px; border-radius: 6px; border: 1px solid currentColor; background: transparent; color: inherit; }
+      .grid { display: flex; flex-direction: column; gap: 20px; }
+      .card { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(6px); border: 1px solid rgba(15, 23, 42, 0.08); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+      main.dark .card { background: rgba(30, 41, 59, 0.4); border-color: rgba(255, 255, 255, 0.08); }
+      .card h2 { margin: 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.7; }
+      .card p { margin: 0; font-size: 13px; opacity: 0.7; line-height: 1.5; }
+      .card pre { margin: 0; padding: 10px 12px; font-size: 12px; background: rgba(15, 23, 42, 0.05); border-radius: 8px; overflow-x: auto; font-family: 'SFMono-Regular', Menlo, monospace; }
+      main.dark .card pre { background: rgba(255, 255, 255, 0.04); }
+      .stack { display: flex; flex-direction: column; gap: 8px; }
+      footer { margin: 60px 0 0; font-size: 13px; opacity: 0.65; }
+      kbd { font-family: inherit; font-size: 11px; padding: 2px 6px; border-radius: 4px; background: rgba(15, 23, 42, 0.08); border: 1px solid rgba(15, 23, 42, 0.12); }
+      code { font-family: 'SFMono-Regular', Menlo, monospace; font-size: 0.92em; padding: 1px 5px; border-radius: 4px; background: rgba(15, 23, 42, 0.06); }
+    </style>
+  </head>
+  <body>
+    <main id="root">
+      <header>
+        <div class="brand">
+          <span class="logo">▲</span>
+          <h1>@anilkumarthakur/select · Web Component</h1>
+          <span class="tag">v0.0.1</span>
+        </div>
+        <p class="lead">
+          Custom element <code>&lt;a-select&gt;</code> — works in Angular, Lit, Alpine, Astro, Qwik,
+          plain HTML, and any framework that doesn't get a dedicated package.
+        </p>
+        <label class="theme-switch">
+          Theme
+          <select id="theme-switch">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="auto">Auto</option>
+          </select>
+        </label>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Single — primitives</h2>
+          <p>Pass the array of strings via the <code>options</code> property.</p>
+          <a-select id="basic" placeholder="Pick a fruit"></a-select>
+          <pre id="basic-out"></pre>
+        </article>
+
+        <article class="card">
+          <h2>Multi — grouped objects</h2>
+          <p>Object options with <code>option-value</code>/<code>option-label</code>/<code>option-group</code> attributes are not supported on the WC; instead, set <code>options</code> programmatically and pass already-shaped <code>{ value, label }</code> objects.</p>
+          <a-select id="multi" mode="multiple" placeholder="Pick countries"></a-select>
+          <pre id="multi-out"></pre>
+        </article>
+
+        <article class="card">
+          <h2>Tags — create on the fly</h2>
+          <p>Listen for <code>create</code> CustomEvents and push to <code>options</code>.</p>
+          <a-select id="tags" mode="tags" taggable placeholder="Add tags"></a-select>
+          <pre id="tags-out"></pre>
+        </article>
+
+        <article class="card">
+          <h2>Disabled options &amp; sizes</h2>
+          <p><code>size</code> and <code>theme</code> attributes scale the control.</p>
+          <div class="stack">
+            <a-select id="size-sm" size="sm" placeholder="Plan (sm)"></a-select>
+            <a-select id="size-md" size="md" placeholder="Plan (md)"></a-select>
+            <a-select id="size-lg" size="lg" placeholder="Plan (lg)"></a-select>
+          </div>
+          <pre id="size-out"></pre>
+        </article>
+
+        <article class="card">
+          <h2>Loading state</h2>
+          <p>Toggle the <code>loading</code> attribute to show a spinner.</p>
+          <a-select id="loader" loading placeholder="Loading…"></a-select>
+          <button id="toggle-loader" type="button" style="align-self:flex-start;padding:6px 10px;border-radius:6px;cursor:pointer">
+            Toggle loading
+          </button>
+        </article>
+      </section>
+
+      <footer>
+        <p>
+          Press <kbd>↓</kbd>/<kbd>↑</kbd> to navigate, <kbd>Enter</kbd> to select, <kbd>Esc</kbd> to
+          close.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
