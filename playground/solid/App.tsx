@@ -5,6 +5,7 @@ import TagsExample from './examples/TagsExample'
 import AsyncExample from './examples/AsyncExample'
 import CustomRenderExample from './examples/CustomRenderExample'
 import SizesExample from './examples/SizesExample'
+import TreeExample from './examples/TreeExample'
 
 export type Theme = 'light' | 'dark' | 'auto'
 
@@ -55,6 +56,9 @@ export default function App(): JSX.Element {
         </div>
         <div class="single-row">
           <SizesExample theme={theme()} />
+        </div>
+        <div class="single-row">
+          <TreeExample theme={theme()} />
         </div>
       </section>
 

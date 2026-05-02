@@ -5,6 +5,7 @@ import TagsExample from './examples/TagsExample'
 import AsyncExample from './examples/AsyncExample'
 import CustomRenderExample from './examples/CustomRenderExample'
 import SizesExample from './examples/SizesExample'
+import TreeExample from './examples/TreeExample'
 
 type Theme = 'light' | 'dark' | 'auto'
 
@@ -59,6 +60,9 @@ export default function App() {
         </div>
         <div className="single-row">
           <SizesExample theme={theme} />
+        </div>
+        <div className="single-row">
+          <TreeExample theme={theme} />
         </div>
       </section>
 

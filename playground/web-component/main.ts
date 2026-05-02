@@ -1,5 +1,6 @@
 import { defineSelectElement } from '@/web-component'
-import { fruits, countries, plans } from '../shared/data'
+import { fruits, countries, plans, categories, flatCategories } from '../shared/data'
+import { renderTreeSelect } from './tree-select'
 import '@/styles/index.scss'
 
 defineSelectElement('a-select')
@@ -85,4 +86,25 @@ const loader = document.getElementById('loader') as SelectEl
 loader.options = ['First', 'Second', 'Third']
 document.getElementById('toggle-loader')!.addEventListener('click', () => {
   loader.toggleAttribute('loading')
+})
+
+// --- Tree (multi-level) ---
+renderTreeSelect({
+  mount: document.getElementById('tree-mount')!,
+  out: document.getElementById('tree-out')!,
+  options: categories,
+  initial: [4, 8],
+  outKey: 'selectedTree',
+  placeholder: 'Pick categories',
+  maxVisibleTags: 3,
+})
+
+// --- Tree (flat) ---
+renderTreeSelect({
+  mount: document.getElementById('tree-flat-mount')!,
+  out: document.getElementById('tree-flat-out')!,
+  options: flatCategories,
+  initial: [],
+  outKey: 'selectedFlat',
+  placeholder: 'Pick frameworks',
 })

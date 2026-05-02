@@ -5,6 +5,7 @@
   import AsyncExample from './examples/AsyncExample.svelte'
   import CustomRenderExample from './examples/CustomRenderExample.svelte'
   import SizesExample from './examples/SizesExample.svelte'
+  import TreeExample from './examples/TreeExample.svelte'
 
   let theme = $state<'light' | 'dark' | 'auto'>('light')
   const themeBg = $derived(theme === 'dark' ? '#0b1220' : '#f8fafc')
@@ -39,6 +40,7 @@
     <div class="single-row"><AsyncExample {theme} /></div>
     <div class="single-row"><CustomRenderExample {theme} /></div>
     <div class="single-row"><SizesExample {theme} /></div>
+    <div class="single-row"><TreeExample {theme} /></div>
   </section>
 
   <footer>
