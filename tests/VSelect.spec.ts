@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import VSelect from '@/components/VSelect'
+import VSelect from '@/vue/components/VSelect'
 
 const FRUITS = ['Apple', 'Banana', 'Cherry']
 

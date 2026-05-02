@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 
 // Library-build config — produces what consumers install via npm:
@@ -10,19 +11,26 @@ import dts from 'vite-plugin-dts'
 //   CJS (.cjs) for tools that still resolve `require(...)` (Jest, older Node)
 //   .d.ts for full TypeScript intellisense
 //
-// We intentionally do not ship a UMD/IIFE bundle — every modern consumer
-// resolves through a bundler, and the CDN drop-in path adds maintenance
-// without paying for itself for an internally-consumed library.
+// Multi-framework adapters:
+//   /         — root, framework-free core (createSelectMachine + helpers)
+//   /vue      — Vue 3 + Nuxt module
+//   /react    — React 18+ adapter
+//   /svelte   — Svelte 5 adapter
+//   /solid    — Solid adapter
+//   /web-component — framework-free custom element (covers Angular, Lit, Alpine, vanilla)
 //
-// The dev server / playground lives in `vite.config.dev.ts` so this file
-// stays focused on what actually ships to consumers.
+// Vue and React JSX live side-by-side in the source tree, so the JSX
+// transforms are scoped by file pattern: vue-jsx only sees src/vue/*.tsx,
+// react only sees src/react/*.tsx. Without the scoping, vue-jsx tries to
+// transform React components into Vue createVNode calls and the build dies.
 
 const here = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
 export default defineConfig({
   plugins: [
-    vue(),
-    vueJsx(),
+    vue({ include: [/\.vue$/] }),
+    vueJsx({ include: /src\/vue\/.*\.tsx?$/ }),
+    react({ include: /src\/react\/.*\.tsx$/ }),
     dts({
       include: ['src/**/*.ts', 'src/**/*.tsx'],
       exclude: ['playground/**/*', 'tests/**/*'],
@@ -42,13 +50,14 @@ export default defineConfig({
 
   build: {
     lib: {
-      // Two entries: the main library and a Nuxt module. The Nuxt module is
-      // built as its own chunk so consumers can register it via
-      // `modules: ['vue3-select/nuxt']` without pulling Nuxt into the main
-      // bundle.
       entry: {
-        'vue3-select': here('./src/index.ts'),
-        nuxt: here('./src/nuxt.ts'),
+        index: here('./src/index.ts'),
+        vue: here('./src/vue/index.ts'),
+        'vue/nuxt': here('./src/vue/nuxt.ts'),
+        react: here('./src/react/index.ts'),
+        svelte: here('./src/svelte/index.ts'),
+        solid: here('./src/solid/index.ts'),
+        'web-component': here('./src/web-component/index.ts'),
       },
       fileName: (format, entryName) =>
         `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
@@ -64,15 +73,30 @@ export default defineConfig({
     emptyOutDir: true,
 
     rollupOptions: {
-      // Externalise the Vue peer, the floating-ui dep, and the Nuxt-only
-      // build deps so consumers' package managers resolve them — never
-      // inline a peer, and never bundle Nuxt internals into the library.
-      external: ['vue', '@floating-ui/vue', '@nuxt/kit', '@nuxt/schema', 'nuxt'],
+      // Externalise framework peers so consumers' package managers resolve
+      // them and bundlers tree-shake the unused adapters.
+      external: [
+        'vue',
+        '@floating-ui/vue',
+        '@nuxt/kit',
+        '@nuxt/schema',
+        'nuxt',
+        'react',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+        'react-dom',
+        'svelte',
+        'svelte/internal',
+        'svelte/internal/client',
+        'svelte/internal/disclose-version',
+        'solid-js',
+        'solid-js/web',
+      ],
       output: {
-        globals: { vue: 'Vue', '@floating-ui/vue': 'FloatingUIVue' },
+        globals: { vue: 'Vue', '@floating-ui/vue': 'FloatingUIVue', react: 'React', 'react-dom': 'ReactDOM' },
         assetFileNames: (asset) => {
           const name = asset.names?.[0]
-          return name === 'style.css' ? 'vue3-select.css' : (name ?? 'asset')
+          return name === 'style.css' ? 'select.css' : (name ?? 'asset')
         },
         exports: 'named',
       },

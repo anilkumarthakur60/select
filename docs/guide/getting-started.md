@@ -1,6 +1,6 @@
 # Getting Started
 
-`@anilkumarthakur/vue3-select` is a single component family that covers
+`@anilkumarthakur/select` is a single component family that covers
 single, multi, tags, grouped, async, and tree pickers — all behind one
 consistent, generic-typed API.
 
@@ -9,19 +9,19 @@ consistent, generic-typed API.
 ::: code-group
 
 ```bash [npm]
-npm i @anilkumarthakur/vue3-select
+npm i @anilkumarthakur/select
 ```
 
 ```bash [pnpm]
-pnpm add @anilkumarthakur/vue3-select
+pnpm add @anilkumarthakur/select
 ```
 
 ```bash [yarn]
-yarn add @anilkumarthakur/vue3-select
+yarn add @anilkumarthakur/select
 ```
 
 ```bash [bun]
-bun add @anilkumarthakur/vue3-select
+bun add @anilkumarthakur/select
 ```
 
 :::
@@ -35,8 +35,8 @@ in automatically; `vue` is the only required peer.
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/vue3-select'
-import '@anilkumarthakur/vue3-select/style.css'
+import { VSelect } from '@anilkumarthakur/select'
+import '@anilkumarthakur/select/style.css'
 
 const fruit = ref<string | null>(null)
 </script>
@@ -69,8 +69,8 @@ If you'd rather not import per file, register the plugin once:
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import { VueSelectPlugin } from '@anilkumarthakur/vue3-select'
-import '@anilkumarthakur/vue3-select/style.css'
+import { VueSelectPlugin } from '@anilkumarthakur/select'
+import '@anilkumarthakur/select/style.css'
 import App from './App.vue'
 
 createApp(App).use(VueSelectPlugin).mount('#app')

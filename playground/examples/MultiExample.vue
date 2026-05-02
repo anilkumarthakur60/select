@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@'
+import { VSelect } from '@/vue'
 import { countries } from './data'
 
 defineProps<{ theme: 'light' | 'dark' | 'auto' }>()

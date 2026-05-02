@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import { computed, ref } from 'vue'
-import { useTreeSelection } from '@/composables/useTreeSelection'
+import { useTreeSelection } from '@/vue/composables/useTreeSelection'
 import { normalizeTree, walkTree } from '@/core/tree'
-import type { NormalizedTreeNode } from '@/types/tree-node'
+import type { NormalizedTreeNode } from '@/core/types/tree-node'
 
 interface Cat {
   id: number

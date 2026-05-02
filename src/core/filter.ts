@@ -1,4 +1,4 @@
-import type { NormalizedOption } from '@/types/option'
+import type { NormalizedOption } from '@/core/types/option'
 
 /**
  * Default substring matcher. We intentionally don't ship a fuzzy ranker by

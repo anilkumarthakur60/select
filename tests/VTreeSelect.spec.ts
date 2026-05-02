@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import VTreeSelect from '@/components/VTreeSelect'
+import VTreeSelect from '@/vue/components/VTreeSelect'
 
 interface Cat {
   id: number

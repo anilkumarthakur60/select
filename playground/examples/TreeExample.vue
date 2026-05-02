@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VTreeSelect } from '@'
+import { VTreeSelect } from '@/vue'
 
 defineProps<{ theme: 'light' | 'dark' | 'auto' }>()
 

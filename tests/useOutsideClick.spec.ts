@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
-import { useOutsideClick } from '@/composables/useOutsideClick'
+import { useOutsideClick } from '@/vue/composables/useOutsideClick'
 
 function pointerDown(target: Element) {
   const event = new Event('pointerdown', { bubbles: true, cancelable: true })

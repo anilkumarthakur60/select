@@ -10,3 +10,30 @@ export {
   getLeafValues,
   getAncestorIds,
 } from '@/core/tree'
+
+export type {
+  NormalizedOption,
+  OptionLike,
+  OptionAccessor,
+  SelectMode,
+  SelectSize,
+  SelectTheme,
+  FilterFn,
+  FilterContext,
+  NormalizedTreeNode,
+  TreeOptionLike,
+  TreeChildrenAccessor,
+  TreeNodeCheckState,
+} from '@/core/types'
+
+export { createSelectMachine } from '@/core/machine'
+export type {
+  SelectMachine,
+  SelectMachineConfig,
+  SelectState,
+  RootProps,
+  ControlProps,
+  MenuProps,
+  SearchProps,
+  OptionProps,
+} from '@/core/machine'

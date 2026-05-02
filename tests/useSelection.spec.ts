@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { computed, ref } from 'vue'
-import { useSelection } from '@/composables/useSelection'
+import { useSelection } from '@/vue/composables/useSelection'
 import { normalize } from '@/core/normalize'
 
 function setup(initial: unknown, mode: 'single' | 'multiple' | 'tags' = 'single') {
