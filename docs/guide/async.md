@@ -137,7 +137,7 @@ Grab the instance and call `flushSearch()`:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { VSelectInstance } from '@anilkumarthakur/select'
+import type { VSelectInstance } from '@anilkumarthakur/select/vue'
 
 const sel = ref<VSelectInstance>()
 function onSubmit() {

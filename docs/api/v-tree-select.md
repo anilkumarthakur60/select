@@ -3,7 +3,7 @@
 Hierarchical multi-select with tri-state parents.
 
 ```ts
-import { VTreeSelect } from '@anilkumarthakur/select'
+import { VTreeSelect } from '@anilkumarthakur/select/vue'
 ```
 
 v-model holds **leaf values only** — parent state is always derived. See
@@ -59,7 +59,7 @@ the [Tree Select guide](../guide/tree-select) for examples.
 | `blur` | `FocusEvent` | Focus leaves the control entirely |
 
 ```ts
-import type { VTreeSelectEmits } from '@anilkumarthakur/select'
+import type { VTreeSelectEmits } from '@anilkumarthakur/select/vue'
 ```
 
 ## Slots
@@ -78,7 +78,7 @@ import type { VTreeSelectEmits } from '@anilkumarthakur/select'
 ## Exposed instance methods
 
 ```ts
-import type { VTreeSelectInstance } from '@anilkumarthakur/select'
+import type { VTreeSelectInstance } from '@anilkumarthakur/select/vue'
 
 const tree = ref<VTreeSelectInstance>()
 tree.value?.open()
@@ -103,5 +103,5 @@ tree.value?.isOpen
 | `VTreeSelectNode` | A single tree row — exported in case you build a custom toolbar / virtualisation around the same node renderer |
 
 ```ts
-import { VTreeSelectNode } from '@anilkumarthakur/select'
+import { VTreeSelectNode } from '@anilkumarthakur/select/vue'
 ```

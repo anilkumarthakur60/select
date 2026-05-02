@@ -3,7 +3,7 @@
 The flagship component — single, multi, tags, async, grouped, all in one.
 
 ```ts
-import { VSelect } from '@anilkumarthakur/select'
+import { VSelect } from '@anilkumarthakur/select/vue'
 ```
 
 ## Props
@@ -57,7 +57,7 @@ import { VSelect } from '@anilkumarthakur/select'
 | `blur` | `FocusEvent` | Focus leaves the control entirely |
 
 ```ts
-import type { VSelectEmits } from '@anilkumarthakur/select'
+import type { VSelectEmits } from '@anilkumarthakur/select/vue'
 ```
 
 ## Slots
@@ -81,7 +81,7 @@ See the [Slots guide](../guide/slots) for usage. Quick reference:
 ## Exposed instance methods
 
 ```ts
-import type { VSelectInstance } from '@anilkumarthakur/select'
+import type { VSelectInstance } from '@anilkumarthakur/select/vue'
 
 const sel = ref<VSelectInstance>()
 sel.value?.open()         // open the menu
@@ -105,7 +105,7 @@ you want to reuse them outside the parent control:
 | `VSelectTag` | One tag chip with a remove button, used in multi / tags mode |
 
 ```ts
-import { VSelectOption, VSelectTag } from '@anilkumarthakur/select'
+import { VSelectOption, VSelectTag } from '@anilkumarthakur/select/vue'
 ```
 
 ## Bundled icons
@@ -115,5 +115,5 @@ option chrome. Re-export them if you want to mirror the visual style in
 custom slot content.
 
 ```ts
-import { ChevronDownIcon, CheckIcon, CloseIcon } from '@anilkumarthakur/select'
+import { ChevronDownIcon, CheckIcon, CloseIcon } from '@anilkumarthakur/select/vue'
 ```

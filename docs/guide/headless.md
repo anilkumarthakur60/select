@@ -1,7 +1,17 @@
-# Headless Composables
+# Headless Composables (Vue)
 
 `<VSelect>` is a thin assembly of small composables. Each one is exported
 publicly so you can build a totally custom UI on the same primitives.
+
+::: tip Other frameworks
+The composables listed here are Vue-specific (they return refs and use
+Vue's lifecycle). For framework-agnostic primitives, import
+`createSelectMachine` from the root `@anilkumarthakur/select` entry, or
+use the dedicated headless adapters:
+[`useSelect`](./frameworks/react#hook-usage-headless) (React),
+[`createSelectAdapter`](./frameworks/svelte) (Svelte),
+[`createSelect`](./frameworks/solid) (Solid).
+:::
 
 ## Available primitives
 
@@ -50,7 +60,7 @@ import {
   useKeyboardNav,
   useDebounced,
   normalize,
-} from '@anilkumarthakur/select'
+} from '@anilkumarthakur/select/vue'
 
 const props = defineProps<{ options: string[] }>()
 const modelValue = defineModel<unknown>()

@@ -1,6 +1,6 @@
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import { VueSelectPlugin } from '@anilkumarthakur/select'
+import { VueSelectPlugin } from '@anilkumarthakur/select/vue'
 import '@anilkumarthakur/select/style.css'
 import './style.css'
 

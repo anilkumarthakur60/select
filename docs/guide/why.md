@@ -1,7 +1,24 @@
 # Why @anilkumarthakur/select?
 
-There are plenty of select components for Vue. This one earns its place by
-sweating the parts that other libraries leave fuzzy.
+There are plenty of select components — for Vue, for React, for Svelte,
+for everyone. This one earns its place by sweating the parts that other
+libraries leave fuzzy, and by doing so **once** in a framework-agnostic
+core that every adapter shares.
+
+## One core, every framework
+
+A pure-TypeScript state machine drives every adapter. The keyboard map,
+ARIA wiring, focus management, filtering, and tag/create-on-Enter logic
+live in `@anilkumarthakur/select` (the root entry) and are reused by:
+
+- **Vue** — `<VSelect>`, `<VTreeSelect>`, plugin, composables
+- **React** — `<Select>` component + `useSelect` hook
+- **Svelte 5** — `createSelectAdapter` headless primitive
+- **Solid** — `createSelect` headless primitive
+- **Web Component** — `<a-select>` custom element (covers Angular, Lit, Alpine, vanilla, …)
+
+You don't switch select libraries when you switch frameworks, and behaviour
+parity is a test pass — not a hope.
 
 ## One component, every shape
 
@@ -58,8 +75,13 @@ import {
   useOutsideClick,
   useControlFocus,
   useFormBinding,
-} from '@anilkumarthakur/select'
+} from '@anilkumarthakur/select/vue'
 ```
+
+In React, the same machine is reachable via `useSelect`. In Svelte and
+Solid, `createSelectAdapter` / `createSelect` expose it directly. The
+core itself (`createSelectMachine` from `@anilkumarthakur/select`) is
+framework-free TypeScript.
 
 ## Themed without specificity wars
 
@@ -75,16 +97,22 @@ cascade level, no SCSS recompile required.
 }
 ```
 
-## Tiny
+## Tiny — pay only for what you import
 
-| | gzipped |
+| Entry | gzipped |
 |---|---|
-| JS (ESM) | ~10.7 kB |
-| JS (CJS) | ~9.5 kB |
-| CSS | ~2.8 kB |
+| Core (framework-free) | ~5 kB |
+| Vue adapter | ~13 kB |
+| React adapter | ~8 kB |
+| Svelte adapter | ~6 kB |
+| Solid adapter | ~6 kB |
+| Web Component | ~8 kB |
+| CSS | ~3 kB |
 
-Plus a Nuxt module for one-line setup. Zero runtime deps beyond
-`@floating-ui/vue`.
+Each subpath is its own entry — bundlers only pull in the adapter you
+import. The Vue adapter brings `@floating-ui/vue`; every other adapter has
+zero runtime deps. A Nuxt module is shipped under
+`@anilkumarthakur/select/vue/nuxt` for one-line setup.
 
 ## What it isn't
 

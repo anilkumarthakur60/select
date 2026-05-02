@@ -1,7 +1,17 @@
 # Composables
 
-Every state machine and DOM-plumbing primitive that powers the SFCs is
-exported. See the [Headless guide](../guide/headless) for a worked example.
+Every state machine and DOM-plumbing primitive that powers the Vue SFCs
+is exported from `@anilkumarthakur/select/vue`. See the
+[Headless guide](../guide/headless) for a worked example.
+
+::: tip Other frameworks
+These composables return Vue refs and use Vue's lifecycle. For
+framework-agnostic primitives, import `createSelectMachine` from the
+root `@anilkumarthakur/select` entry, or use
+[`useSelect`](../guide/frameworks/react#hook-usage-headless) (React),
+[`createSelectAdapter`](../guide/frameworks/svelte) (Svelte), or
+[`createSelect`](../guide/frameworks/solid) (Solid).
+:::
 
 ## `useSelection`
 
@@ -10,7 +20,7 @@ Owns *only* selection; pair with [`useMenuState`](#usemenustate) for the
 open / close / active-index state.
 
 ```ts
-import { useSelection } from '@anilkumarthakur/select'
+import { useSelection } from '@anilkumarthakur/select/vue'
 
 const {
   isMulti,
@@ -38,7 +48,7 @@ highlight whenever `itemsCount` shrinks so it never dangles past the end of
 a filtered list.
 
 ```ts
-import { useMenuState } from '@anilkumarthakur/select'
+import { useMenuState } from '@anilkumarthakur/select/vue'
 
 const { isOpen, activeIndex, open, close, toggle } = useMenuState({
   itemsCount: computed(() => filtered.value.length),
@@ -51,7 +61,7 @@ Hierarchical analogue of `useSelection`. Only **leaves** are stored in
 v-model — parent state is always derived.
 
 ```ts
-import { useTreeSelection } from '@anilkumarthakur/select'
+import { useTreeSelection } from '@anilkumarthakur/select/vue'
 
 const { selectedValues, isLeafSelected, getCheckState, toggle, selectAll, clear } =
   useTreeSelection({
@@ -70,7 +80,7 @@ Toggling a parent node toggles every selectable leaf below it.
 ## `useOptionFilter`
 
 ```ts
-import { useOptionFilter } from '@anilkumarthakur/select'
+import { useOptionFilter } from '@anilkumarthakur/select/vue'
 
 const { filtered, hasMatches } = useOptionFilter({
   options,         // Ref<NormalizedOption<T>[]>
@@ -86,7 +96,7 @@ The "Create '&lt;query&gt;'" affordance used in tags mode. Suppresses itself whe
 the query is empty or already matches an existing label.
 
 ```ts
-import { useTaggable } from '@anilkumarthakur/select'
+import { useTaggable } from '@anilkumarthakur/select/vue'
 
 const { showCreate, createFromQuery } = useTaggable({
   enabled:  computed(() => mode.value === 'tags' && props.taggable),
@@ -99,7 +109,7 @@ const { showCreate, createFromQuery } = useTaggable({
 ## `useDebounced`
 
 ```ts
-import { useDebounced } from '@anilkumarthakur/select'
+import { useDebounced } from '@anilkumarthakur/select/vue'
 
 const { debounced, flush, cancel, force } = useDebounced(source, 200)
 // or with a reactive delay:
@@ -114,7 +124,7 @@ explicit cleanup.
 ## `useKeyboardNav`
 
 ```ts
-import { useKeyboardNav } from '@anilkumarthakur/select'
+import { useKeyboardNav } from '@anilkumarthakur/select/vue'
 
 const { onKeydown } = useKeyboardNav({
   isOpen,
@@ -140,7 +150,7 @@ keeps clicking the trigger, focusing the search input, and toggling the
 menu in lockstep across components.
 
 ```ts
-import { useTriggerInteractions } from '@anilkumarthakur/select'
+import { useTriggerInteractions } from '@anilkumarthakur/select/vue'
 
 const { onControlMousedown, onSearchInput } = useTriggerInteractions({
   disabled,
@@ -158,7 +168,7 @@ const { onControlMousedown, onSearchInput } = useTriggerInteractions({
 ## `useFloatingMenu`
 
 ```ts
-import { useFloatingMenu } from '@anilkumarthakur/select'
+import { useFloatingMenu } from '@anilkumarthakur/select/vue'
 
 const { styles, target, floating, update } = useFloatingMenu(controlEl, menuEl, {
   teleportTo: ref<string | HTMLElement | false>('body'),
@@ -172,7 +182,7 @@ is `undefined` and `target` is `null` so the menu sits in document flow.
 ## `useOutsideClick`
 
 ```ts
-import { useOutsideClick } from '@anilkumarthakur/select'
+import { useOutsideClick } from '@anilkumarthakur/select/vue'
 
 useOutsideClick({
   active: isOpen,                    // Ref<boolean>
@@ -187,7 +197,7 @@ auto-detaches on scope dispose.
 ## `useControlFocus`
 
 ```ts
-import { useControlFocus } from '@anilkumarthakur/select'
+import { useControlFocus } from '@anilkumarthakur/select/vue'
 
 const { focused, onFocusIn, onFocusOut } = useControlFocus({
   root: rootEl,
@@ -207,7 +217,7 @@ Centralises the native-form integration shared by `<VSelect>` and
 renders below its trigger.
 
 ```ts
-import { useFormBinding } from '@anilkumarthakur/select'
+import { useFormBinding } from '@anilkumarthakur/select/vue'
 
 const { hiddenInputs } = useFormBinding({
   name:    toRef(props, 'name'),
@@ -226,7 +236,7 @@ empty input is still emitted so the field appears in `FormData`.
 ## `useStableId`
 
 ```ts
-import { useStableId } from '@anilkumarthakur/select'
+import { useStableId } from '@anilkumarthakur/select/vue'
 
 const id = useStableId('my-prefix') // 'my-prefix-42' (per-instance uid)
 ```
@@ -257,7 +267,7 @@ import {
   filterTree,
   getLeafValues,
   getAncestorIds,
-} from '@anilkumarthakur/select'
+} from '@anilkumarthakur/select/vue'
 ```
 
 | Helper | Job |

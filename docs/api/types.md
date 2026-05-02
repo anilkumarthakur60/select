@@ -45,7 +45,7 @@ import type {
   TreeValueSlotProps,
   TreeToolbarSlotProps,
   TreeEmptySlotProps,
-} from '@anilkumarthakur/select'
+} from '@anilkumarthakur/select/vue'
 ```
 
 The composables expose their own option / return types — see the
@@ -115,7 +115,7 @@ Custom filter — return `true` to keep the option in the menu.
 The full prop surface for `<VSelect>`. Use it to type wrappers:
 
 ```ts
-import type { VSelectProps } from '@anilkumarthakur/select'
+import type { VSelectProps } from '@anilkumarthakur/select/vue'
 
 interface MyPickerProps<T> extends VSelectProps<T> {
   helperText?: string

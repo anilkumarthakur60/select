@@ -5,7 +5,7 @@
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/select/nuxt'],
+  modules: ['@anilkumarthakur/select/vue/nuxt'],
 })
 ```
 
@@ -17,7 +17,7 @@ of the box — the menu renders client-side via `<Teleport>` when configured.
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/select/nuxt'],
+  modules: ['@anilkumarthakur/select/vue/nuxt'],
   vue3Select: {
     /** Disable to keep tree-shaken named imports only. Default: true */
     components: true,
@@ -35,7 +35,7 @@ With `composables: true` the following are auto-imported across your app
 without an explicit `import`: `useSelection`, `useTreeSelection`,
 `useOptionFilter`, `useKeyboardNav`, `useStableId`, `useDebounced`. The
 remaining composables (e.g. `useFloatingMenu`, `useFormBinding`) are still
-available — just `import` them from `@anilkumarthakur/select` directly.
+available — just `import` them from `@anilkumarthakur/select/vue` directly.
 
 ## Without the module
 
@@ -43,7 +43,7 @@ Prefer to wire it up by hand? Drop a Nuxt plugin file in `plugins/`:
 
 ```ts
 // plugins/vue3-select.ts
-import { VueSelectPlugin } from '@anilkumarthakur/select'
+import { VueSelectPlugin } from '@anilkumarthakur/select/vue'
 import '@anilkumarthakur/select/style.css'
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -56,7 +56,7 @@ Vue 3 app:
 
 ```vue
 <script setup lang="ts">
-import { VSelect } from '@anilkumarthakur/select'
+import { VSelect } from '@anilkumarthakur/select/vue'
 </script>
 ```
 

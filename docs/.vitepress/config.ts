@@ -5,8 +5,9 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 const here = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
 export default defineConfig({
-  title: 'vue3-select',
-  description: 'A typed, accessible, headless-friendly select for Vue 3.',
+  title: '@anilkumarthakur/select',
+  description:
+    'A typed, accessible, headless-friendly select for Vue, React, Svelte, Solid, and Web Components — one core, idiomatic adapters.',
   lang: 'en-US',
   cleanUrls: true,
   lastUpdated: true,
@@ -18,12 +19,13 @@ export default defineConfig({
   head: [
     ['meta', { name: 'theme-color', content: '#6366f1' }],
     ['meta', { name: 'og:type', content: 'website' }],
-    ['meta', { name: 'og:title', content: 'vue3-select' }],
+    ['meta', { name: 'og:title', content: '@anilkumarthakur/select' }],
     [
       'meta',
       {
         name: 'og:description',
-        content: 'A typed, accessible, headless-friendly select for Vue 3.',
+        content:
+          'A typed, accessible select for Vue, React, Svelte, Solid, and Web Components — framework-agnostic core, framework-idiomatic adapters.',
       },
     ],
   ],
@@ -47,11 +49,21 @@ export default defineConfig({
           text: 'Introduction',
           items: [
             { text: 'Getting Started', link: '/guide/getting-started' },
-            { text: 'Why vue3-select?', link: '/guide/why' },
+            { text: 'Why this library?', link: '/guide/why' },
           ],
         },
         {
-          text: 'Components',
+          text: 'Frameworks',
+          items: [
+            { text: 'Vue 3', link: '/guide/frameworks/vue' },
+            { text: 'React', link: '/guide/frameworks/react' },
+            { text: 'Svelte 5', link: '/guide/frameworks/svelte' },
+            { text: 'Solid', link: '/guide/frameworks/solid' },
+            { text: 'Web Components', link: '/guide/frameworks/web-component' },
+          ],
+        },
+        {
+          text: 'Components (Vue)',
           items: [
             { text: 'Single Select', link: '/guide/single-select' },
             { text: 'Multi Select', link: '/guide/multi-select' },
@@ -121,19 +133,43 @@ export default defineConfig({
     resolve: {
       alias: [
         {
-          find: /^@anilkumarthakur\/vue3-select\/style\.css$/,
+          find: /^@anilkumarthakur\/select\/style\.css$/,
           replacement: here('../../src/styles/index.scss'),
         },
         {
-          find: /^@anilkumarthakur\/vue3-select\/scss\/(.*)$/,
+          find: /^@anilkumarthakur\/select\/scss\/(.*)$/,
           replacement: here('../../src/styles/$1'),
         },
         {
-          find: /^@anilkumarthakur\/vue3-select\/nuxt$/,
-          replacement: here('../../src/nuxt.ts'),
+          find: /^@anilkumarthakur\/select\/scss$/,
+          replacement: here('../../src/styles/index.scss'),
         },
         {
-          find: /^@anilkumarthakur\/vue3-select$/,
+          find: /^@anilkumarthakur\/select\/vue\/nuxt$/,
+          replacement: here('../../src/vue/nuxt.ts'),
+        },
+        {
+          find: /^@anilkumarthakur\/select\/vue$/,
+          replacement: here('../../src/vue/index.ts'),
+        },
+        {
+          find: /^@anilkumarthakur\/select\/react$/,
+          replacement: here('../../src/react/index.ts'),
+        },
+        {
+          find: /^@anilkumarthakur\/select\/svelte$/,
+          replacement: here('../../src/svelte/index.ts'),
+        },
+        {
+          find: /^@anilkumarthakur\/select\/solid$/,
+          replacement: here('../../src/solid/index.ts'),
+        },
+        {
+          find: /^@anilkumarthakur\/select\/web-component$/,
+          replacement: here('../../src/web-component/index.ts'),
+        },
+        {
+          find: /^@anilkumarthakur\/select$/,
           replacement: here('../../src/index.ts'),
         },
         { find: /^@\/(.*)$/, replacement: here('../../src/$1') },

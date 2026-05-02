@@ -10,7 +10,7 @@
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VTreeSelect } from '@anilkumarthakur/select'
+import { VTreeSelect } from '@anilkumarthakur/select/vue'
 
 interface Cat { id: number; name: string; children: Cat[] }
 

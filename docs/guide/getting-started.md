@@ -1,8 +1,10 @@
 # Getting Started
 
-`@anilkumarthakur/select` is a single component family that covers
-single, multi, tags, grouped, async, and tree pickers — all behind one
-consistent, generic-typed API.
+`@anilkumarthakur/select` is a single typed, accessible select that ships
+adapters for **Vue 3, React, Svelte 5, Solid, and Web Components** on top
+of a framework-agnostic core. The state machine, ARIA semantics, keyboard
+map, and CSS are shared — you only pull in the adapter for the framework
+you use.
 
 ## Install
 
@@ -26,16 +28,33 @@ bun add @anilkumarthakur/select
 
 :::
 
-The package ships ESM and CJS — bring your own bundler (Vite, Webpack,
-Rollup, esbuild). `@floating-ui/vue` is a regular dependency and gets pulled
-in automatically; `vue` is the only required peer.
+The package ships ESM and CJS. Peer dependencies (`vue`, `react` /
+`react-dom`, `svelte`, `solid-js`, `nuxt`) are all optional — install only
+the ones you actually use. `@floating-ui/vue` is pulled in automatically
+and is only loaded by the Vue adapter.
+
+## Pick your adapter
+
+Every adapter lives behind a subpath import so bundlers tree-shake the
+others:
+
+| Framework | Import | What you get |
+| --- | --- | --- |
+| Vue 3 | `@anilkumarthakur/select/vue` | `<VSelect>`, `<VTreeSelect>`, plugin, composables |
+| React | `@anilkumarthakur/select/react` | `<Select>` component, `useSelect` hook |
+| Svelte 5 | `@anilkumarthakur/select/svelte` | `createSelectAdapter` headless primitive |
+| Solid | `@anilkumarthakur/select/solid` | `createSelect` headless primitive |
+| Web Component | `@anilkumarthakur/select/web-component` | `<a-select>` custom element |
+| _Anything_ | `@anilkumarthakur/select` | `createSelectMachine` + helpers (the core) |
 
 ## Use it
 
-```vue
+::: code-group
+
+```vue [Vue]
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/select'
+import { VSelect } from '@anilkumarthakur/select/vue'
 import '@anilkumarthakur/select/style.css'
 
 const fruit = ref<string | null>(null)
@@ -50,7 +69,75 @@ const fruit = ref<string | null>(null)
 </template>
 ```
 
-That's it. Live result:
+```tsx [React]
+import { useState } from 'react'
+import { Select } from '@anilkumarthakur/select/react'
+import '@anilkumarthakur/select/style.css'
+
+export function FruitPicker() {
+  const [fruit, setFruit] = useState<string | null>(null)
+  return (
+    <Select
+      modelValue={fruit}
+      options={['Apple', 'Banana', 'Cherry']}
+      placeholder="Pick a fruit"
+      onChange={(v) => setFruit(v as string | null)}
+    />
+  )
+}
+```
+
+```svelte [Svelte 5]
+<script lang="ts">
+  import { createSelectAdapter, toSvelteProps } from '@anilkumarthakur/select/svelte'
+  import '@anilkumarthakur/select/style.css'
+
+  let fruit = $state<string | null>(null)
+  const adapter = createSelectAdapter({
+    options: ['Apple', 'Banana', 'Cherry'],
+    modelValue: fruit,
+    onChange: (v) => (fruit = v as string | null),
+  })
+
+  // Bridge machine notifies → Svelte reactivity (see /guide/frameworks/svelte).
+</script>
+```
+
+```tsx [Solid]
+import { createSelect, toSolidProps } from '@anilkumarthakur/select/solid'
+import '@anilkumarthakur/select/style.css'
+
+export function FruitPicker() {
+  const select = createSelect({
+    options: ['Apple', 'Banana', 'Cherry'],
+    onChange: (v) => console.log(v),
+  })
+  // Render with select.machine.* + toSolidProps — see /guide/frameworks/solid.
+  return <div {...toSolidProps(select.machine.getRootProps())} />
+}
+```
+
+```html [Web Component]
+<script type="module">
+  import { defineSelectElement } from '@anilkumarthakur/select/web-component'
+  import '@anilkumarthakur/select/style.css'
+
+  defineSelectElement('a-select')
+  const el = document.querySelector('a-select')
+  el.options = ['Apple', 'Banana', 'Cherry']
+  el.addEventListener('change', (e) => console.log(e.detail))
+</script>
+
+<a-select placeholder="Pick a fruit"></a-select>
+```
+
+:::
+
+That's it. For per-framework deep-dives — controlled vs uncontrolled,
+slots / render props, the headless reactivity bridge — see the
+[Frameworks](./frameworks/vue) section.
+
+## Live result (Vue adapter)
 
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -62,43 +149,27 @@ const fruit = ref(null)
   <div class="demo-meta">Selected: <code>{{ JSON.stringify(fruit) }}</code></div>
 </div>
 
-## Global registration (optional)
+## Stylesheet
 
-If you'd rather not import per file, register the plugin once:
+All adapters share one stylesheet. Pick **one** of the imports below,
+once, anywhere in your app entry:
 
 ```ts
-// main.ts
-import { createApp } from 'vue'
-import { VueSelectPlugin } from '@anilkumarthakur/select'
+// Compiled CSS — works in every bundler, every framework.
 import '@anilkumarthakur/select/style.css'
-import App from './App.vue'
 
-createApp(App).use(VueSelectPlugin).mount('#app')
+// Or compose the SCSS source with your own design tokens:
+import '@anilkumarthakur/select/scss'
 ```
 
-`<VSelect>` and `<VTreeSelect>` are then available on every template without
-an explicit `import`.
-
-### Plugin options
-
-```ts
-app.use(VueSelectPlugin, {
-  /** Override the global tag for `<VSelect>` (default: 'VSelect'). */
-  name: 'AppSelect',
-  /** Override the global tag for `<VTreeSelect>` (default: 'VTreeSelect'). */
-  treeName: 'AppTreeSelect',
-  /** Skip registering `<VTreeSelect>` to drop it from the runtime cost. */
-  registerTree: false,
-  /** Also register `VSelectOption` and `VSelectTag` globally (default: false). */
-  registerInternals: true,
-})
-```
+See [Theming](./theming) for the full token surface.
 
 ## Next steps
 
-- [Single Select](./single-select) — primitives, objects, accessors
-- [Multi Select](./multi-select) — tags, max selections, overflow
-- [Async Loading](./async) — debounced search, loading states
-- [Tree Select](./tree-select) — tri-state parents, "select all"
-- [Headless Composables](./headless) — build a custom UI on the same primitives
-- [Nuxt 3 / 4](./nuxt) — first-class Nuxt module
+- [Vue 3](./frameworks/vue) — `<VSelect>`, `<VTreeSelect>`, plugin, composables
+- [React](./frameworks/react) — `<Select>` component + `useSelect` hook
+- [Svelte 5](./frameworks/svelte) — headless adapter + reactivity bridge
+- [Solid](./frameworks/solid) — `createSelect` primitive
+- [Web Components](./frameworks/web-component) — `<a-select>` custom element
+- [Headless Composables](./headless) — build a custom UI on the same core
+- [Why this library?](./why) — the design rationale
