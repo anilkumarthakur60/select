@@ -214,7 +214,7 @@
     "prettier": "3.8.3",
     "prettier-plugin-svelte": "^3.5.1",
     "react": "19.2.5",
-    "react-dom": "19.2.5",
+    "react-dom": "19.2.6",
     "sass": "^1.99.0",
     "size-limit": "^12.1.0",
     "solid-js": "1.9.12",
