@@ -189,7 +189,7 @@
     "@nuxt/kit": "^4.4.2",
     "@nuxt/schema": "^4.4.2",
     "@size-limit/preset-small-lib": "^12.1.0",
-    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.12.2",
     "@types/react": "19.2.14",
