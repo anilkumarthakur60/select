@@ -186,7 +186,7 @@
   "devDependencies": {
     "@commitlint/cli": "^20.5.2",
     "@commitlint/config-conventional": "^20.5.0",
-    "@nuxt/kit": "^4.4.2",
+    "@nuxt/kit": "^4.4.7",
     "@nuxt/schema": "^4.4.2",
     "@size-limit/preset-small-lib": "^12.1.0",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
