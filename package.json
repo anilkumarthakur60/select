@@ -184,7 +184,7 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.5.2",
+    "@commitlint/cli": "^21.0.2",
     "@commitlint/config-conventional": "^20.5.0",
     "@nuxt/kit": "^4.4.2",
     "@nuxt/schema": "^4.4.2",
