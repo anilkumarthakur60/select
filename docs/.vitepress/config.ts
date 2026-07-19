@@ -1,11 +1,8 @@
 import { defineConfig } from 'vitepress'
-import { fileURLToPath, URL } from 'node:url'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
-const here = (path: string) => fileURLToPath(new URL(path, import.meta.url))
-
 export default defineConfig({
-  title: '@anilkumarthakur/select',
+  title: '@anil-labs/select-core',
   description:
     'A typed, accessible, headless-friendly select for Vue, React, Svelte, Solid, and Web Components — one core, idiomatic adapters.',
   lang: 'en-US',
@@ -19,7 +16,7 @@ export default defineConfig({
   head: [
     ['meta', { name: 'theme-color', content: '#6366f1' }],
     ['meta', { name: 'og:type', content: 'website' }],
-    ['meta', { name: 'og:title', content: '@anilkumarthakur/select' }],
+    ['meta', { name: 'og:title', content: '@anil-labs/select-core' }],
     [
       'meta',
       {
@@ -37,8 +34,11 @@ export default defineConfig({
       {
         text: 'v0.1.0',
         items: [
-          { text: 'Changelog', link: 'https://github.com/anilkumarthakur60/vue3-select/blob/main/CHANGELOG.md' },
-          { text: 'npm', link: 'https://www.npmjs.com/package/@anilkumarthakur/select' },
+          {
+            text: 'Changelog',
+            link: 'https://github.com/anilkumarthakur60/vue3-select/blob/main/CHANGELOG.md',
+          },
+          { text: 'npm', link: 'https://www.npmjs.com/package/@anil-labs/select-core' },
         ],
       },
     ],
@@ -126,54 +126,10 @@ export default defineConfig({
     },
   },
 
-  // The docs live in the same repo as the library — alias the package name
-  // so example code on every page reads exactly like consumer code.
+  // Docs consume the real workspace packages, so every example on every page
+  // is exactly the code a consumer writes — and the docs build fails if a
+  // package's published entry points break.
   vite: {
     plugins: [vueJsx()],
-    resolve: {
-      alias: [
-        {
-          find: /^@anilkumarthakur\/select\/style\.css$/,
-          replacement: here('../../src/styles/index.scss'),
-        },
-        {
-          find: /^@anilkumarthakur\/select\/scss\/(.*)$/,
-          replacement: here('../../src/styles/$1'),
-        },
-        {
-          find: /^@anilkumarthakur\/select\/scss$/,
-          replacement: here('../../src/styles/index.scss'),
-        },
-        {
-          find: /^@anilkumarthakur\/select\/vue\/nuxt$/,
-          replacement: here('../../src/vue/nuxt.ts'),
-        },
-        {
-          find: /^@anilkumarthakur\/select\/vue$/,
-          replacement: here('../../src/vue/index.ts'),
-        },
-        {
-          find: /^@anilkumarthakur\/select\/react$/,
-          replacement: here('../../src/react/index.ts'),
-        },
-        {
-          find: /^@anilkumarthakur\/select\/svelte$/,
-          replacement: here('../../src/svelte/index.ts'),
-        },
-        {
-          find: /^@anilkumarthakur\/select\/solid$/,
-          replacement: here('../../src/solid/index.ts'),
-        },
-        {
-          find: /^@anilkumarthakur\/select\/web-component$/,
-          replacement: here('../../src/web-component/index.ts'),
-        },
-        {
-          find: /^@anilkumarthakur\/select$/,
-          replacement: here('../../src/index.ts'),
-        },
-        { find: /^@\/(.*)$/, replacement: here('../../src/$1') },
-      ],
-    },
   },
 })

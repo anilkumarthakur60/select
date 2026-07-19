@@ -7,7 +7,7 @@ set of composables that power them.
 ## Install
 
 ```bash
-npm i @anilkumarthakur/select
+npm i @anil-labs/select-core
 ```
 
 `vue ^3.3` is a peer dep. `@floating-ui/vue` is pulled in automatically.
@@ -15,8 +15,8 @@ npm i @anilkumarthakur/select
 ## Import
 
 ```ts
-import { VSelect, VTreeSelect, VueSelectPlugin } from '@anilkumarthakur/select/vue'
-import '@anilkumarthakur/select/style.css'
+import { VSelect, VTreeSelect, VueSelectPlugin } from '@anil-labs/select-vue'
+import '@anil-labs/select-core/styles.css'
 ```
 
 ## Per-component usage
@@ -24,17 +24,13 @@ import '@anilkumarthakur/select/style.css'
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/select/vue'
+import { VSelect } from '@anil-labs/select-vue'
 
 const fruit = ref<string | null>(null)
 </script>
 
 <template>
-  <VSelect
-    v-model="fruit"
-    :options="['Apple', 'Banana', 'Cherry']"
-    placeholder="Pick a fruit"
-  />
+  <VSelect v-model="fruit" :options="['Apple', 'Banana', 'Cherry']" placeholder="Pick a fruit" />
 </template>
 ```
 
@@ -43,8 +39,8 @@ const fruit = ref<string | null>(null)
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import { VueSelectPlugin } from '@anilkumarthakur/select/vue'
-import '@anilkumarthakur/select/style.css'
+import { VueSelectPlugin } from '@anil-labs/select-vue'
+import '@anil-labs/select-core/styles.css'
 import App from './App.vue'
 
 createApp(App).use(VueSelectPlugin).mount('#app')
@@ -86,7 +82,7 @@ import {
   useControlFocus,
   useFormBinding,
   useTreeSelection,
-} from '@anilkumarthakur/select/vue'
+} from '@anil-labs/select-vue'
 ```
 
 See [Headless Composables](../headless) for end-to-end examples.
@@ -98,7 +94,7 @@ A first-party Nuxt module is shipped as a subpath:
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/select/vue/nuxt'],
+  modules: ['@anil-labs/select-vue/nuxt'],
 })
 ```
 

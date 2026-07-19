@@ -18,13 +18,7 @@ function onCreate(value: string) {
 </script>
 
 <template>
-  <VSelect
-    v-model="tags"
-    mode="tags"
-    :options="known"
-    taggable
-    @create="onCreate"
-  />
+  <VSelect v-model="tags" mode="tags" :options="known" taggable @create="onCreate" />
 </template>
 ```
 

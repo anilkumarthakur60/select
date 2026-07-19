@@ -26,8 +26,8 @@ first version ships, the published artefacts below will also be in scope.
 In scope:
 
 - Source code in this repository
-- Once published: the `@anilkumarthakur/select` package on npm
-- Once published: the bundled Nuxt module (`@anilkumarthakur/select/nuxt`)
+- Once published: the `@anil-labs/select-core` package on npm
+- Once published: the bundled Nuxt module (`@anil-labs/select-vue/nuxt`)
 
 Out of scope:
 

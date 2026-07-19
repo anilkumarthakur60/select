@@ -23,7 +23,7 @@ prop. Set it and the component renders hidden inputs that participate in
 One hidden input. Empty string when the model is `null` / `undefined`.
 
 ```html
-<input type="hidden" name="country" value="us">
+<input type="hidden" name="country" value="us" />
 ```
 
 ## Multi / tags mode
@@ -32,8 +32,8 @@ Many hidden inputs, one per selected value, named with `[]` so PHP-style
 servers parse them as arrays:
 
 ```html
-<input type="hidden" name="skills[]" value="ts">
-<input type="hidden" name="skills[]" value="vue">
+<input type="hidden" name="skills[]" value="ts" />
+<input type="hidden" name="skills[]" value="vue" />
 ```
 
 Read them on the server as an array (most server frameworks already do).
@@ -56,7 +56,7 @@ styling concern; key off `:invalid` or your form library's state.
 ```ts
 function onSubmit(event: SubmitEvent) {
   const data = new FormData(event.target as HTMLFormElement)
-  const country = data.get('country')          // 'us'
-  const skills = data.getAll('skills[]')       // ['ts', 'vue']
+  const country = data.get('country') // 'us'
+  const skills = data.getAll('skills[]') // ['ts', 'vue']
 }
 ```

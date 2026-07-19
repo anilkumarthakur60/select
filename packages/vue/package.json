@@ -1,0 +1,104 @@
+{
+  "name": "@anil-labs/select-vue",
+  "version": "0.0.1",
+  "description": "Vue 3 components for @anil-labs/select — accessible single, multi, tags, async, grouped and tree select.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json",
+    "./nuxt": {
+      "import": {
+        "types": "./dist/nuxt.d.ts",
+        "default": "./dist/nuxt.js"
+      },
+      "require": {
+        "types": "./dist/nuxt.d.cts",
+        "default": "./dist/nuxt.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist coverage",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "nuxt",
+    "tree-select",
+    "select",
+    "combobox",
+    "multiselect",
+    "tags",
+    "autocomplete",
+    "a11y",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "author": "Er. Anil Kumar Thakur <anilkumarthakur60@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anilkumarthakur60/vue3-select.git",
+    "directory": "packages/vue"
+  },
+  "homepage": "https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/vue#readme",
+  "bugs": "https://github.com/anilkumarthakur60/vue3-select/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@anil-labs/select-core": "workspace:^",
+    "@floating-ui/vue": "^1.0.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.5",
+    "tsup": "^8.5.1",
+    "typescript": "~6.0.0",
+    "vitest": "^4.1.5",
+    "vue": "^3.5.32",
+    "@vue/test-utils": "^2.4.8",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vitejs/plugin-vue-jsx": "^5.1.5",
+    "@nuxt/kit": "^4.4.2",
+    "jsdom": "^29.0.2",
+    "@types/node": "^24.12.2"
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0",
+    "@nuxt/kit": "^3.0.0 || ^4.0.0",
+    "nuxt": "^3.0.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@nuxt/kit": {
+      "optional": true
+    },
+    "nuxt": {
+      "optional": true
+    }
+  }
+}

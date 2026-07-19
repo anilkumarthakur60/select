@@ -1,0 +1,79 @@
+{
+  "name": "@anil-labs/select-svelte",
+  "version": "0.0.1",
+  "description": "Svelte 5 headless adapter for @anil-labs/select — a reactive store wrapper you compose into your own components.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist coverage",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "svelte",
+    "svelte5",
+    "headless",
+    "runes",
+    "select",
+    "combobox",
+    "multiselect",
+    "tags",
+    "autocomplete",
+    "a11y",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "author": "Er. Anil Kumar Thakur <anilkumarthakur60@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anilkumarthakur60/vue3-select.git",
+    "directory": "packages/svelte"
+  },
+  "homepage": "https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/svelte#readme",
+  "bugs": "https://github.com/anilkumarthakur60/vue3-select/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@anil-labs/select-core": "workspace:^"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.5",
+    "tsup": "^8.5.1",
+    "typescript": "~6.0.0",
+    "vitest": "^4.1.5",
+    "svelte": "5.55.5",
+    "jsdom": "^29.0.2",
+    "@types/node": "^24.12.2"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  }
+}

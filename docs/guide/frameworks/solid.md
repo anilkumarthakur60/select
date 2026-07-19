@@ -9,7 +9,7 @@ in their `.tsx`.
 ## Install
 
 ```bash
-npm i @anilkumarthakur/select
+npm i @anil-labs/select-core
 ```
 
 `solid-js ^1.8` is an optional peer dep.
@@ -17,9 +17,9 @@ npm i @anilkumarthakur/select
 ## Import
 
 ```ts
-import { createSelect, toSolidProps } from '@anilkumarthakur/select/solid'
-import type { OptionLike, SelectMachineConfig } from '@anilkumarthakur/select/solid'
-import '@anilkumarthakur/select/style.css'
+import { createSelect, toSolidProps } from '@anil-labs/select-solid'
+import type { OptionLike, SelectMachineConfig } from '@anil-labs/select-solid'
+import '@anil-labs/select-core/styles.css'
 ```
 
 ## Reactivity bridge
@@ -30,7 +30,7 @@ when the machine notifies. The signal flips on every notify.
 
 ```tsx
 import { createMemo, For, Show } from 'solid-js'
-import { createSelect, toSolidProps } from '@anilkumarthakur/select/solid'
+import { createSelect, toSolidProps } from '@anil-labs/select-solid'
 
 export default function Select<T>(props: SelectMachineConfig<T>) {
   const select = createSelect<T>(props)
@@ -51,9 +51,7 @@ export default function Select<T>(props: SelectMachineConfig<T>) {
       <div {...toSolidProps(select.machine.getMenuProps())}>
         <For each={filtered()}>
           {(option, i) => (
-            <div {...toSolidProps(select.machine.getOptionProps(option, i()))}>
-              {option.label}
-            </div>
+            <div {...toSolidProps(select.machine.getOptionProps(option, i()))}>{option.label}</div>
           )}
         </For>
       </div>

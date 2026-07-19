@@ -1,11 +1,11 @@
 # Nuxt 3 / 4
 
-`@anilkumarthakur/select` ships a first-class Nuxt module. Add it to
+`@anil-labs/select-core` ships a first-class Nuxt module. Add it to
 `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/select/vue/nuxt'],
+  modules: ['@anil-labs/select-vue/nuxt'],
 })
 ```
 
@@ -17,7 +17,7 @@ of the box — the menu renders client-side via `<Teleport>` when configured.
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/select/vue/nuxt'],
+  modules: ['@anil-labs/select-vue/nuxt'],
   vue3Select: {
     /** Disable to keep tree-shaken named imports only. Default: true */
     components: true,
@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     prefix: '',
     /** Auto-import the headless composables too. Default: false */
     composables: false,
-    /** Inject '@anilkumarthakur/select/style.css' into Nuxt's CSS array. Default: true */
+    /** Inject '@anil-labs/select-core/styles.css' into Nuxt's CSS array. Default: true */
     css: true,
   },
 })
@@ -35,7 +35,7 @@ With `composables: true` the following are auto-imported across your app
 without an explicit `import`: `useSelection`, `useTreeSelection`,
 `useOptionFilter`, `useKeyboardNav`, `useStableId`, `useDebounced`. The
 remaining composables (e.g. `useFloatingMenu`, `useFormBinding`) are still
-available — just `import` them from `@anilkumarthakur/select/vue` directly.
+available — just `import` them from `@anil-labs/select-vue` directly.
 
 ## Without the module
 
@@ -43,8 +43,8 @@ Prefer to wire it up by hand? Drop a Nuxt plugin file in `plugins/`:
 
 ```ts
 // plugins/vue3-select.ts
-import { VueSelectPlugin } from '@anilkumarthakur/select/vue'
-import '@anilkumarthakur/select/style.css'
+import { VueSelectPlugin } from '@anil-labs/select-vue'
+import '@anil-labs/select-core/styles.css'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueSelectPlugin)
@@ -56,7 +56,7 @@ Vue 3 app:
 
 ```vue
 <script setup lang="ts">
-import { VSelect } from '@anilkumarthakur/select/vue'
+import { VSelect } from '@anil-labs/select-vue'
 </script>
 ```
 
@@ -64,7 +64,7 @@ The CSS still has to be imported once — easiest in `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
-  css: ['@anilkumarthakur/select/style.css'],
+  css: ['@anil-labs/select-core/styles.css'],
 })
 ```
 

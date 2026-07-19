@@ -7,7 +7,7 @@ Vue adapter uses.
 ## Install
 
 ```bash
-npm i @anilkumarthakur/select
+npm i @anil-labs/select-core
 ```
 
 `react ^18 || ^19` and `react-dom ^18 || ^19` are optional peer deps.
@@ -15,8 +15,8 @@ npm i @anilkumarthakur/select
 ## Import
 
 ```ts
-import { Select, useSelect } from '@anilkumarthakur/select/react'
-import '@anilkumarthakur/select/style.css'
+import { Select, useSelect } from '@anil-labs/select-react'
+import '@anil-labs/select-core/styles.css'
 ```
 
 ## Component usage
@@ -25,7 +25,7 @@ import '@anilkumarthakur/select/style.css'
 
 ```tsx
 import { useState } from 'react'
-import { Select } from '@anilkumarthakur/select/react'
+import { Select } from '@anil-labs/select-react'
 
 export function FruitPicker() {
   const [fruit, setFruit] = useState<string | null>(null)
@@ -67,8 +67,14 @@ type-checked against `keyof T`.
 If you'd rather render your own DOM, drop down to `useSelect`:
 
 ```tsx
-import { useSelect, toReactRootProps, toReactControlProps, toReactMenuProps,
-         toReactSearchProps, toReactOptionProps } from '@anilkumarthakur/select/react'
+import {
+  useSelect,
+  toReactRootProps,
+  toReactControlProps,
+  toReactMenuProps,
+  toReactSearchProps,
+  toReactOptionProps,
+} from '@anil-labs/select-react'
 
 export function CommandPalette() {
   const select = useSelect({

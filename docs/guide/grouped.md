@@ -7,7 +7,11 @@ holds the group key.
 <script setup lang="ts">
 import { ref } from 'vue'
 
-interface Country { code: string; name: string; region: string }
+interface Country {
+  code: string
+  name: string
+  region: string
+}
 
 const countries: Country[] = [
   { code: 'us', name: 'United States', region: 'Americas' },

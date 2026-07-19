@@ -45,7 +45,7 @@ import type {
   TreeValueSlotProps,
   TreeToolbarSlotProps,
   TreeEmptySlotProps,
-} from '@anilkumarthakur/select/vue'
+} from '@anil-labs/select-vue'
 ```
 
 The composables expose their own option / return types — see the
@@ -92,8 +92,8 @@ Either a property name or an extractor function.
 ## `SelectMode` / `SelectSize` / `SelectTheme`
 
 ```ts
-type SelectMode  = 'single' | 'multiple' | 'tags'
-type SelectSize  = 'sm' | 'md' | 'lg'
+type SelectMode = 'single' | 'multiple' | 'tags'
+type SelectSize = 'sm' | 'md' | 'lg'
 type SelectTheme = 'light' | 'dark' | 'auto'
 ```
 
@@ -115,7 +115,7 @@ Custom filter — return `true` to keep the option in the menu.
 The full prop surface for `<VSelect>`. Use it to type wrappers:
 
 ```ts
-import type { VSelectProps } from '@anilkumarthakur/select/vue'
+import type { VSelectProps } from '@anil-labs/select-vue'
 
 interface MyPickerProps<T> extends VSelectProps<T> {
   helperText?: string
@@ -133,8 +133,8 @@ interface VSelectEmits<T = unknown> {
   (e: 'open'): void
   (e: 'close'): void
   (e: 'focus', event: FocusEvent): void
-  (e: 'blur',  event: FocusEvent): void
-  (e: 'select',   option: NormalizedOption<T>): void
+  (e: 'blur', event: FocusEvent): void
+  (e: 'select', option: NormalizedOption<T>): void
   (e: 'deselect', option: NormalizedOption<T>): void
   (e: 'create', value: string): void
   (e: 'search', query: string): void
@@ -269,10 +269,10 @@ interface VTreeSelectEmits<T = unknown> {
   (e: 'open'): void
   (e: 'close'): void
   (e: 'focus', event: FocusEvent): void
-  (e: 'blur',  event: FocusEvent): void
-  (e: 'select',   node: NormalizedTreeNode<T>): void
+  (e: 'blur', event: FocusEvent): void
+  (e: 'select', node: NormalizedTreeNode<T>): void
   (e: 'deselect', node: NormalizedTreeNode<T>): void
-  (e: 'expand',   node: NormalizedTreeNode<T>): void
+  (e: 'expand', node: NormalizedTreeNode<T>): void
   (e: 'collapse', node: NormalizedTreeNode<T>): void
   (e: 'search', query: string): void
 }
@@ -289,9 +289,9 @@ interface VTreeSelectInstance {
   blur: () => void
   clear: () => void
   selectAll: () => void
-  expand:   (id: string) => void
+  expand: (id: string) => void
   collapse: (id: string) => void
-  expandAll:   () => void
+  expandAll: () => void
   collapseAll: () => void
   flushSearch: () => void
   readonly isOpen: boolean

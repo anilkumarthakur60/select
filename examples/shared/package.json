@@ -1,0 +1,19 @@
+{
+  "name": "example-shared",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Shared fixture data for the @anil-labs/select examples.",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anil-labs/select-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.2",
+    "typescript": "~6.0.0",
+    "vite": "^8.0.8"
+  }
+}

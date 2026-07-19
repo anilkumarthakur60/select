@@ -15,18 +15,18 @@ That's it — no submodules, no codegen step.
 
 ## Day-to-day commands
 
-| Command | What it does |
-|---|---|
-| `npm run dev` | Run the playground at http://localhost:5173 |
-| `npm test` | Run the full vitest suite |
-| `npm run test:watch` | Watch mode |
-| `npm run test:coverage` | Coverage report → `coverage/` |
-| `npm run lint` | Run oxlint + eslint with `--fix` |
-| `npm run format` | Apply prettier |
-| `npm run type-check` | `vue-tsc --build` |
-| `npm run build` | Type-check + lib build → `dist/` |
-| `npm run docs:dev` | VitePress docs locally |
-| `npm run docs:build` | Build the docs to `docs/.vitepress/dist` |
+| Command                 | What it does                                |
+| ----------------------- | ------------------------------------------- |
+| `npm run dev`           | Run the playground at http://localhost:5173 |
+| `npm test`              | Run the full vitest suite                   |
+| `npm run test:watch`    | Watch mode                                  |
+| `npm run test:coverage` | Coverage report → `coverage/`               |
+| `npm run lint`          | Run oxlint + eslint with `--fix`            |
+| `npm run format`        | Apply prettier                              |
+| `npm run type-check`    | `vue-tsc --build`                           |
+| `npm run build`         | Type-check + lib build → `dist/`            |
+| `npm run docs:dev`      | VitePress docs locally                      |
+| `npm run docs:build`    | Build the docs to `docs/.vitepress/dist`    |
 
 ## Repo layout
 
@@ -91,19 +91,19 @@ Format:
 
 Allowed `<type>` values:
 
-| Type | Use for |
-|---|---|
-| `feat` | A user-facing new feature |
-| `fix` | A user-facing bug fix |
-| `docs` | README / CHANGELOG / docs site |
-| `style` | Formatting, whitespace — no code change |
-| `refactor` | Code change that's neither feat nor fix |
-| `perf` | Performance improvement |
-| `test` | Adding or correcting tests |
-| `build` | Build tooling, deps, vite/tsconfig/package.json |
-| `ci` | GitHub Actions / workflow changes |
-| `chore` | Anything else that isn't user-facing |
-| `revert` | A `git revert` style undo |
+| Type       | Use for                                         |
+| ---------- | ----------------------------------------------- |
+| `feat`     | A user-facing new feature                       |
+| `fix`      | A user-facing bug fix                           |
+| `docs`     | README / CHANGELOG / docs site                  |
+| `style`    | Formatting, whitespace — no code change         |
+| `refactor` | Code change that's neither feat nor fix         |
+| `perf`     | Performance improvement                         |
+| `test`     | Adding or correcting tests                      |
+| `build`    | Build tooling, deps, vite/tsconfig/package.json |
+| `ci`       | GitHub Actions / workflow changes               |
+| `chore`    | Anything else that isn't user-facing            |
+| `revert`   | A `git revert` style undo                       |
 
 Subject is lowercase, no trailing period, ≤100 chars.
 

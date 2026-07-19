@@ -8,7 +8,11 @@ takes the result list — no extra wiring.
 <script setup lang="ts">
 import { ref } from 'vue'
 
-interface User { id: string; name: string; email: string }
+interface User {
+  id: string
+  name: string
+  email: string
+}
 
 const results = ref<User[]>([])
 const loading = ref(false)
@@ -21,8 +25,7 @@ async function onSearch(query: string) {
   }
   loading.value = true
   try {
-    results.value = await fetch(`/api/users?q=${encodeURIComponent(query)}`)
-      .then((r) => r.json())
+    results.value = await fetch(`/api/users?q=${encodeURIComponent(query)}`).then((r) => r.json())
   } finally {
     loading.value = false
   }
@@ -137,7 +140,7 @@ Grab the instance and call `flushSearch()`:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { VSelectInstance } from '@anilkumarthakur/select/vue'
+import type { VSelectInstance } from '@anil-labs/select-vue'
 
 const sel = ref<VSelectInstance>()
 function onSubmit() {

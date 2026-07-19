@@ -1,13 +1,13 @@
 # Composables
 
 Every state machine and DOM-plumbing primitive that powers the Vue SFCs
-is exported from `@anilkumarthakur/select/vue`. See the
+is exported from `@anil-labs/select-vue`. See the
 [Headless guide](../guide/headless) for a worked example.
 
 ::: tip Other frameworks
 These composables return Vue refs and use Vue's lifecycle. For
 framework-agnostic primitives, import `createSelectMachine` from the
-root `@anilkumarthakur/select` entry, or use
+root `@anil-labs/select-core` entry, or use
 [`useSelect`](../guide/frameworks/react#hook-usage-headless) (React),
 [`createSelectAdapter`](../guide/frameworks/svelte) (Svelte), or
 [`createSelect`](../guide/frameworks/solid) (Solid).
@@ -16,11 +16,11 @@ root `@anilkumarthakur/select` entry, or use
 ## `useSelection`
 
 The single / multi / tags state machine over a normalised option list.
-Owns *only* selection; pair with [`useMenuState`](#usemenustate) for the
+Owns _only_ selection; pair with [`useMenuState`](#usemenustate) for the
 open / close / active-index state.
 
 ```ts
-import { useSelection } from '@anilkumarthakur/select/vue'
+import { useSelection } from '@anil-labs/select-vue'
 
 const {
   isMulti,
@@ -48,7 +48,7 @@ highlight whenever `itemsCount` shrinks so it never dangles past the end of
 a filtered list.
 
 ```ts
-import { useMenuState } from '@anilkumarthakur/select/vue'
+import { useMenuState } from '@anil-labs/select-vue'
 
 const { isOpen, activeIndex, open, close, toggle } = useMenuState({
   itemsCount: computed(() => filtered.value.length),
@@ -61,7 +61,7 @@ Hierarchical analogue of `useSelection`. Only **leaves** are stored in
 v-model — parent state is always derived.
 
 ```ts
-import { useTreeSelection } from '@anilkumarthakur/select/vue'
+import { useTreeSelection } from '@anil-labs/select-vue'
 
 const { selectedValues, isLeafSelected, getCheckState, toggle, selectAll, clear } =
   useTreeSelection({
@@ -80,13 +80,13 @@ Toggling a parent node toggles every selectable leaf below it.
 ## `useOptionFilter`
 
 ```ts
-import { useOptionFilter } from '@anilkumarthakur/select/vue'
+import { useOptionFilter } from '@anil-labs/select-vue'
 
 const { filtered, hasMatches } = useOptionFilter({
-  options,         // Ref<NormalizedOption<T>[]>
-  query,           // Ref<string>
-  filter,          // optional FilterFn<T>
-  caseSensitive,   // optional Ref<boolean>
+  options, // Ref<NormalizedOption<T>[]>
+  query, // Ref<string>
+  filter, // optional FilterFn<T>
+  caseSensitive, // optional Ref<boolean>
 })
 ```
 
@@ -96,10 +96,10 @@ The "Create '&lt;query&gt;'" affordance used in tags mode. Suppresses itself whe
 the query is empty or already matches an existing label.
 
 ```ts
-import { useTaggable } from '@anilkumarthakur/select/vue'
+import { useTaggable } from '@anil-labs/select-vue'
 
 const { showCreate, createFromQuery } = useTaggable({
-  enabled:  computed(() => mode.value === 'tags' && props.taggable),
+  enabled: computed(() => mode.value === 'tags' && props.taggable),
   query,
   filtered,
   onCreate: (value) => emit('create', value),
@@ -109,7 +109,7 @@ const { showCreate, createFromQuery } = useTaggable({
 ## `useDebounced`
 
 ```ts
-import { useDebounced } from '@anilkumarthakur/select/vue'
+import { useDebounced } from '@anil-labs/select-vue'
 
 const { debounced, flush, cancel, force } = useDebounced(source, 200)
 // or with a reactive delay:
@@ -124,7 +124,7 @@ explicit cleanup.
 ## `useKeyboardNav`
 
 ```ts
-import { useKeyboardNav } from '@anilkumarthakur/select/vue'
+import { useKeyboardNav } from '@anil-labs/select-vue'
 
 const { onKeydown } = useKeyboardNav({
   isOpen,
@@ -150,7 +150,7 @@ keeps clicking the trigger, focusing the search input, and toggling the
 menu in lockstep across components.
 
 ```ts
-import { useTriggerInteractions } from '@anilkumarthakur/select/vue'
+import { useTriggerInteractions } from '@anil-labs/select-vue'
 
 const { onControlMousedown, onSearchInput } = useTriggerInteractions({
   disabled,
@@ -168,7 +168,7 @@ const { onControlMousedown, onSearchInput } = useTriggerInteractions({
 ## `useFloatingMenu`
 
 ```ts
-import { useFloatingMenu } from '@anilkumarthakur/select/vue'
+import { useFloatingMenu } from '@anil-labs/select-vue'
 
 const { styles, target, floating, update } = useFloatingMenu(controlEl, menuEl, {
   teleportTo: ref<string | HTMLElement | false>('body'),
@@ -182,11 +182,11 @@ is `undefined` and `target` is `null` so the menu sits in document flow.
 ## `useOutsideClick`
 
 ```ts
-import { useOutsideClick } from '@anilkumarthakur/select/vue'
+import { useOutsideClick } from '@anil-labs/select-vue'
 
 useOutsideClick({
-  active: isOpen,                    // Ref<boolean>
-  contains: [rootEl, menuEl],        // Ref<HTMLElement | null>[]
+  active: isOpen, // Ref<boolean>
+  contains: [rootEl, menuEl], // Ref<HTMLElement | null>[]
   onOutside: () => (isOpen.value = false),
 })
 ```
@@ -197,12 +197,12 @@ auto-detaches on scope dispose.
 ## `useControlFocus`
 
 ```ts
-import { useControlFocus } from '@anilkumarthakur/select/vue'
+import { useControlFocus } from '@anil-labs/select-vue'
 
 const { focused, onFocusIn, onFocusOut } = useControlFocus({
   root: rootEl,
   onFocus: (e) => emit('focus', e),
-  onBlur:  (e) => emit('blur', e),
+  onBlur: (e) => emit('blur', e),
 })
 ```
 
@@ -217,12 +217,12 @@ Centralises the native-form integration shared by `<VSelect>` and
 renders below its trigger.
 
 ```ts
-import { useFormBinding } from '@anilkumarthakur/select/vue'
+import { useFormBinding } from '@anil-labs/select-vue'
 
 const { hiddenInputs } = useFormBinding({
-  name:    toRef(props, 'name'),
+  name: toRef(props, 'name'),
   required: toRef(props, 'required'),
-  values:   selectedValues,
+  values: selectedValues,
   isMulti,
 })
 
@@ -230,13 +230,13 @@ const { hiddenInputs } = useFormBinding({
 ```
 
 Multi-mode names are suffixed with `[]` so PHP / Rails-style array parsers
-pick up every value. When the selection is empty *and* `name` is set, one
+pick up every value. When the selection is empty _and_ `name` is set, one
 empty input is still emitted so the field appears in `FormData`.
 
 ## `useStableId`
 
 ```ts
-import { useStableId } from '@anilkumarthakur/select/vue'
+import { useStableId } from '@anil-labs/select-vue'
 
 const id = useStableId('my-prefix') // 'my-prefix-42' (per-instance uid)
 ```
@@ -267,21 +267,21 @@ import {
   filterTree,
   getLeafValues,
   getAncestorIds,
-} from '@anilkumarthakur/select/vue'
+} from '@anil-labs/select-vue'
 ```
 
-| Helper | Job |
-|---|---|
-| `normalize(options, config)` | Coerce primitives / objects into `NormalizedOption[]` |
-| `normalizeTree(roots, config)` | Same for trees, with depth + parent ids attached |
-| `defaultFilter(query, option, caseSensitive?)` | Default substring matcher used by `useOptionFilter` |
-| `escapeRegex(input)` | Escape a string for use as a regex literal |
-| `valuesEqual(a, b)` | Reference-or-primitive equality |
-| `toggleValue(current, value)` | Add-or-remove from a value array (immutable) |
-| `readAccessor(option, accessor, fallback)` | Resolve a `keyof T \| (o) => …` accessor |
-| `isPrimitive(value)` | Type guard for `string \| number \| boolean` |
-| `walkTree(nodes, visit)` | Depth-first traversal — return `false` from `visit` to skip a subtree |
-| `flattenTree(nodes)` | Depth-first array of every node |
-| `filterTree(nodes, query, caseSensitive?)` | Keep nodes whose label or descendants match — preserves ancestors |
-| `getLeafValues(node \| nodes)` | Collect every selectable leaf value reachable from the input |
-| `getAncestorIds(node, byId)` | Ids on the path from the node to the root, inclusive |
+| Helper                                         | Job                                                                   |
+| ---------------------------------------------- | --------------------------------------------------------------------- |
+| `normalize(options, config)`                   | Coerce primitives / objects into `NormalizedOption[]`                 |
+| `normalizeTree(roots, config)`                 | Same for trees, with depth + parent ids attached                      |
+| `defaultFilter(query, option, caseSensitive?)` | Default substring matcher used by `useOptionFilter`                   |
+| `escapeRegex(input)`                           | Escape a string for use as a regex literal                            |
+| `valuesEqual(a, b)`                            | Reference-or-primitive equality                                       |
+| `toggleValue(current, value)`                  | Add-or-remove from a value array (immutable)                          |
+| `readAccessor(option, accessor, fallback)`     | Resolve a `keyof T \| (o) => …` accessor                              |
+| `isPrimitive(value)`                           | Type guard for `string \| number \| boolean`                          |
+| `walkTree(nodes, visit)`                       | Depth-first traversal — return `false` from `visit` to skip a subtree |
+| `flattenTree(nodes)`                           | Depth-first array of every node                                       |
+| `filterTree(nodes, query, caseSensitive?)`     | Keep nodes whose label or descendants match — preserves ancestors     |
+| `getLeafValues(node \| nodes)`                 | Collect every selectable leaf value reachable from the input          |
+| `getAncestorIds(node, byId)`                   | Ids on the path from the node to the root, inclusive                  |

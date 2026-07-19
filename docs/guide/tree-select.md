@@ -10,27 +10,42 @@
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VTreeSelect } from '@anilkumarthakur/select/vue'
+import { VTreeSelect } from '@anil-labs/select-vue'
 
-interface Cat { id: number; name: string; children: Cat[] }
+interface Cat {
+  id: number
+  name: string
+  children: Cat[]
+}
 
 const categories: Cat[] = [
   {
-    id: 1, name: 'Web',
+    id: 1,
+    name: 'Web',
     children: [
-      { id: 2, name: 'Frontend', children: [
-        { id: 3, name: 'CSS', children: [] },
-        { id: 4, name: 'JavaScript', children: [] },
-        { id: 5, name: 'TypeScript', children: [] },
-      ]},
-      { id: 6, name: 'Backend', children: [
-        { id: 7, name: 'Node.js', children: [] },
-        { id: 8, name: 'Go', children: [] },
-      ]},
+      {
+        id: 2,
+        name: 'Frontend',
+        children: [
+          { id: 3, name: 'CSS', children: [] },
+          { id: 4, name: 'JavaScript', children: [] },
+          { id: 5, name: 'TypeScript', children: [] },
+        ],
+      },
+      {
+        id: 6,
+        name: 'Backend',
+        children: [
+          { id: 7, name: 'Node.js', children: [] },
+          { id: 8, name: 'Go', children: [] },
+        ],
+      },
     ],
   },
   {
-    id: 9, name: 'DevOps', children: [
+    id: 9,
+    name: 'DevOps',
+    children: [
       { id: 10, name: 'Docker', children: [] },
       { id: 11, name: 'Kubernetes', children: [] },
     ],
@@ -94,12 +109,12 @@ const picked = ref<number[]>([])
 
 ## Accessors
 
-| Prop | Default | Reads |
-|---|---|---|
-| `option-value` | `value` ?? `id` | The value emitted into v-model when this leaf is checked |
-| `option-label` | `label` ?? `name` | The visible label |
-| `option-children` | `children` | The children array — return `[]` for leaves |
-| `option-disabled` | `disabled` | Skip the node from selection / count |
+| Prop              | Default           | Reads                                                    |
+| ----------------- | ----------------- | -------------------------------------------------------- |
+| `option-value`    | `value` ?? `id`   | The value emitted into v-model when this leaf is checked |
+| `option-label`    | `label` ?? `name` | The visible label                                        |
+| `option-children` | `children`        | The children array — return `[]` for leaves              |
+| `option-disabled` | `disabled`        | Skip the node from selection / count                     |
 
 All four accept either a string (property name) or a function `(node) => …`.
 
@@ -149,7 +164,7 @@ tree.value?.collapseAll()
 
 ## Search
 
-Same input as `<VSelect>`. The search filters leaves *and* keeps their
+Same input as `<VSelect>`. The search filters leaves _and_ keeps their
 ancestor branches in the rendered tree so matches stay reachable. Matching
 subtrees auto-expand — clearing the query collapses back to the
 `default-expand-all` state.

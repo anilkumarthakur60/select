@@ -1,4 +1,4 @@
-# Why @anilkumarthakur/select?
+# Why @anil-labs/select-core?
 
 There are plenty of select components — for Vue, for React, for Svelte,
 for everyone. This one earns its place by sweating the parts that other
@@ -9,7 +9,7 @@ core that every adapter shares.
 
 A pure-TypeScript state machine drives every adapter. The keyboard map,
 ARIA wiring, focus management, filtering, and tag/create-on-Enter logic
-live in `@anilkumarthakur/select` (the root entry) and are reused by:
+live in `@anil-labs/select-core` (the root entry) and are reused by:
 
 - **Vue** — `<VSelect>`, `<VTreeSelect>`, plugin, composables
 - **React** — `<Select>` component + `useSelect` hook
@@ -39,12 +39,7 @@ Generic over `T`. Accessors are `keyof T | (o: T) => …`, so the compiler
 catches `option-value="cod"` typos and infers slot props correctly:
 
 ```vue
-<VSelect
-  v-model="country"
-  :options="countries"
-  option-value="code"  // <-- ✅ keyof Country
-  option-label="name"  // <-- ✅ keyof Country
-/>
+<VSelect v-model="country" :options="countries" option-value="code" option-label="name" />
 ```
 
 ## Accessibility you can trust
@@ -75,12 +70,12 @@ import {
   useOutsideClick,
   useControlFocus,
   useFormBinding,
-} from '@anilkumarthakur/select/vue'
+} from '@anil-labs/select-vue'
 ```
 
 In React, the same machine is reachable via `useSelect`. In Svelte and
 Solid, `createSelectAdapter` / `createSelect` expose it directly. The
-core itself (`createSelectMachine` from `@anilkumarthakur/select`) is
+core itself (`createSelectMachine` from `@anil-labs/select-core`) is
 framework-free TypeScript.
 
 ## Themed without specificity wars
@@ -99,20 +94,20 @@ cascade level, no SCSS recompile required.
 
 ## Tiny — pay only for what you import
 
-| Entry | gzipped |
-|---|---|
-| Core (framework-free) | ~5 kB |
-| Vue adapter | ~13 kB |
-| React adapter | ~8 kB |
-| Svelte adapter | ~6 kB |
-| Solid adapter | ~6 kB |
-| Web Component | ~8 kB |
-| CSS | ~3 kB |
+| Entry                 | gzipped |
+| --------------------- | ------- |
+| Core (framework-free) | ~5 kB   |
+| Vue adapter           | ~13 kB  |
+| React adapter         | ~8 kB   |
+| Svelte adapter        | ~6 kB   |
+| Solid adapter         | ~6 kB   |
+| Web Component         | ~8 kB   |
+| CSS                   | ~3 kB   |
 
 Each subpath is its own entry — bundlers only pull in the adapter you
 import. The Vue adapter brings `@floating-ui/vue`; every other adapter has
 zero runtime deps. A Nuxt module is shipped under
-`@anilkumarthakur/select/vue/nuxt` for one-line setup.
+`@anil-labs/select-vue/nuxt` for one-line setup.
 
 ## What it isn't
 
