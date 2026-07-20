@@ -72,8 +72,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@anil-labs/select-core": "workspace:^",
-    "@floating-ui/vue": "^1.0.0"
+    "@anil-labs/select-core": "workspace:^"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.1.5",

@@ -17,10 +17,7 @@ export default defineConfig({
   treeshake: true,
   target: 'es2022',
   outDir: 'dist',
-  external: [
-    '@anil-labs/select-core',
-    ...['vue', 'vue/jsx-runtime', '@floating-ui/vue', '@nuxt/kit', 'nuxt'],
-  ],
+  external: ['@anil-labs/select-core', ...['vue', 'vue/jsx-runtime', '@nuxt/kit', 'nuxt']],
 
   // REQUIRED — do not remove. tsconfig.json keeps `jsx: "preserve"` because
   // Vue's jsx-runtime declares no `ElementChildrenAttribute`, so under the
