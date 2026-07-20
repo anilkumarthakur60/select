@@ -17,14 +17,18 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./styles.css": "./dist/styles.css",
+    "./styles.css": {
+      "types": "./styles.css.d.ts",
+      "default": "./dist/styles.css"
+    },
     "./scss": "./src/styles/index.scss",
     "./scss/*": "./src/styles/*",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "src/styles"
+    "src/styles",
+    "styles.css.d.ts"
   ],
   "sideEffects": [
     "**/*.css",

@@ -15,6 +15,10 @@ export default tseslint.config(
       '.changeset/**',
       'dist-demo/**',
       'examples/env.d.ts',
+      // Hand-written type stub shipped alongside the CSS export. It lives
+      // outside src/, so it is covered by no tsconfig and no projectService
+      // block — type-aware rules crash on it, and there is nothing to lint.
+      'packages/*/styles.css.d.ts',
     ],
   },
 
