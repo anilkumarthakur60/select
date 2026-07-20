@@ -1,5 +1,5 @@
 import type { NormalizedOption, OptionAccessor, OptionLike } from '@/types/option'
-import { isPrimitive, readAccessor } from '@/accessor'
+import { isPrimitive, readAccessor, safeLabel } from '@/accessor'
 
 interface NormalizeConfig<T> {
   optionValue?: OptionAccessor<T, unknown>
@@ -32,11 +32,16 @@ export function normalize<T extends OptionLike>(
       config.optionValue,
       (option as Record<string, unknown>).value,
     )
-    const label = readAccessor(
+    // Resolve the label WITHOUT coercing, then coerce through safeLabel — the
+    // old `String(option.label ?? value ?? '')` rendered "[object Object]" for
+    // an i18n-shaped label and made the row unsearchable, since `label` is the
+    // only field the filter matches against.
+    const rawLabel = readAccessor<T, unknown>(
       option,
       config.optionLabel,
-      String((option as Record<string, unknown>).label ?? value ?? ''),
+      (option as Record<string, unknown>).label ?? value,
     )
+    const label = safeLabel(rawLabel, value, 'normalize')
     const group = readAccessor(option, config.optionGroup, undefined)
     const disabled = readAccessor(
       option,
@@ -44,9 +49,12 @@ export function normalize<T extends OptionLike>(
       Boolean((option as Record<string, unknown>).disabled),
     )
     return {
-      id: `opt-${index}-${String(value)}`,
+      // The index already makes the id unique, so a non-primitive value
+      // contributes nothing but "[object Object]" — and this id is
+      // interpolated into DOM attributes downstream.
+      id: isPrimitive(value) ? `opt-${index}-${String(value)}` : `opt-${index}`,
       value,
-      label: String(label),
+      label,
       group: group,
       disabled: Boolean(disabled),
       raw: option,
