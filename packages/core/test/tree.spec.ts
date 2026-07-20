@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { filterTree, flattenTree, getLeafValues, normalizeTree, walkTree } from '@/tree'
+import { resetWarnings } from '@/warn'
 
 interface Cat {
   id: number
@@ -140,9 +141,89 @@ describe('filterTree', () => {
     expect(filtered[0]?.children[0]?.label).toBe('Frontend')
   })
 
+  // These two are the point of the test above. It asserted only that the
+  // matched parent survived — never that it kept its subtree — so filterTree
+  // shipped returning `{ isLeaf: false, children: [] }` for a matched branch.
+  // That row rendered a checkbox and an expand chevron but had nothing to
+  // select or expand: clicking it emitted no model update while the checkbox
+  // stayed visually ticked, because Vue never patched `checked` back.
+  it('keeps the whole subtree of a node matched on its own label', () => {
+    const tree = normalizeTree(sample, { optionValue: 'id', optionLabel: 'name' })
+    const matched = filterTree(tree, 'Frontend')[0]?.children[0]
+
+    expect(matched?.label).toBe('Frontend')
+    expect(matched?.isLeaf).toBe(false)
+    expect(matched?.children.map((c) => c.label)).toEqual(['CSS', 'JS'])
+    expect(getLeafValues(matched!)).toEqual([3, 4])
+  })
+
+  it('never produces a non-leaf node with zero children', () => {
+    const tree = normalizeTree(sample, { optionValue: 'id', optionLabel: 'name' })
+    for (const query of ['Frontend', 'Web', 'CSS', 'e', 'DevOps']) {
+      for (const node of flattenTree(filterTree(tree, query))) {
+        expect(node.isLeaf || node.children.length > 0).toBe(true)
+      }
+    }
+  })
+
   it('is case-insensitive by default', () => {
     const tree = normalizeTree(sample, { optionValue: 'id', optionLabel: 'name' })
     expect(filterTree(tree, 'CSS')).toHaveLength(1)
     expect(filterTree(tree, 'css')).toHaveLength(1)
+  })
+})
+
+describe('normalizeTree — malformed input', () => {
+  it('drops a cyclic node instead of blowing the stack', () => {
+    interface Node {
+      id: string
+      name: string
+      children: Node[]
+    }
+    const a: Node = { id: 'a', name: 'A', children: [] }
+    a.children.push(a) // node is its own child
+
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    resetWarnings()
+
+    // Unguarded this threw RangeError out of the Vue `computed` that calls it
+    // during render, taking the component tree down rather than degrading.
+    // Cycles arrive easily from graph-shaped server data.
+    expect(() => normalizeTree([a], { optionValue: 'id', optionLabel: 'name' })).not.toThrow()
+
+    const tree = normalizeTree([a], { optionValue: 'id', optionLabel: 'name' })
+    expect(tree).toHaveLength(1)
+    expect(tree[0]?.children).toHaveLength(0)
+    expect(warn).toHaveBeenCalled()
+    warn.mockRestore()
+  })
+
+  it('does not render an object label as "[object Object]"', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    resetWarnings()
+
+    // `label` is the only field filterTree matches against, so coercing an
+    // i18n-shaped label to "[object Object]" also made the node unfindable.
+    const tree = normalizeTree([{ id: 1, name: { en: 'Web' }, children: [] }] as never, {
+      optionValue: 'id',
+    })
+
+    expect(tree[0]?.label).not.toContain('[object')
+    expect(tree[0]?.label).toBe('1')
+    expect(warn).toHaveBeenCalled()
+    warn.mockRestore()
+  })
+
+  it('keeps ids unique and readable for object-valued nodes', () => {
+    const tree = normalizeTree(
+      [
+        { value: { k: 'a' }, label: 'A', children: [] },
+        { value: { k: 'b' }, label: 'B', children: [] },
+      ] as never,
+      {},
+    )
+    const ids = tree.map((n) => n.id)
+    expect(new Set(ids).size).toBe(ids.length)
+    expect(ids.some((id) => id.includes('[object'))).toBe(false)
   })
 })
