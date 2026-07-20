@@ -254,3 +254,46 @@ describe('useOptionFilter', () => {
     expect(filtered.value.map((o) => o.label)).toEqual(['Crab'])
   })
 })
+
+describe('debounced search + Enter', () => {
+  // With `debounce` set, the rendered list lags the query. Enter used to commit
+  // whatever was highlighted in the STALE list, so typing "Gam" and pressing
+  // Enter before the trailing edge committed "Alpha". Type-then-Enter is the
+  // ordinary type-ahead flow, so this fired constantly.
+  it('commits the option the typed query implies, not the stale highlight', async () => {
+    wrapper = mount(VSelect, {
+      props: { options: ['Alpha', 'Beta', 'Gamma'], debounce: 300 },
+      attachTo: document.body,
+    })
+    await open(wrapper)
+    await nextTick()
+
+    await wrapper.find('input.vselect-search').setValue('Gam')
+    await nextTick()
+    // The menu still shows the pre-debounce list at this point...
+    expect(wrapper.findAll('[role="option"]').map((n) => n.text())).toContain('Alpha')
+
+    await wrapper.find('input.vselect-search').trigger('keydown', { key: 'Enter' })
+    await nextTick()
+
+    expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['Gamma'])
+  })
+
+  it('keeps a deliberate highlight that still matches the new query', async () => {
+    wrapper = mount(VSelect, {
+      props: { options: ['Gamma one', 'Gamma two'], debounce: 300 },
+      attachTo: document.body,
+    })
+    await open(wrapper)
+    await nextTick()
+    // Arrow to the second row, then type a query both rows still match.
+    await wrapper.find('input.vselect-search').trigger('keydown', { key: 'ArrowDown' })
+    await nextTick()
+    await wrapper.find('input.vselect-search').setValue('Gamma')
+    await nextTick()
+    await wrapper.find('input.vselect-search').trigger('keydown', { key: 'Enter' })
+    await nextTick()
+
+    expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['Gamma two'])
+  })
+})

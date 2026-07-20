@@ -202,9 +202,24 @@ export default defineComponent({
     }
 
     function selectActive() {
-      const idx = activeIndex.value
-      const option = filtered.value[idx]
+      // Commit against the list the user's QUERY implies, not the stale one
+      // still on screen. With `debounce` set, typing "Gam" and pressing Enter
+      // before the trailing edge committed "Alpha" — the first row of the
+      // not-yet-filtered list — so the value that landed in v-model had
+      // nothing to do with what was typed. Type-then-Enter is the normal
+      // type-ahead flow, so this fired constantly.
+      const highlighted = filtered.value[activeIndex.value]
+      flushSearch()
+      const visible = filtered.value
+
+      // Keep the user's highlight if it survives the newly-applied query;
+      // otherwise fall back to the default (selected, else first enabled).
+      let idx = highlighted ? visible.findIndex((o) => o.id === highlighted.id) : -1
+      if (idx === -1) idx = resolveDefaultActiveIndex()
+
+      const option = visible[idx]
       if (!option) return
+      activeIndex.value = idx
       select(option)
       if (closeOnSelectResolved.value) close()
       // Reset the search and skip the debounce — the menu should reflect the

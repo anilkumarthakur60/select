@@ -336,6 +336,22 @@ export default defineComponent({
       }
     }
 
+    /**
+     * Flush any pending debounced query, then re-resolve the active node
+     * against the freshly-filtered tree. Keeps the user's highlight when it
+     * survives the new query, otherwise falls back to the first selectable node.
+     */
+    function resolveActiveAfterFlush(): NormalizedTreeNode<T> | undefined {
+      const highlighted = activeNode.value
+      flushSearch()
+      const nodes = visibleNodes.value
+      let idx = highlighted ? nodes.findIndex((n) => n.id === highlighted.id) : -1
+      if (idx === -1) idx = nodes.findIndex((n) => !n.disabled)
+      if (idx === -1) return undefined
+      activeIndex.value = idx
+      return nodes[idx]
+    }
+
     function onTreeKeydown(event: KeyboardEvent, fromSearch: boolean) {
       const node = activeNode.value
 
@@ -379,17 +395,23 @@ export default defineComponent({
           event.preventDefault()
           moveActiveEdge(true)
           return
-        case 'Enter':
+        case 'Enter': {
           if (!isOpen.value) {
             event.preventDefault()
             open()
             return
           }
-          if (!node) return
+          // Act on the tree the QUERY implies, not the stale one still on
+          // screen — same class as VSelect.selectActive(). With `debounce`
+          // set, Enter before the trailing edge would toggle a node the
+          // typed query had already filtered out.
+          const target = resolveActiveAfterFlush()
+          if (!target) return
           event.preventDefault()
-          onToggle(node)
+          onToggle(target)
           return
-        case ' ':
+        }
+        case ' ': {
           // Space types a literal space in the search box; only treat it as
           // "toggle" when the caret isn't in a text field.
           if (fromSearch) return
@@ -398,10 +420,12 @@ export default defineComponent({
             open()
             return
           }
-          if (!node) return
+          const spaceTarget = resolveActiveAfterFlush()
+          if (!spaceTarget) return
           event.preventDefault()
-          onToggle(node)
+          onToggle(spaceTarget)
           return
+        }
         case 'Escape':
           if (!isOpen.value) return
           event.preventDefault()
