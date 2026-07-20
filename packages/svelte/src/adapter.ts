@@ -38,6 +38,13 @@ export function createSelectAdapter<T extends OptionLike = OptionLike>(
   const machine = createSelectMachine<T>(config)
   return {
     machine,
+    // Refuted during the audit: `createSelectMachine` returns an object literal
+    // of closures over its factory scope, so `subscribe` never reads `this` and
+    // detaching it is safe. The rule flags the shape, not an actual defect.
+    //
+    // Directive stays on the line directly above its target — Prettier reflows
+    // a long trailing `--` reason and would move it off.
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     subscribe: machine.subscribe,
     tick: 0,
   }

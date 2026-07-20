@@ -46,28 +46,27 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-explicit-any': 'error',
 
-      // WARN, NOT OFF — these are real, pre-existing defects that only became
-      // visible when the monorepo replaced the old non-type-checked lint
-      // (oxlint + plain eslint) with type-aware rules. They are NOT caused by
-      // the split, and fixing them properly needs regression tests, so they are
-      // tracked as audit work rather than patched blind during a restructure:
+      // These three were set to 'warn' during the monorepo split, when
+      // type-aware linting first surfaced 11 pre-existing defects that the old
+      // non-type-checked setup could not see. All 11 are now fixed or
+      // explicitly refuted, so they are back to 'error' — the warn tier existed
+      // to keep a known backlog visible, and there is no backlog left.
       //
-      //   no-floating-promises (2) unawaited nextTick() in VTreeSelect — a
-      //                            throw inside the callback becomes an
-      //                            unhandled rejection that bypasses
-      //                            app.config.errorHandler entirely
-      //   unbound-method (1)       a method read off its object may lose `this`
+      //   no-base-to-string    fixed: labels route through core's safeLabel(),
+      //                        which falls back to the option value and warns
+      //                        once in dev instead of rendering "[object Object]"
+      //   no-floating-promises fixed: nextTick callbacks go through afterTick(),
+      //                        which reports into app.config.errorHandler
+      //                        rather than dropping the rejection
+      //   unbound-method       one site remains, disabled inline in
+      //                        packages/svelte/src/adapter.ts with the reason:
+      //                        the audit verified it does not reproduce
       //
-      // They stay in the lint output so they cannot be quietly forgotten.
-      //
-      // Fixed so far: every no-base-to-string site (core's normalize/tree/
-      // machine and the Vue composables now route through `safeLabel()`), and
-      // VSelect's three floating promises (they go through `afterTick()`,
-      // which reports into Vue's own error handler). What remains is
-      // VTreeSelect, which still has its own copies.
-      '@typescript-eslint/no-base-to-string': 'warn',
-      '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/unbound-method': 'warn',
+      // Keeping them at 'error' means a regression fails CI rather than
+      // scrolling past in the output.
+      '@typescript-eslint/no-base-to-string': 'error',
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/unbound-method': 'error',
     },
   },
 
