@@ -181,16 +181,50 @@ describe('<VSelect> — accessors and grouping', () => {
 })
 
 describe('<VSelect> — aria wiring', () => {
-  it('sets role=combobox + aria-expanded on the control', async () => {
+  // Under WAI-ARIA 1.2 the combobox is the element that RECEIVES FOCUS. When
+  // searchable (the default) that is the search input — the control div carries
+  // tabindex={-1} and can never be focused, so declaring the role there meant a
+  // screen reader announced the focused element as a plain edit field and was
+  // never told the popup opened or closed. This test used to assert the role
+  // sat on the control, which is what made the defect look intentional.
+  it('puts role=combobox + aria-expanded on the focusable search input', async () => {
     wrapper = mount(VSelect, {
       props: { options: FRUITS },
       attachTo: document.body,
     })
+    const search = wrapper.find('input.vselect-search')
+    expect(search.attributes('role')).toBe('combobox')
+    expect(search.attributes('aria-expanded')).toBe('false')
+    // ...and not on the unfocusable wrapper.
+    expect(wrapper.find('.vselect-control').attributes('role')).toBeUndefined()
+
+    await open(wrapper)
+    await nextTick()
+    expect(wrapper.find('input.vselect-search').attributes('aria-expanded')).toBe('true')
+  })
+
+  it('puts role=combobox on the control when not searchable', async () => {
+    wrapper = mount(VSelect, {
+      props: { options: FRUITS, searchable: false },
+      attachTo: document.body,
+    })
+    // With no search input rendered, the control IS the focusable element.
     const control = wrapper.find('.vselect-control')
     expect(control.attributes('role')).toBe('combobox')
     expect(control.attributes('aria-expanded')).toBe('false')
-    await open(wrapper)
-    await nextTick()
-    expect(wrapper.find('.vselect-control').attributes('aria-expanded')).toBe('true')
+    expect(control.attributes('tabindex')).toBe('0')
+  })
+
+  it('keeps an accessible name on the search input after a value is picked', async () => {
+    wrapper = mount(VSelect, {
+      props: { options: FRUITS, ariaLabel: 'Favourite fruit', modelValue: FRUITS[0] },
+      attachTo: document.body,
+    })
+    // The placeholder is stripped once a value exists, and `ariaLabel` used to
+    // land on the unfocusable div — leaving the focused input with no
+    // accessible name at all.
+    const search = wrapper.find('input.vselect-search')
+    expect(search.attributes('placeholder')).toBeUndefined()
+    expect(search.attributes('aria-label')).toBe('Favourite fruit')
   })
 })
