@@ -1,7 +1,10 @@
 import { normalize } from '@/normalize'
+import { isPrimitive, readAccessor, safeLabel } from '@/accessor'
+import { valuesEqual } from '@/compare'
 import { defaultFilter } from '@/filter'
 import type {
   NormalizedOption,
+  OptionAccessor,
   OptionLike,
   SelectMode,
   SelectSize,
@@ -226,8 +229,24 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
 
   // -------- helpers --------
 
+  /**
+   * Normalises an *incoming* modelValue. The `value === ''` carve-out is for
+   * forms that initialise a select with an empty string meaning "nothing
+   * chosen" — it must NOT be applied to values the machine emits, or an option
+   * legitimately valued `''` (the native-`<select>` "any / no preference"
+   * sentinel) is emitted and then immediately forgotten.
+   */
   function toArray(value: unknown): unknown[] {
     if (value == null || value === '') return []
+    return Array.isArray(value) ? value : [value]
+  }
+
+  /**
+   * Normalises a value the machine itself just produced. Same as `toArray`
+   * minus the empty-string carve-out: only `null`/`undefined` mean "cleared".
+   */
+  function toSelectedValues(value: unknown): unknown[] {
+    if (value == null) return []
     return Array.isArray(value) ? value : [value]
   }
 
@@ -244,7 +263,15 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
   }
 
   function emitChange(next: unknown) {
-    state.selectedValues = toArray(next)
+    state.selectedValues = toSelectedValues(next)
+    // Record what we just emitted as the current modelValue. `update()` diffs
+    // an incoming modelValue against `config.modelValue`; leaving it stale
+    // meant a controlled parent could never RE-ASSERT the value it last
+    // passed. A parent that validates and rejects a change, reverts after a
+    // failed save, or resets a form to its initial value pushed the same
+    // modelValue back, the diff saw "no change", and the machine kept its own
+    // selection forever — the UI showed the rejected option indefinitely.
+    config = { ...config, modelValue: next }
     config.onChange?.(next)
     notify()
   }
@@ -273,25 +300,57 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
     return new Set(state.selectedValues)
   }
 
+  // Last normalised option seen for a given selected value. The documented
+  // async pattern replaces `:options` on every search response (and empties it
+  // when the query clears), which used to turn an already-chosen "Ada
+  // Lovelace" back into the raw id "u_8f21c" the instant its option vanished.
+  // The machine cannot re-derive a label it was never given, so it remembers
+  // the one it had. Pruned to the current selection on every read, so it
+  // cannot grow without bound.
+  const lastKnownOption = new Map<unknown, NormalizedOption<T>>()
+
   function getSelectedOptions(): NormalizedOption<T>[] {
     const lookup = new Map<unknown, NormalizedOption<T>>()
     for (const option of getNormalizedOptions()) lookup.set(option.value, option)
-    return state.selectedValues.map((v) => {
+
+    const result = state.selectedValues.map((v, index) => {
       const found = lookup.get(v)
-      if (found) return found
-      const label =
-        typeof v === 'object' && v !== null
-          ? String(
-              (v as Record<string, unknown>).label ?? (v as Record<string, unknown>).name ?? '',
-            )
-          : String(v)
+      if (found) {
+        lastKnownOption.set(v, found)
+        return found
+      }
+      const remembered = lastKnownOption.get(v)
+      if (remembered) return remembered
+
+      // Genuinely unknown value: resolve its label through the SAME accessors
+      // normalize() uses, rather than a hardcoded `label ?? name` chain that
+      // ignored a configured `optionLabel` and yielded '' for any other shape.
+      const rawLabel = readAccessor<T, unknown>(
+        v as T,
+        // SelectMachineConfig types its accessors as `string | fn` while
+        // OptionAccessor is `keyof T | fn`; the normalize() call below casts
+        // for the same reason.
+        config.optionLabel as OptionAccessor<T, unknown> | undefined,
+        isPrimitive(v)
+          ? v
+          : ((v as Record<string, unknown> | null)?.label ??
+              (v as Record<string, unknown> | null)?.name),
+      )
       return {
-        id: `synthetic-${label}`,
+        // Index-qualified: the id used to be derived from the label, so every
+        // value that resolved to an empty label collided on `synthetic-`, and
+        // React logged duplicate-key warnings for tags keyed on it.
+        id: `synthetic-${index}`,
         value: v,
-        label,
+        label: safeLabel(rawLabel, v, 'getSelectedOptions'),
         raw: v as T,
       } satisfies NormalizedOption<T>
     })
+
+    for (const key of lastKnownOption.keys()) {
+      if (!state.selectedValues.some((v) => valuesEqual(v, key))) lastKnownOption.delete(key)
+    }
+    return result
   }
 
   function isSelected(option: NormalizedOption<T>): boolean {
@@ -304,9 +363,21 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
 
   function showCreate(): boolean {
     if (!taggableResolved()) return false
-    if (!state.query) return false
+    // Trim to agree with getFilteredOptions(), which already trims. Untrimmed,
+    // a whitespace-only query was truthy and creatable, so Enter emitted
+    // onCreate('   ') and produced a blank tag; and "Vue " offered to create a
+    // second "Vue" while the real one was still listed.
+    const q = state.query.trim()
+    if (!q) return false
     const filtered = getFilteredOptions()
-    return !filtered.some((o) => o.label.toLowerCase() === state.query.toLowerCase())
+    return !filtered.some((o) => o.label.toLowerCase() === q.toLowerCase())
+  }
+
+  /** The visible option whose label exactly matches the trimmed query, if any. */
+  function exactQueryMatch(): NormalizedOption<T> | undefined {
+    const q = state.query.trim().toLowerCase()
+    if (!q) return undefined
+    return getFilteredOptions().find((o) => o.label.toLowerCase() === q && !o.disabled)
   }
 
   function emptyMode(): 'no-options' | 'no-results' {
@@ -361,6 +432,10 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
 
   function selectOption(option: NormalizedOption<T>) {
     if (option.disabled) return
+    // Remember the resolved option now, while we still have it: the async
+    // pattern replaces `:options` right after a pick, and getSelectedOptions()
+    // only caches what it sees on a read.
+    lastKnownOption.set(option.value, option)
     const wasSelected = isSelected(option)
     if (!isMulti()) {
       if (!wasSelected) {
@@ -375,7 +450,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
     const cap = config.maxSelections
     if (!wasSelected && cap !== undefined && state.selectedValues.length >= cap) return
     const next = wasSelected
-      ? state.selectedValues.filter((v) => v !== option.value)
+      ? state.selectedValues.filter((v) => !valuesEqual(v, option.value))
       : [...state.selectedValues, option.value]
     emitChange(next)
     if (wasSelected) config.onDeselect?.(option)
@@ -389,7 +464,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
     if (!isMulti()) {
       emitChange(null)
     } else {
-      emitChange(state.selectedValues.filter((v) => v !== option.value))
+      emitChange(state.selectedValues.filter((v) => !valuesEqual(v, option.value)))
     }
     config.onDeselect?.(option)
   }
@@ -421,6 +496,12 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
         return
       }
     }
+    // Every visible option is disabled. Falling out of the loop silently left
+    // a stale index behind — a disabled row kept rendering as active, Enter on
+    // it preventDefault-ed and selected nothing, and no adapter re-rendered
+    // because notify() never fired.
+    state.activeIndex = -1
+    notify()
   }
 
   function moveActiveTo(index: number) {
@@ -444,6 +525,9 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
         return
       }
     }
+    // No enabled option — clear rather than leaving a stale index. See moveActive().
+    state.activeIndex = -1
+    notify()
   }
 
   function selectActive() {
@@ -454,8 +538,11 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
   }
 
   function createFromQuery() {
-    if (!taggableResolved() || !state.query) return
-    config.onCreate?.(state.query)
+    // Trimmed, so the created tag is the same string the user sees offered —
+    // and a whitespace-only query creates nothing at all.
+    const q = state.query.trim()
+    if (!taggableResolved() || !q) return
+    config.onCreate?.(q)
     state.query = ''
     notify()
   }
@@ -519,18 +606,41 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
           moveActiveLast()
         }
         break
-      case 'Enter':
-        if (state.isOpen && state.activeIndex >= 0) {
-          event.preventDefault()
-          selectActive()
-        } else if (state.isOpen && taggableResolved() && state.query) {
-          event.preventDefault()
-          createFromQuery()
-        } else if (!state.isOpen) {
+      case 'Enter': {
+        if (!state.isOpen) {
           event.preventDefault()
           open()
+          break
         }
+        // Resolve what Enter would actually DO before consuming the key. The
+        // old branch tested `activeIndex >= 0` and called preventDefault()
+        // unconditionally, so a stale index swallowed form submission and then
+        // selected nothing.
+        const active = state.activeIndex >= 0 ? getFilteredOptions()[state.activeIndex] : undefined
+        if (active) {
+          event.preventDefault()
+          selectOption(active)
+          break
+        }
+        // In tags mode, typing an exact match shows the real row and NO create
+        // row (showCreate() returns false) — but Enter used to fire onCreate
+        // anyway, producing a duplicate tag while onChange never fired.
+        // setQuery() resets activeIndex to -1, so there is no highlight to
+        // fall back on; match the query against the list explicitly.
+        const exact = exactQueryMatch()
+        if (exact) {
+          event.preventDefault()
+          selectOption(exact)
+          break
+        }
+        if (showCreate()) {
+          event.preventDefault()
+          createFromQuery()
+        }
+        // Otherwise Enter means nothing here — leave the event alone so it can
+        // submit the surrounding form.
         break
+      }
       case 'Escape':
         if (state.isOpen) {
           event.preventDefault()
@@ -705,6 +815,19 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
       config = { ...config, ...partial }
       if ('modelValue' in partial && partial.modelValue !== prevModelValue) {
         state.selectedValues = toArray(partial.modelValue)
+      }
+      // Reconcile the highlight against the new list. `getFilteredOptions()`
+      // is recomputed on demand, so after an async result replaced a longer
+      // list activeIndex pointed past the end: no row rendered as active,
+      // `aria-activedescendant` was undefined (screen readers announced
+      // nothing), and Enter still took the "has active index" branch — calling
+      // preventDefault(), swallowing form submit, and then selecting nothing.
+      // This is the documented async pattern, which replaces `:options` on
+      // every search response.
+      if (state.isOpen && observableChange) {
+        if (state.activeIndex >= getFilteredOptions().length) {
+          state.activeIndex = resolveDefaultActiveIndex()
+        }
       }
       if (observableChange) notify()
     },
