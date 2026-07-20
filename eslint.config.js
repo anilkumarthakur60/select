@@ -52,13 +52,19 @@ export default tseslint.config(
       // the split, and fixing them properly needs regression tests, so they are
       // tracked as audit work rather than patched blind during a restructure:
       //
-      //   no-base-to-string (5)    an option whose label accessor returns an
+      //   no-base-to-string (2)    an option whose label accessor returns an
       //                            object renders as "[object Object]" in the UI
       //   no-floating-promises (5) unawaited promises in VSelect/VTreeSelect can
       //                            swallow rejections
-      //   unbound-method (2)       a method read off its object may lose `this`
+      //   unbound-method (1)       a method read off its object may lose `this`
       //
       // They stay in the lint output so they cannot be quietly forgotten.
+      //
+      // The core's three no-base-to-string sites (normalize.ts, tree.ts,
+      // machine.ts) are FIXED — they now route through `safeLabel()`, which
+      // falls back to the option value and warns once in dev. The two left are
+      // in the Vue adapter's composables, which still carry their own copy of
+      // the logic; folding them into the shared helper is the remaining work.
       '@typescript-eslint/no-base-to-string': 'warn',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/unbound-method': 'warn',
