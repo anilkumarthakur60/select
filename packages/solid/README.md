@@ -1,10 +1,10 @@
 # @anil-labs/select-solid
 
-Solid adapter for [`@anil-labs/select`](https://github.com/anilkumarthakur60/vue3-select).
+Solid adapter for [`@anil-labs/select`](https://github.com/anilkumarthakur60/select).
 
 This adapter is **headless**: it ships no JSX component, just a primitive that
 wires the shared
-[`@anil-labs/select-core`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/core)
+[`@anil-labs/select-core`](https://github.com/anilkumarthakur60/select/tree/main/packages/core)
 machine to a Solid signal, so you build your own markup with full reactivity.
 
 ## Install
@@ -53,7 +53,7 @@ Solid's lowercased ones (`onmousedown`).
 ## Not supported here
 
 Tree select is Vue-only for now — use
-[`@anil-labs/select-vue`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/vue)
+[`@anil-labs/select-vue`](https://github.com/anilkumarthakur60/select/tree/main/packages/vue)
 if you need hierarchical selection.
 
 ## Styles

@@ -1,8 +1,8 @@
 # @anil-labs/select-vue
 
-Vue 3 components for [`@anil-labs/select`](https://github.com/anilkumarthakur60/vue3-select):
+Vue 3 components for [`@anil-labs/select`](https://github.com/anilkumarthakur60/select):
 single, multiple, tags, async, grouped and tree select, driven by the shared
-[`@anil-labs/select-core`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/core)
+[`@anil-labs/select-core`](https://github.com/anilkumarthakur60/select/tree/main/packages/core)
 state machine.
 
 ## Install
@@ -65,7 +65,7 @@ and its types.
 
 ## Documentation
 
-Full API reference and guides: <https://github.com/anilkumarthakur60/vue3-select>
+Full API reference and guides: <https://github.com/anilkumarthakur60/select>
 
 ## License
 

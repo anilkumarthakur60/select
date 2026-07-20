@@ -42,7 +42,7 @@ available — just `import` them from `@anil-labs/select-vue` directly.
 Prefer to wire it up by hand? Drop a Nuxt plugin file in `plugins/`:
 
 ```ts
-// plugins/vue3-select.ts
+// plugins/select.ts
 import { VueSelectPlugin } from '@anil-labs/select-vue'
 import '@anil-labs/select-core/styles.css'
 

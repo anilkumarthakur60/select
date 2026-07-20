@@ -14,7 +14,7 @@ hero:
       link: /guide/why
     - theme: alt
       text: View on GitHub
-      link: https://github.com/anilkumarthakur60/vue3-select
+      link: https://github.com/anilkumarthakur60/select
 
 features:
   - icon: 🧩

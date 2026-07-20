@@ -1,7 +1,7 @@
 # @anil-labs/select-core
 
 Framework-agnostic state machine, option normalisation and styles behind
-[`@anil-labs/select`](https://github.com/anilkumarthakur60/vue3-select). No
+[`@anil-labs/select`](https://github.com/anilkumarthakur60/select). No
 framework dependency — this is the package every adapter is built on.
 
 Reach for it directly when you are writing your own adapter, or driving a select
@@ -70,11 +70,11 @@ compiling:
 
 | Package                                                                                                    | Framework      |
 | ---------------------------------------------------------------------------------------------------------- | -------------- |
-| [`@anil-labs/select-vue`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/vue)         | Vue 3 / Nuxt   |
-| [`@anil-labs/select-react`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/react)     | React          |
-| [`@anil-labs/select-svelte`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/svelte)   | Svelte 5       |
-| [`@anil-labs/select-solid`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/solid)     | Solid          |
-| [`@anil-labs/select-element`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/element) | Web Components |
+| [`@anil-labs/select-vue`](https://github.com/anilkumarthakur60/select/tree/main/packages/vue)         | Vue 3 / Nuxt   |
+| [`@anil-labs/select-react`](https://github.com/anilkumarthakur60/select/tree/main/packages/react)     | React          |
+| [`@anil-labs/select-svelte`](https://github.com/anilkumarthakur60/select/tree/main/packages/svelte)   | Svelte 5       |
+| [`@anil-labs/select-solid`](https://github.com/anilkumarthakur60/select/tree/main/packages/solid)     | Solid          |
+| [`@anil-labs/select-element`](https://github.com/anilkumarthakur60/select/tree/main/packages/element) | Web Components |
 
 ## License
 

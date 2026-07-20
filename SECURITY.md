@@ -4,7 +4,7 @@
 
 **Do not** open a public GitHub issue for security reports.
 
-Please use [GitHub's private vulnerability reporting](https://github.com/anilkumarthakur60/vue3-select/security/advisories/new)
+Please use [GitHub's private vulnerability reporting](https://github.com/anilkumarthakur60/select/security/advisories/new)
 instead. We aim to acknowledge reports within 72 hours and to ship a fix or
 mitigation within 14 days for high-severity issues.
 

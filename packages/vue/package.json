@@ -63,11 +63,11 @@
   "author": "Er. Anil Kumar Thakur <anilkumarthakur60@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anilkumarthakur60/vue3-select.git",
+    "url": "git+https://github.com/anilkumarthakur60/select.git",
     "directory": "packages/vue"
   },
-  "homepage": "https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/vue#readme",
-  "bugs": "https://github.com/anilkumarthakur60/vue3-select/issues",
+  "homepage": "https://github.com/anilkumarthakur60/select/tree/main/packages/vue#readme",
+  "bugs": "https://github.com/anilkumarthakur60/select/issues",
   "publishConfig": {
     "access": "public"
   },

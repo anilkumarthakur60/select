@@ -66,7 +66,7 @@ export default function Select<T>(props: SelectMachineConfig<T>) {
 ## Reference component
 
 A complete `Select.tsx` is included in the playground at
-[`playground/solid/Select.tsx`](https://github.com/anilkumarthakur60/vue3-select/blob/main/playground/solid/Select.tsx).
+[`playground/solid/Select.tsx`](https://github.com/anilkumarthakur60/select/blob/main/playground/solid/Select.tsx).
 Copy it into your project as a starting point.
 
 ## Limitations

@@ -1,12 +1,12 @@
 # @anil-labs/select-svelte
 
-Svelte 5 adapter for [`@anil-labs/select`](https://github.com/anilkumarthakur60/vue3-select).
+Svelte 5 adapter for [`@anil-labs/select`](https://github.com/anilkumarthakur60/select).
 
 This adapter is **headless**: it ships no precompiled `.svelte` component. Doing
 so would force both this package and its consumers onto `vite-plugin-svelte` and
 pin a Svelte version into the tarball. Instead you get a small reactive wrapper
 around the shared
-[`@anil-labs/select-core`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/core)
+[`@anil-labs/select-core`](https://github.com/anilkumarthakur60/select/tree/main/packages/core)
 machine, which you compose into your own components.
 
 ## Install

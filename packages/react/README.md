@@ -1,9 +1,9 @@
 # @anil-labs/select-react
 
-React bindings for [`@anil-labs/select`](https://github.com/anilkumarthakur60/vue3-select) —
+React bindings for [`@anil-labs/select`](https://github.com/anilkumarthakur60/select) —
 a ready-made `<Select>` plus the `useSelect` hook it is built on, both driven by
 the shared
-[`@anil-labs/select-core`](https://github.com/anilkumarthakur60/vue3-select/tree/main/packages/core)
+[`@anil-labs/select-core`](https://github.com/anilkumarthakur60/select/tree/main/packages/core)
 state machine.
 
 ## Install

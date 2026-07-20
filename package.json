@@ -7,11 +7,11 @@
   "author": "Er. Anil Kumar Thakur <anilkumarthakur60@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anilkumarthakur60/vue3-select.git"
+    "url": "git+https://github.com/anilkumarthakur60/select.git"
   },
-  "homepage": "https://github.com/anilkumarthakur60/vue3-select#readme",
+  "homepage": "https://github.com/anilkumarthakur60/select#readme",
   "bugs": {
-    "url": "https://github.com/anilkumarthakur60/vue3-select/issues"
+    "url": "https://github.com/anilkumarthakur60/select/issues"
   },
   "funding": {
     "type": "github",

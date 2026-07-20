@@ -81,7 +81,7 @@ Svelte's templates expect (`onmousedown`, `onkeydown`).
 ## Reference component
 
 A complete `Select.svelte` is included in the playground at
-[`playground/svelte/Select.svelte`](https://github.com/anilkumarthakur60/vue3-select/blob/main/playground/svelte/Select.svelte).
+[`playground/svelte/Select.svelte`](https://github.com/anilkumarthakur60/select/blob/main/playground/svelte/Select.svelte).
 Copy it into your project as a starting point.
 
 ## Limitations

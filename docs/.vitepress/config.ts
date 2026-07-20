@@ -9,9 +9,9 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
 
-  // GitHub Pages project-page support: deploys live under /vue3-select/.
+  // GitHub Pages project-page support: deploys live under /select/.
   // Override at build time with VITEPRESS_BASE='/' for a custom domain.
-  base: process.env.VITEPRESS_BASE ?? '/vue3-select/',
+  base: process.env.VITEPRESS_BASE ?? '/select/',
 
   head: [
     ['meta', { name: 'theme-color', content: '#6366f1' }],
@@ -36,7 +36,7 @@ export default defineConfig({
         items: [
           {
             text: 'Changelog',
-            link: 'https://github.com/anilkumarthakur60/vue3-select/blob/main/CHANGELOG.md',
+            link: 'https://github.com/anilkumarthakur60/select/blob/main/CHANGELOG.md',
           },
           { text: 'npm', link: 'https://www.npmjs.com/package/@anil-labs/select-core' },
         ],
@@ -109,14 +109,14 @@ export default defineConfig({
       ],
     },
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/anilkumarthakur60/vue3-select' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/anilkumarthakur60/select' }],
 
     search: {
       provider: 'local',
     },
 
     editLink: {
-      pattern: 'https://github.com/anilkumarthakur60/vue3-select/edit/main/docs/:path',
+      pattern: 'https://github.com/anilkumarthakur60/select/edit/main/docs/:path',
       text: 'Edit this page on GitHub',
     },
 

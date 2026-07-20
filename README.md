@@ -266,7 +266,7 @@ If you'd rather skip the module and wire it up by hand, drop a Nuxt plugin
 file in `plugins/`:
 
 ```ts
-// plugins/vue3-select.ts
+// plugins/select.ts
 import { VueSelectPlugin } from '@anil-labs/select-vue'
 import '@anil-labs/select-core/styles.css'
 
