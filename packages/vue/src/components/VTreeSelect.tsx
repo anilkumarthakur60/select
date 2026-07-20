@@ -1,7 +1,6 @@
 import {
   computed,
   defineComponent,
-  nextTick,
   reactive,
   ref,
   Teleport,
@@ -20,6 +19,7 @@ import {
   normalizeTree,
   walkTree,
 } from '@anil-labs/select-core'
+import { afterTick } from '@/composables/afterTick'
 import { useControlFocus } from '@/composables/useControlFocus'
 import { useDebounced } from '@/composables/useDebounced'
 import { useFloatingMenu } from '@/composables/useFloatingMenu'
@@ -132,21 +132,30 @@ export default defineComponent({
       }),
     )
 
-    // Re-seed the expansion set when the tree shape (re)builds. We deliberately
-    // don't preserve old ids — they become invalid the moment the underlying
-    // option array changes identity.
-    watch(
-      tree,
-      (next) => {
-        expanded.clear()
-        if (props.defaultExpandAll) {
-          walkTree(next, (n) => {
-            if (!n.isLeaf) expanded.add(n.id)
-          })
-        }
-      },
-      { immediate: true },
-    )
+    // Re-seed the expansion set to the `defaultExpandAll` baseline. We
+    // deliberately don't preserve old ids — they become invalid the moment the
+    // underlying option array changes identity.
+    function seedExpansion(nodes: NormalizedTreeNode<T>[]) {
+      expanded.clear()
+      if (props.defaultExpandAll) {
+        walkTree(nodes, (n) => {
+          if (!n.isLeaf) expanded.add(n.id)
+        })
+      }
+    }
+
+    watch(tree, seedExpansion, { immediate: true })
+
+    // Clearing the search collapses back to that baseline. This is what the
+    // search-time auto-expand below always CLAIMED happened, and what the docs
+    // promise — but the only re-seed was keyed on `tree` identity, and a query
+    // change never touches `props.options`. So ids added during a search just
+    // accumulated: every query permanently opened more of the tree until it was
+    // effectively fully expanded, leaving an expansion state the user never
+    // chose and that `default-expand-all="false"` explicitly disclaims.
+    watch(effectiveQuery, (q) => {
+      if (!q) seedExpansion(tree.value)
+    })
 
     const filteredTree = computed(() => {
       if (!effectiveQuery.value) return tree.value
@@ -154,8 +163,8 @@ export default defineComponent({
     })
 
     // While searching, expand every parent in the filtered subtree so matches
-    // are visible without an extra click. Restored on query clear by the watcher
-    // above re-seeding from `defaultExpandAll`.
+    // are visible without an extra click. Reverted on query clear by the
+    // `effectiveQuery` watcher above.
     watch(filteredTree, (next, prev) => {
       if (!effectiveQuery.value) return
       if (next === prev) return
@@ -201,6 +210,45 @@ export default defineComponent({
       return map
     })
 
+    /**
+     * Resolve a node from the *filtered* tree back to its counterpart in the
+     * full tree.
+     *
+     * Rows render from `filteredTree`, but selection state must be derived from
+     * the whole branch. Passing a filtered node straight to `getCheckState`
+     * made it count only the leaves that survived the search: a partially
+     * selected parent rendered and announced itself `aria-checked="true"`, and
+     * clicking it to clear the branch removed only the visible leaves while
+     * silently leaving the filtered-out ones selected. `filterTree` preserves
+     * node ids, so the canonical node is a lookup away.
+     */
+    function canonical(node: NormalizedTreeNode<T>): NormalizedTreeNode<T> {
+      return nodeById.value.get(node.id) ?? node
+    }
+
+    const getCheckStateResolved = (node: NormalizedTreeNode<T>) => getCheckState(canonical(node))
+
+    // Drop values that are no longer selectable leaves.
+    //
+    // v-model holds leaf values only — that invariant was enforced when a value
+    // was picked but never re-checked when `options` changed. Lazy-loading is
+    // the canonical tree pattern: a node ships with `children: []`, so it is
+    // legitimately a selectable leaf; once its children arrive the value in
+    // v-model is a PARENT id, and every derived view disagrees about it. No tag
+    // rendered (leafByValue skips parents) so the user could not remove it, its
+    // own row showed unchecked so clicking added children instead of clearing
+    // it, yet the toolbar still counted it and the hidden form input still
+    // submitted it.
+    //
+    // Guarded on a non-empty tree so an async load that briefly passes `[]`
+    // cannot wipe the selection.
+    watch(tree, (next) => {
+      if (next.length === 0) return
+      const leaves = leafByValue.value
+      const kept = selectedValues.value.filter((v) => leaves.has(v))
+      if (kept.length !== selectedValues.value.length) emit('update:modelValue', kept)
+    })
+
     const selectedLeaves = computed(() =>
       selectedValues.value
         .map((v) => leafByValue.value.get(v))
@@ -222,6 +270,151 @@ export default defineComponent({
     const flattened = computed(() => flattenTree(filteredTree.value))
     const isEmpty = computed(() => flattened.value.length === 0)
 
+    // ---- keyboard model ----
+    //
+    // VTreeSelect previously bound no keydown handler at all: the popup could
+    // not be opened, navigated, or dismissed without a mouse, and no element
+    // ever carried `aria-activedescendant`, so nothing identified a current
+    // node to assistive tech. This is the tree-pattern equivalent of what
+    // `useKeyboardNav` does for VSelect — kept local because the tree needs
+    // ArrowLeft/ArrowRight expand/collapse semantics that the flat key map has
+    // no concept of.
+
+    /** Rows the user can actually see: depth-first, not descending into collapsed parents. */
+    const visibleNodes = computed(() => {
+      const out: NormalizedTreeNode<T>[] = []
+      const visit = (nodes: NormalizedTreeNode<T>[]) => {
+        for (const node of nodes) {
+          out.push(node)
+          if (!node.isLeaf && expanded.has(node.id)) visit(node.children)
+        }
+      }
+      visit(filteredTree.value)
+      return out
+    })
+
+    const activeIndex = ref(-1)
+    const activeNode = computed<NormalizedTreeNode<T> | undefined>(
+      () => visibleNodes.value[activeIndex.value],
+    )
+    const activeDescendantId = computed(() =>
+      activeNode.value ? `${baseId.value}-node-${activeNode.value.id}` : undefined,
+    )
+
+    // Keep the highlight inside the list as rows appear/disappear (searching,
+    // expanding, async option arrival).
+    watch(visibleNodes, (nodes) => {
+      if (activeIndex.value >= nodes.length) activeIndex.value = nodes.length > 0 ? 0 : -1
+    })
+
+    function moveActive(delta: number) {
+      const nodes = visibleNodes.value
+      if (nodes.length === 0) {
+        activeIndex.value = -1
+        return
+      }
+      let i = activeIndex.value
+      if (i < 0) i = delta > 0 ? -1 : nodes.length
+      for (let step = 0; step < nodes.length; step += 1) {
+        i = (i + delta + nodes.length) % nodes.length
+        if (!nodes[i]!.disabled) {
+          activeIndex.value = i
+          return
+        }
+      }
+      activeIndex.value = -1
+    }
+
+    function moveActiveEdge(toEnd: boolean) {
+      const nodes = visibleNodes.value
+      const order = toEnd ? [...nodes.keys()].reverse() : [...nodes.keys()]
+      for (const i of order) {
+        if (!nodes[i]!.disabled) {
+          activeIndex.value = i
+          return
+        }
+      }
+    }
+
+    function onTreeKeydown(event: KeyboardEvent, fromSearch: boolean) {
+      const node = activeNode.value
+
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault()
+          if (!isOpen.value) open()
+          else moveActive(1)
+          return
+        case 'ArrowUp':
+          event.preventDefault()
+          if (!isOpen.value) open()
+          else moveActive(-1)
+          return
+        case 'ArrowRight':
+          // Tree-pattern required key: expand, or step into the first child.
+          if (!isOpen.value || !node || node.isLeaf) return
+          event.preventDefault()
+          if (!expanded.has(node.id)) onExpand(node)
+          else moveActive(1)
+          return
+        case 'ArrowLeft': {
+          if (!isOpen.value || !node) return
+          event.preventDefault()
+          if (!node.isLeaf && expanded.has(node.id)) {
+            onCollapse(node)
+            return
+          }
+          // Already collapsed (or a leaf): step out to the parent.
+          const parentIdx = visibleNodes.value.findIndex((n) => n.id === node.parentId)
+          if (parentIdx !== -1) activeIndex.value = parentIdx
+          return
+        }
+        case 'Home':
+          if (!isOpen.value) return
+          event.preventDefault()
+          moveActiveEdge(false)
+          return
+        case 'End':
+          if (!isOpen.value) return
+          event.preventDefault()
+          moveActiveEdge(true)
+          return
+        case 'Enter':
+          if (!isOpen.value) {
+            event.preventDefault()
+            open()
+            return
+          }
+          if (!node) return
+          event.preventDefault()
+          onToggle(node)
+          return
+        case ' ':
+          // Space types a literal space in the search box; only treat it as
+          // "toggle" when the caret isn't in a text field.
+          if (fromSearch) return
+          if (!isOpen.value) {
+            event.preventDefault()
+            open()
+            return
+          }
+          if (!node) return
+          event.preventDefault()
+          onToggle(node)
+          return
+        case 'Escape':
+          if (!isOpen.value) return
+          event.preventDefault()
+          close()
+          return
+        case 'Tab':
+          if (isOpen.value) close()
+          return
+        default:
+          return
+      }
+    }
+
     const emptyMessage = computed(() => {
       if (query.value) return props.noResultsText ?? props.emptyText
       return props.emptyText
@@ -238,7 +431,15 @@ export default defineComponent({
           expanded.add(id)
         }
       }
-      nextTick(() => {
+      // Seed the keyboard highlight so the first ArrowRight/Enter has a target.
+      // Prefer the first selected leaf, mirroring VSelect's open() behaviour.
+      if (activeIndex.value === -1) {
+        const nodes = visibleNodes.value
+        const chosen = new Set(selectedValues.value)
+        const selected = nodes.findIndex((n) => !n.disabled && chosen.has(n.value))
+        activeIndex.value = selected !== -1 ? selected : nodes.findIndex((n) => !n.disabled)
+      }
+      afterTick(() => {
         if (props.searchable && searchEl.value) searchEl.value.focus()
         if (isFloating.value) updateFloating()
       })
@@ -247,6 +448,7 @@ export default defineComponent({
     function close() {
       if (!isOpen.value) return
       isOpen.value = false
+      activeIndex.value = -1
       emit('close')
     }
 
@@ -256,7 +458,9 @@ export default defineComponent({
     }
 
     function onToggle(node: NormalizedTreeNode<T>) {
-      toggle(node)
+      // canonical(): rows come from the filtered tree, but toggling must act on
+      // the whole branch — see the note on `canonical`.
+      toggle(canonical(node))
       if (props.closeOnSelect) close()
     }
 
@@ -377,7 +581,9 @@ export default defineComponent({
     watch(
       () => props.autofocus,
       (auto) => {
-        if (auto) nextTick(() => searchEl.value?.focus() ?? controlEl.value?.focus())
+        // Coalesce the ELEMENTS, not the call results: focus() returns undefined,
+        // so `a?.focus() ?? b?.focus()` always ran both and the control div won.
+        if (auto) afterTick(() => (searchEl.value ?? controlEl.value)?.focus())
       },
       { immediate: true },
     )
@@ -493,8 +699,9 @@ export default defineComponent({
                   key={node.id}
                   node={node}
                   expanded={expanded}
-                  getCheckState={getCheckState}
+                  getCheckState={getCheckStateResolved}
                   idPrefix={baseId.value}
+                  activeId={activeNode.value?.id}
                   onToggle={onToggle}
                   onExpand={onExpand}
                   onCollapse={onCollapse}
@@ -521,15 +728,22 @@ export default defineComponent({
             controlEl.value = el as HTMLElement | null
           }}
           class="vselect-control"
-          role="combobox"
-          aria-expanded={isOpen.value}
-          aria-controls={treeId.value}
-          aria-haspopup="tree"
-          aria-disabled={props.disabled || undefined}
-          aria-label={props.ariaLabel ?? props.placeholder}
+          // Combobox semantics follow the element that actually takes focus —
+          // the search input when searchable, this div otherwise. Same
+          // WAI-ARIA 1.2 rationale as VSelect.
+          role={props.searchable ? undefined : 'combobox'}
+          aria-expanded={props.searchable ? undefined : isOpen.value}
+          aria-controls={props.searchable ? undefined : treeId.value}
+          aria-haspopup={props.searchable ? undefined : 'tree'}
+          aria-disabled={props.searchable ? undefined : props.disabled || undefined}
+          aria-label={props.searchable ? undefined : (props.ariaLabel ?? props.placeholder)}
+          aria-activedescendant={props.searchable ? undefined : activeDescendantId.value}
           tabindex={props.searchable ? -1 : props.disabled ? -1 : 0}
           {...attrs}
           onMousedown={onControlMousedown}
+          onKeydown={(e: KeyboardEvent) => {
+            if (!props.searchable) onTreeKeydown(e, false)
+          }}
         >
           {slots.prefix?.()}
 
@@ -587,9 +801,21 @@ export default defineComponent({
                 value={query.value}
                 placeholder={hasSelection.value ? undefined : props.placeholder}
                 disabled={props.disabled}
+                // This input is the combobox when searchable — it is what
+                // takes focus. It previously had no role, no aria-expanded,
+                // no aria-activedescendant and NO keydown handler at all.
+                role="combobox"
+                aria-expanded={isOpen.value}
+                aria-haspopup="tree"
                 aria-controls={treeId.value}
                 aria-autocomplete="list"
+                aria-disabled={props.disabled || undefined}
+                // Always set: the placeholder is stripped once a value exists,
+                // which would otherwise leave the focused input unnamed.
+                aria-label={props.ariaLabel ?? props.placeholder}
+                aria-activedescendant={activeDescendantId.value}
                 onInput={onSearchInput}
+                onKeydown={(e: KeyboardEvent) => onTreeKeydown(e, true)}
               />
             )}
           </div>

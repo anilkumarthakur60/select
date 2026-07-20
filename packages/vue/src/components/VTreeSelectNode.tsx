@@ -16,6 +16,12 @@ const VTreeSelectNode = defineComponent({
     },
     /** DOM-id prefix from the parent VTreeSelect (used by aria wiring). */
     idPrefix: { type: String, required: true },
+    /**
+     * Id of the keyboard-active node. Drives `is-active` so the row the
+     * `aria-activedescendant` on the combobox points at is also visible
+     * sighted-side. Undefined when nothing is active.
+     */
+    activeId: { type: String, default: undefined },
   },
   emits: {
     toggle: (_node: NormalizedTreeNode<TreeOptionLike>) => true,
@@ -79,7 +85,13 @@ const VTreeSelectNode = defineComponent({
       <div class="vselect-tree-branch" role="none">
         <div
           id={`${props.idPrefix}-node-${props.node.id}`}
-          class={['vselect-tree-row', { 'is-disabled': props.node.disabled }]}
+          class={[
+            'vselect-tree-row',
+            {
+              'is-disabled': props.node.disabled,
+              'is-active': props.activeId === props.node.id,
+            },
+          ]}
           role="treeitem"
           aria-level={props.node.depth + 1}
           aria-expanded={props.node.isLeaf ? undefined : isExpanded.value}
@@ -127,6 +139,7 @@ const VTreeSelectNode = defineComponent({
                 expanded={props.expanded}
                 getCheckState={props.getCheckState}
                 idPrefix={props.idPrefix}
+                activeId={props.activeId}
                 onToggle={(n: NormalizedTreeNode<TreeOptionLike>) => emit('toggle', n)}
                 onExpand={(n: NormalizedTreeNode<TreeOptionLike>) => emit('expand', n)}
                 onCollapse={(n: NormalizedTreeNode<TreeOptionLike>) => emit('collapse', n)}

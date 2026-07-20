@@ -119,9 +119,20 @@ export function useTreeSelection<T>(opts: UseTreeSelectionOptions<T>): UseTreeSe
     for (const v of leafValues) {
       if (!set.has(v)) merged.push(v)
     }
-    opts.emitUpdate(withCap(merged))
+    // Cap FIRST, then emit events off the capped result. This used to emit the
+    // truncated array but then walk the whole branch and fire @select for every
+    // enabled leaf — with `max-selections=2`, clicking a 5-leaf parent emitted
+    // update:modelValue [3,4] alongside five @select events, three of which
+    // described selections that never happened. The leaf path already gets this
+    // right (it checks the cap before emitting), so the two paths in this same
+    // composable disagreed about what @select means.
+    const next = withCap(merged)
+    const accepted = new Set(next)
+    opts.emitUpdate(next)
     walkTree(node.children, (child) => {
-      if (child.isLeaf && !child.disabled && !set.has(child.value)) opts.emitSelect(child)
+      if (child.isLeaf && !child.disabled && !set.has(child.value) && accepted.has(child.value)) {
+        opts.emitSelect(child)
+      }
     })
   }
 
