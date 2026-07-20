@@ -6,7 +6,7 @@ publicly so you can build a totally custom UI on the same primitives.
 ::: tip Other frameworks
 The composables listed here are Vue-specific (they return refs and use
 Vue's lifecycle). For framework-agnostic primitives, import
-`createSelectMachine` from the root `@anilkumarthakur/select` entry, or
+`createSelectMachine` from the root `@anil-labs/select-core` entry, or
 use the dedicated headless adapters:
 [`useSelect`](./frameworks/react#hook-usage-headless) (React),
 [`createSelectAdapter`](./frameworks/svelte) (Svelte),
@@ -15,35 +15,35 @@ use the dedicated headless adapters:
 
 ## Available primitives
 
-| Composable | Job |
-|---|---|
-| `useSelection` | The single / multi / tags state machine over an option list |
-| `useMenuState` | Open / close + active-row state for a combobox-style menu |
-| `useTreeSelection` | Same idea as `useSelection`, but for hierarchical data with tri-state parents |
-| `useOptionFilter` | Filter the option list against a query (custom filter optional) |
-| `useTaggable` | "Create '&lt;query&gt;'" affordance with suppression rules |
-| `useDebounced` | Debounce a `Ref` source with `flush` / `cancel` / `force` escape hatches |
-| `useKeyboardNav` | Arrow / Home / End / Enter / Esc / Backspace key handling |
-| `useTriggerInteractions` | Mouse + input handlers shared by both triggers |
-| `useFloatingMenu` | The `@floating-ui/vue` setup — middleware, teleport gating |
-| `useOutsideClick` | Pointerdown outside a set of refs while active |
-| `useControlFocus` | Track "focus is inside this subtree" with rAF-deferred blur |
-| `useFormBinding` | Hidden-input descriptors for native `<form>` participation |
-| `useStableId` | Per-instance id for ARIA wiring |
+| Composable               | Job                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| `useSelection`           | The single / multi / tags state machine over an option list                   |
+| `useMenuState`           | Open / close + active-row state for a combobox-style menu                     |
+| `useTreeSelection`       | Same idea as `useSelection`, but for hierarchical data with tri-state parents |
+| `useOptionFilter`        | Filter the option list against a query (custom filter optional)               |
+| `useTaggable`            | "Create '&lt;query&gt;'" affordance with suppression rules                    |
+| `useDebounced`           | Debounce a `Ref` source with `flush` / `cancel` / `force` escape hatches      |
+| `useKeyboardNav`         | Arrow / Home / End / Enter / Esc / Backspace key handling                     |
+| `useTriggerInteractions` | Mouse + input handlers shared by both triggers                                |
+| `useFloatingMenu`        | Menu positioning — offset / flip / clamp / width-match, teleport gating       |
+| `useOutsideClick`        | Pointerdown outside a set of refs while active                                |
+| `useControlFocus`        | Track "focus is inside this subtree" with rAF-deferred blur                   |
+| `useFormBinding`         | Hidden-input descriptors for native `<form>` participation                    |
+| `useStableId`            | Per-instance id for ARIA wiring                                               |
 
 ## Pure helpers
 
-| Helper | Job |
-|---|---|
-| `normalize(options, config)` | Coerce primitives / objects into `NormalizedOption[]` |
-| `normalizeTree(roots, config)` | Same for trees, with depth + parent ids |
-| `defaultFilter(query, option, caseSensitive?)` | The substring matcher used by default |
-| `escapeRegex(input)` | Escape a string for use as a regex literal |
-| `valuesEqual(a, b)` | Reference-or-primitive equality |
-| `toggleValue(current, value)` | Add-or-remove from a value array (immutable) |
-| `readAccessor(option, accessor, fallback)` | Resolve a `keyof T \| (o) => …` accessor |
-| `isPrimitive(value)` | Type guard for `string \| number \| boolean` |
-| `walkTree`, `flattenTree`, `filterTree`, `getLeafValues`, `getAncestorIds` | Tree traversal helpers |
+| Helper                                                                     | Job                                                   |
+| -------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `normalize(options, config)`                                               | Coerce primitives / objects into `NormalizedOption[]` |
+| `normalizeTree(roots, config)`                                             | Same for trees, with depth + parent ids               |
+| `defaultFilter(query, option, caseSensitive?)`                             | The substring matcher used by default                 |
+| `escapeRegex(input)`                                                       | Escape a string for use as a regex literal            |
+| `valuesEqual(a, b)`                                                        | Reference-or-primitive equality                       |
+| `toggleValue(current, value)`                                              | Add-or-remove from a value array (immutable)          |
+| `readAccessor(option, accessor, fallback)`                                 | Resolve a `keyof T \| (o) => …` accessor              |
+| `isPrimitive(value)`                                                       | Type guard for `string \| number \| boolean`          |
+| `walkTree`, `flattenTree`, `filterTree`, `getLeafValues`, `getAncestorIds` | Tree traversal helpers                                |
 
 ## Building a custom select
 
@@ -60,7 +60,7 @@ import {
   useKeyboardNav,
   useDebounced,
   normalize,
-} from '@anilkumarthakur/select/vue'
+} from '@anil-labs/select-vue'
 
 const props = defineProps<{ options: string[] }>()
 const modelValue = defineModel<unknown>()
@@ -83,8 +83,8 @@ const { isSelected, select } = useSelection({
   modelValue,
   options: normalised,
   mode: ref('single'),
-  emitUpdate:   (v) => (modelValue.value = v),
-  emitSelect:   () => {},
+  emitUpdate: (v) => (modelValue.value = v),
+  emitSelect: () => {},
   emitDeselect: () => {},
 })
 

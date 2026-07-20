@@ -1,0 +1,18 @@
+{
+  "name": "docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview .",
+    "typecheck": "echo \"(docs: no typecheck)\""
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4",
+    "@vitejs/plugin-vue-jsx": "^5.1.5",
+    "@anil-labs/select-vue": "workspace:*",
+    "@anil-labs/select-core": "workspace:*"
+  }
+}

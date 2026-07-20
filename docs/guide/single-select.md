@@ -54,7 +54,11 @@ For objects, point at the value / label keys with `option-value` and
 <script setup lang="ts">
 import { ref } from 'vue'
 
-interface Country { code: string; name: string; flag: string }
+interface Country {
+  code: string
+  name: string
+  flag: string
+}
 const countries: Country[] = [
   { code: 'us', name: 'United States', flag: '🇺🇸' },
   { code: 'fr', name: 'France', flag: '🇫🇷' },
@@ -64,12 +68,7 @@ const country = ref<string>('us')
 </script>
 
 <template>
-  <VSelect
-    v-model="country"
-    :options="countries"
-    option-value="code"
-    option-label="name"
-  />
+  <VSelect v-model="country" :options="countries" option-value="code" option-label="name" />
 </template>
 ```
 
@@ -126,6 +125,7 @@ Three baked-in sizes. Override the underlying tokens for finer control.
 
 ```vue
 <VSelect size="sm" :options="..." />
-<VSelect size="md" :options="..." />  <!-- default -->
+<VSelect size="md" :options="..." />
+<!-- default -->
 <VSelect size="lg" :options="..." />
 ```

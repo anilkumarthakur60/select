@@ -2,104 +2,48 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Lint & format
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: npm
+          node-version: lts/*
+          cache: pnpm
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Build runs FIRST and must stay first: the Vue package's build invokes
+      # scripts/check-dist.mjs, which mounts the emitted bundle. The unit suite
+      # only ever compiles src, so a broken artifact is invisible to it — that
+      # is exactly how a bundle compiled with the React JSX factory shipped
+      # while all 125 tests were green.
+      - name: Build
+        run: pnpm build
 
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
 
-      - name: Check formatting
-        run: npm run format:check
+      - name: Format check
+        run: pnpm format:check
 
-  type-check:
-    name: Type check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
+      - name: Typecheck
+        run: pnpm typecheck
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 'lts/*'
-          cache: npm
+      - name: Test
+        run: pnpm test
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Type check
-        run: npm run type-check
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 'lts/*'
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests with coverage
-        run: npm run test:coverage
-
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 14
-
-  build:
-    name: Build library
-    runs-on: ubuntu-latest
-    needs: [ lint, type-check, test ]
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 'lts/*'
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Check bundle size
-        run: npm run size
-
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: dist
-          path: dist/
-          retention-days: 7
+      - name: Build examples
+        run: pnpm build:examples

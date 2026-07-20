@@ -1,0 +1,84 @@
+{
+  "name": "@anil-labs/select-core",
+  "version": "0.0.1",
+  "description": "Framework-agnostic core for @anil-labs/select — the headless select/combobox state machine, option normalization, filtering and tree helpers, plus the shared stylesheet.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./styles.css": {
+      "types": "./styles.css.d.ts",
+      "default": "./dist/styles.css"
+    },
+    "./scss": "./src/styles/index.scss",
+    "./scss/*": "./src/styles/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src/styles",
+    "styles.css.d.ts"
+  ],
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist coverage",
+    "build": "tsup && pnpm run build:css",
+    "build:css": "sass --no-source-map --load-path=src/styles src/styles/index.scss dist/styles.css",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "select",
+    "combobox",
+    "multiselect",
+    "tags",
+    "autocomplete",
+    "tree-select",
+    "headless",
+    "framework-agnostic",
+    "typescript",
+    "a11y"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "author": "Er. Anil Kumar Thakur <anilkumarthakur60@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anilkumarthakur60/select.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/anilkumarthakur60/select/tree/main/packages/core#readme",
+  "bugs": "https://github.com/anilkumarthakur60/select/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.5",
+    "sass": "^1.99.0",
+    "tsup": "^8.5.1",
+    "typescript": "~6.0.0",
+    "vitest": "^4.1.5",
+    "@types/node": "^24.12.2",
+    "jsdom": "^29.0.2"
+  }
+}

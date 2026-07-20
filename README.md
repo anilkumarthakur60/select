@@ -1,14 +1,13 @@
-# @anilkumarthakur/select
+# @anil-labs/select
 
-A typed, accessible, headless-friendly select for Vue 3.
-Single, multi, tags, async, grouped — one component, zero surprises.
+A typed, accessible select/combobox for **Vue, React, Svelte, Solid, and Web
+Components**. Single, multi, tags, async, grouped, tree — one framework-agnostic
+core, framework-idiomatic adapters.
 
-[![npm](https://img.shields.io/npm/v/@anilkumarthakur/select.svg)](https://www.npmjs.com/package/@anilkumarthakur/select)
-[![bundle](https://img.shields.io/badge/bundle-~10.5kb%20gz-blue)](#)
-[![types](https://img.shields.io/badge/types-included-3178c6)](#)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+[![types](https://img.shields.io/badge/types-included-3178c6)](#)
 
-- ✅ Vue 3 + TypeScript with full generics over your option type
+- ✅ One state machine drives every adapter — same behaviour, semantics and tests
 - ✅ Single, multiple, and tags modes (with create-on-Enter)
 - ✅ Tree variant `<VTreeSelect>` with tri-state parents, search, "select all"
 - ✅ Searchable with custom filter functions, debouncing, async loading
@@ -18,19 +17,39 @@ Single, multi, tags, async, grouped — one component, zero surprises.
 - ✅ Themeable via CSS custom properties (light / dark / preset accents)
 - ✅ Native `<form>` integration via `name` prop
 - ✅ Tree-shakeable named exports + headless composables
-- ✅ ~10.5 kB gz JS · ~2.7 kB gz CSS · zero runtime deps beyond `@floating-ui/vue`
 
 ---
 
-## Install
+## Packages
+
+Install the adapter for your framework — it pulls the core in for you.
+
+| Package                                         | For                                           | Notes                                     |
+| ----------------------------------------------- | --------------------------------------------- | ----------------------------------------- |
+| [`@anil-labs/select-core`](packages/core)       | any                                           | Headless machine + the shared stylesheet  |
+| [`@anil-labs/select-vue`](packages/vue)         | Vue 3 / Nuxt                                  | `<VSelect>`, `<VTreeSelect>`, composables |
+| [`@anil-labs/select-react`](packages/react)     | React 18/19                                   | `<Select>`, `useSelect`                   |
+| [`@anil-labs/select-svelte`](packages/svelte)   | Svelte 5                                      | Headless store wrapper                    |
+| [`@anil-labs/select-solid`](packages/solid)     | Solid                                         | Headless signal primitive                 |
+| [`@anil-labs/select-element`](packages/element) | Angular, Lit, Alpine, Astro, Qwik, plain HTML | `<a-select>` custom element               |
 
 ```bash
-npm i @anilkumarthakur/select
+npm i @anil-labs/select-vue      # or -react / -svelte / -solid / -element
 ```
 
-`@floating-ui/vue` is a regular dependency, so npm pulls it in automatically.
-The package ships ESM and CJS only — bring your own bundler (Vite, Webpack,
-Rollup, esbuild, Bun, etc.).
+Tree-select is Vue-only; the Svelte and Solid adapters are deliberately headless
+(they ship a reactive wrapper rather than a precompiled component, so no
+framework version is pinned into the tarball).
+
+Styles live in the core package and are shared by every adapter:
+
+```ts
+import '@anil-labs/select-core/styles.css' // compiled
+```
+
+```scss
+@use '@anil-labs/select-core/scss' as select; // source, to compose with your tokens
+```
 
 ## Quick start
 
@@ -39,7 +58,7 @@ Rollup, esbuild, Bun, etc.).
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import '@anilkumarthakur/select/style.css'
+import '@anil-labs/select-core/styles.css'
 
 createApp(App).mount('#app')
 ```
@@ -47,7 +66,7 @@ createApp(App).mount('#app')
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/select'
+import { VSelect } from '@anil-labs/select-vue'
 
 const fruit = ref<string | null>(null)
 const fruits = ['Apple', 'Banana', 'Cherry']
@@ -65,10 +84,16 @@ const fruits = ['Apple', 'Banana', 'Cherry']
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/select'
+import { VSelect } from '@anil-labs/select-vue'
 
-interface Country { code: string; name: string; region: string }
-const countries: Country[] = [/* … */]
+interface Country {
+  code: string
+  name: string
+  region: string
+}
+const countries: Country[] = [
+  /* … */
+]
 const selected = ref<string[]>([])
 </script>
 
@@ -90,7 +115,7 @@ const selected = ref<string[]>([])
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/select'
+import { VSelect } from '@anil-labs/select-vue'
 
 const results = ref([])
 const loading = ref(false)
@@ -147,9 +172,13 @@ parent state is always derived, so you never have to reconcile it manually.
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VTreeSelect } from '@anilkumarthakur/select'
+import { VTreeSelect } from '@anil-labs/select-vue'
 
-interface Cat { id: number; name: string; children: Cat[] }
+interface Cat {
+  id: number
+  name: string
+  children: Cat[]
+}
 const categories: Cat[] = [
   {
     id: 1,
@@ -181,6 +210,7 @@ Every primitive that powers `<VSelect>` and `<VTreeSelect>` is exported
 individually so you can rebuild the UI surface without the bundled chrome:
 
 ```ts
+// Vue composables ship with the Vue adapter…
 import {
   // Selection state machines
   useSelection,
@@ -194,19 +224,19 @@ import {
   useOutsideClick,
   useControlFocus,
   useStableId,
-  // Core helpers (pure functions, framework-free)
-  normalize,
-  normalizeTree,
-} from '@anilkumarthakur/select'
+} from '@anil-labs/select-vue'
+
+// …and the framework-free helpers come from the core package.
+import { normalize, normalizeTree } from '@anil-labs/select-core'
 ```
 
 ## Nuxt 3 / 4
 
-`@anilkumarthakur/select` ships a first-class Nuxt module. Add it to `nuxt.config.ts`:
+`@anil-labs/select-vue` ships a first-class Nuxt module. Add it to `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/select/nuxt'],
+  modules: ['@anil-labs/select-vue/nuxt'],
 })
 ```
 
@@ -218,7 +248,7 @@ Module options live under `vue3Select`:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['@anilkumarthakur/select/nuxt'],
+  modules: ['@anil-labs/select-vue/nuxt'],
   vue3Select: {
     /** Disable to keep tree-shaken named imports only. Default: true */
     components: true,
@@ -226,7 +256,7 @@ export default defineNuxtConfig({
     prefix: '',
     /** Auto-import the headless composables too. Default: false */
     composables: false,
-    /** Inject '@anilkumarthakur/select/style.css' into Nuxt's CSS array. Default: true */
+    /** Inject '@anil-labs/select-core/styles.css' into Nuxt's CSS array. Default: true */
     css: true,
   },
 })
@@ -236,9 +266,9 @@ If you'd rather skip the module and wire it up by hand, drop a Nuxt plugin
 file in `plugins/`:
 
 ```ts
-// plugins/vue3-select.ts
-import { VueSelectPlugin } from '@anilkumarthakur/select'
-import '@anilkumarthakur/select/style.css'
+// plugins/select.ts
+import { VueSelectPlugin } from '@anil-labs/select-vue'
+import '@anil-labs/select-core/styles.css'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueSelectPlugin)
@@ -249,63 +279,63 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 ### Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `modelValue` | `unknown \| unknown[]` | — | v-model — single value or array |
-| `options` | `T[]` | `[]` | Source list of options |
-| `mode` | `'single' \| 'multiple' \| 'tags'` | `'single'` | Selection mode |
-| `optionValue` | `keyof T \| (o: T) => unknown` | `'value'` | Value accessor |
-| `optionLabel` | `keyof T \| (o: T) => string` | `'label'` | Label accessor |
-| `optionGroup` | `keyof T \| (o: T) => string` | — | Group key accessor |
-| `optionDisabled` | `keyof T \| (o: T) => boolean` | `'disabled'` | Disabled flag |
-| `placeholder` | `string` | `'Select…'` | Placeholder text |
-| `searchable` | `boolean` | `true` | Show search input |
-| `clearable` | `boolean` | `true` | Show clear button |
-| `disabled` | `boolean` | `false` | Disable the control |
-| `loading` | `boolean` | `false` | Show loading spinner |
-| `closeOnSelect` | `boolean` | `mode === 'single'` | Close menu after a pick |
-| `taggable` | `boolean` | `false` | Allow creating new options |
-| `maxVisibleTags` | `number` | — | Collapse to "+N" beyond this count |
-| `maxSelections` | `number` | — | Hard cap on multi-select |
-| `filter` | `FilterFn<T>` | substring | Custom filter function |
-| `caseSensitive` | `boolean` | `false` | Case-sensitive matching |
-| `emptyText` | `string` | `'No options'` | Menu text when there are no options |
-| `noResultsText` | `string` | falls back to `emptyText` | Menu text when search yields nothing |
-| `loadingText` | `string` | `'Loading…'` | Menu text while loading |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control size |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'light'` | Theme |
-| `teleportTo` | `string \| HTMLElement \| false` | `false` | Teleport menu target |
-| `name` | `string` | — | Hidden input name for native forms |
-| `required` | `boolean` | `false` | Native form required marker |
-| `id` | `string` | auto | Override generated id |
+| Prop             | Type                               | Default                   | Description                          |
+| ---------------- | ---------------------------------- | ------------------------- | ------------------------------------ |
+| `modelValue`     | `unknown \| unknown[]`             | —                         | v-model — single value or array      |
+| `options`        | `T[]`                              | `[]`                      | Source list of options               |
+| `mode`           | `'single' \| 'multiple' \| 'tags'` | `'single'`                | Selection mode                       |
+| `optionValue`    | `keyof T \| (o: T) => unknown`     | `'value'`                 | Value accessor                       |
+| `optionLabel`    | `keyof T \| (o: T) => string`      | `'label'`                 | Label accessor                       |
+| `optionGroup`    | `keyof T \| (o: T) => string`      | —                         | Group key accessor                   |
+| `optionDisabled` | `keyof T \| (o: T) => boolean`     | `'disabled'`              | Disabled flag                        |
+| `placeholder`    | `string`                           | `'Select…'`               | Placeholder text                     |
+| `searchable`     | `boolean`                          | `true`                    | Show search input                    |
+| `clearable`      | `boolean`                          | `true`                    | Show clear button                    |
+| `disabled`       | `boolean`                          | `false`                   | Disable the control                  |
+| `loading`        | `boolean`                          | `false`                   | Show loading spinner                 |
+| `closeOnSelect`  | `boolean`                          | `mode === 'single'`       | Close menu after a pick              |
+| `taggable`       | `boolean`                          | `false`                   | Allow creating new options           |
+| `maxVisibleTags` | `number`                           | —                         | Collapse to "+N" beyond this count   |
+| `maxSelections`  | `number`                           | —                         | Hard cap on multi-select             |
+| `filter`         | `FilterFn<T>`                      | substring                 | Custom filter function               |
+| `caseSensitive`  | `boolean`                          | `false`                   | Case-sensitive matching              |
+| `emptyText`      | `string`                           | `'No options'`            | Menu text when there are no options  |
+| `noResultsText`  | `string`                           | falls back to `emptyText` | Menu text when search yields nothing |
+| `loadingText`    | `string`                           | `'Loading…'`              | Menu text while loading              |
+| `size`           | `'sm' \| 'md' \| 'lg'`             | `'md'`                    | Control size                         |
+| `theme`          | `'light' \| 'dark' \| 'auto'`      | `'light'`                 | Theme                                |
+| `teleportTo`     | `string \| HTMLElement \| false`   | `false`                   | Teleport menu target                 |
+| `name`           | `string`                           | —                         | Hidden input name for native forms   |
+| `required`       | `boolean`                          | `false`                   | Native form required marker          |
+| `id`             | `string`                           | auto                      | Override generated id                |
 
 ### Events
 
-| Event | Payload |
-|---|---|
-| `update:modelValue` | `unknown` |
-| `update:search` | `string` |
-| `search` | `string` |
-| `select` | `NormalizedOption<T>` |
-| `deselect` | `NormalizedOption<T>` |
-| `create` | `string` |
-| `open` / `close` / `focus` / `blur` | — |
+| Event                               | Payload               |
+| ----------------------------------- | --------------------- |
+| `update:modelValue`                 | `unknown`             |
+| `update:search`                     | `string`              |
+| `search`                            | `string`              |
+| `select`                            | `NormalizedOption<T>` |
+| `deselect`                          | `NormalizedOption<T>` |
+| `create`                            | `string`              |
+| `open` / `close` / `focus` / `blur` | —                     |
 
 ### Slots
 
-| Slot | Props | Replaces |
-|---|---|---|
-| `prefix` | — | The leading edge of the control |
-| `suffix` | — | The trailing edge of the control |
-| `value` | `{ selected, isMulti }` | The full value display area |
-| `tag` | `{ option, remove, disabled }` | A single tag in multi mode |
-| `option` | `{ option, selected, active, disabled }` | One row in the menu |
-| `optiongroup` | `{ group }` | A group heading row |
-| `empty` | `{ query, mode: 'no-options' \| 'no-results' }` | Empty-state contents |
-| `loader` | `{ inMenu }` | The loading indicator |
-| `dropdownicon` | `{ open }` | The chevron icon |
-| `clearicon` | `{ clear }` | The clear button |
-| `create` | `{ query, create }` | The "Create '<query>'" row in `taggable` mode |
+| Slot           | Props                                           | Replaces                                      |
+| -------------- | ----------------------------------------------- | --------------------------------------------- |
+| `prefix`       | —                                               | The leading edge of the control               |
+| `suffix`       | —                                               | The trailing edge of the control              |
+| `value`        | `{ selected, isMulti }`                         | The full value display area                   |
+| `tag`          | `{ option, remove, disabled }`                  | A single tag in multi mode                    |
+| `option`       | `{ option, selected, active, disabled }`        | One row in the menu                           |
+| `optiongroup`  | `{ group }`                                     | A group heading row                           |
+| `empty`        | `{ query, mode: 'no-options' \| 'no-results' }` | Empty-state contents                          |
+| `loader`       | `{ inMenu }`                                    | The loading indicator                         |
+| `dropdownicon` | `{ open }`                                      | The chevron icon                              |
+| `clearicon`    | `{ clear }`                                     | The clear button                              |
+| `create`       | `{ query, create }`                             | The "Create '<query>'" row in `taggable` mode |
 
 ### Exposed instance methods
 
@@ -316,12 +346,12 @@ sel.value?.open() // close, toggle, focus, blur, clear, flushSearch, isOpen
 
 ### `<VTreeSelect>` props (additions)
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `optionChildren` | `keyof T \| (o: T) => T[]` | `'children'` | Children-array accessor |
-| `defaultExpandAll` | `boolean` | `false` | Expand every parent on first render |
-| `showToolbar` | `boolean` | `true` | Show "select all" / "clear" actions |
-| `closeOnSelect` | `boolean` | `false` | Close after every toggle (rarely useful) |
+| Prop               | Type                       | Default      | Description                              |
+| ------------------ | -------------------------- | ------------ | ---------------------------------------- |
+| `optionChildren`   | `keyof T \| (o: T) => T[]` | `'children'` | Children-array accessor                  |
+| `defaultExpandAll` | `boolean`                  | `false`      | Expand every parent on first render      |
+| `showToolbar`      | `boolean`                  | `true`       | Show "select all" / "clear" actions      |
+| `closeOnSelect`    | `boolean`                  | `false`      | Close after every toggle (rarely useful) |
 
 `<VTreeSelect>` shares `placeholder`, `searchable`, `clearable`, `disabled`,
 `maxSelections`, `maxVisibleTags`, `debounce`, `emptyText`, `noResultsText`,
@@ -349,14 +379,15 @@ Built-in dark mode:
 
 ```vue
 <VSelect theme="dark" />
-<VSelect theme="auto" /> <!-- follows prefers-color-scheme -->
+<VSelect theme="auto" />
+<!-- follows prefers-color-scheme -->
 ```
 
 Accent presets ship as separate SCSS files:
 
 ```scss
-@use '@anilkumarthakur/select/scss/themes/emerald';
-@use '@anilkumarthakur/select/scss/themes/rose';
+@use '@anil-labs/select-core/scss/themes/emerald';
+@use '@anil-labs/select-core/scss/themes/rose';
 ```
 
 ```vue

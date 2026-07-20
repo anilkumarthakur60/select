@@ -10,12 +10,7 @@ The `option` slot replaces the row inside the menu. You get the normalised
 option, plus selected / active / disabled flags.
 
 ```vue
-<VSelect
-  v-model="country"
-  :options="countries"
-  option-value="code"
-  option-label="name"
->
+<VSelect v-model="country" :options="countries" option-value="code" option-label="name">
   <template #option="{ option, selected, active }">
     <span class="flag">{{ option.raw.flag }}</span>
     <span :class="{ 'is-active': active, 'is-selected': selected }">
@@ -121,16 +116,16 @@ through the same slot. Distinguish with `inMenu`:
 
 ## Full slot list
 
-| Slot | Props | Replaces |
-|---|---|---|
-| `prefix` | — | Leading edge of the control |
-| `suffix` | — | Trailing edge of the control |
-| `value` | `{ selected, isMulti }` | Whole value display area |
-| `tag` | `{ option, remove, disabled }` | One tag in multi / tags mode |
-| `option` | `{ option, selected, active, disabled }` | One row in the menu |
-| `optiongroup` | `{ group }` | A group heading row |
-| `empty` | `{ query, mode }` | Empty state contents |
-| `loader` | `{ inMenu }` | The loading indicator |
-| `dropdownicon` | `{ open }` | The chevron icon |
-| `clearicon` | `{ clear }` | The clear button |
-| `create` | `{ query, create }` | The "Create &lt;query&gt;" row in tags mode |
+| Slot           | Props                                    | Replaces                                    |
+| -------------- | ---------------------------------------- | ------------------------------------------- |
+| `prefix`       | —                                        | Leading edge of the control                 |
+| `suffix`       | —                                        | Trailing edge of the control                |
+| `value`        | `{ selected, isMulti }`                  | Whole value display area                    |
+| `tag`          | `{ option, remove, disabled }`           | One tag in multi / tags mode                |
+| `option`       | `{ option, selected, active, disabled }` | One row in the menu                         |
+| `optiongroup`  | `{ group }`                              | A group heading row                         |
+| `empty`        | `{ query, mode }`                        | Empty state contents                        |
+| `loader`       | `{ inMenu }`                             | The loading indicator                       |
+| `dropdownicon` | `{ open }`                               | The chevron icon                            |
+| `clearicon`    | `{ clear }`                              | The clear button                            |
+| `create`       | `{ query, create }`                      | The "Create &lt;query&gt;" row in tags mode |

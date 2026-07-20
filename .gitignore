@@ -46,3 +46,5 @@ docs/.vitepress/cache
 docs/.vitepress/dist
 
 .vscode
+.vercel
+.env*

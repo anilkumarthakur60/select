@@ -1,0 +1,79 @@
+{
+  "name": "@anil-labs/select-solid",
+  "version": "0.0.1",
+  "description": "Solid headless adapter for @anil-labs/select — a primitive wiring the core machine to Solid signals.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist coverage",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "solid",
+    "solid-js",
+    "headless",
+    "signals",
+    "select",
+    "combobox",
+    "multiselect",
+    "tags",
+    "autocomplete",
+    "a11y",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "author": "Er. Anil Kumar Thakur <anilkumarthakur60@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anilkumarthakur60/select.git",
+    "directory": "packages/solid"
+  },
+  "homepage": "https://github.com/anilkumarthakur60/select/tree/main/packages/solid#readme",
+  "bugs": "https://github.com/anilkumarthakur60/select/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@anil-labs/select-core": "workspace:^"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.5",
+    "tsup": "^8.5.1",
+    "typescript": "~6.0.0",
+    "vitest": "^4.1.5",
+    "solid-js": "1.9.12",
+    "jsdom": "^29.0.2",
+    "@types/node": "^24.12.2"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.8.0"
+  }
+}

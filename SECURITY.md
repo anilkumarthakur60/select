@@ -4,7 +4,7 @@
 
 **Do not** open a public GitHub issue for security reports.
 
-Please use [GitHub's private vulnerability reporting](https://github.com/anilkumarthakur60/vue3-select/security/advisories/new)
+Please use [GitHub's private vulnerability reporting](https://github.com/anilkumarthakur60/select/security/advisories/new)
 instead. We aim to acknowledge reports within 72 hours and to ship a fix or
 mitigation within 14 days for high-severity issues.
 
@@ -26,12 +26,12 @@ first version ships, the published artefacts below will also be in scope.
 In scope:
 
 - Source code in this repository
-- Once published: the `@anilkumarthakur/select` package on npm
-- Once published: the bundled Nuxt module (`@anilkumarthakur/select/nuxt`)
+- Once published: the `@anil-labs/select-core` package on npm
+- Once published: the bundled Nuxt module (`@anil-labs/select-vue/nuxt`)
 
 Out of scope:
 
-- Vulnerabilities in `vue`, `@floating-ui/vue`, `@nuxt/kit`, or any other
+- Vulnerabilities in `vue`, `@nuxt/kit`, or any other
   upstream dependency — please report those to the respective project
 - Issues only reproducible with substantially modified forks of the source
 - Self-XSS via consumer-controlled markup passed into slots (consumers are

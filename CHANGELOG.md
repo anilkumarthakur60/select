@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Three sizes: `sm` / `md` / `lg`.
 - Optional Vue plugin (`VueSelectPlugin`) for global registration of both
   `<VSelect>` and `<VTreeSelect>`.
-- First-class Nuxt 3 / 4 module at `vue3-select/nuxt` — auto-registers the
+- First-class Nuxt 3 / 4 module at `select/nuxt` — auto-registers the
   components, optionally auto-imports the composables, and injects the
   prebuilt stylesheet. `@nuxt/kit` and `nuxt` are declared as **optional**
   peer dependencies so non-Nuxt users incur no install cost.

@@ -45,7 +45,7 @@ import type {
   TreeValueSlotProps,
   TreeToolbarSlotProps,
   TreeEmptySlotProps,
-} from '@anilkumarthakur/select/vue'
+} from '@anil-labs/select-vue'
 ```
 
 The composables expose their own option / return types — see the
@@ -92,8 +92,8 @@ Either a property name or an extractor function.
 ## `SelectMode` / `SelectSize` / `SelectTheme`
 
 ```ts
-type SelectMode  = 'single' | 'multiple' | 'tags'
-type SelectSize  = 'sm' | 'md' | 'lg'
+type SelectMode = 'single' | 'multiple' | 'tags'
+type SelectSize = 'sm' | 'md' | 'lg'
 type SelectTheme = 'light' | 'dark' | 'auto'
 ```
 
@@ -112,15 +112,37 @@ Custom filter — return `true` to keep the option in the menu.
 
 ## `VSelectProps<T>`
 
-The full prop surface for `<VSelect>`. Use it to type wrappers:
+The full prop surface for `<VSelect>`. Use it to describe your own wrapper's
+props — note the `extends OptionLike` constraint, which `VSelectProps`
+requires and the previous version of this snippet omitted:
 
 ```ts
-import type { VSelectProps } from '@anilkumarthakur/select/vue'
+import type { VSelectProps, OptionLike } from '@anil-labs/select-vue'
 
-interface MyPickerProps<T> extends VSelectProps<T> {
+interface MyPickerProps<T extends OptionLike> extends VSelectProps<T> {
   helperText?: string
 }
 ```
+
+::: warning `T` is erased at the component boundary
+
+`VSelectProps<T>` types _your_ props, but it is **not** a narrowing escape
+hatch for `<VSelect>` itself. The shipped declaration collapses the generic to
+`OptionLike`, so a `VSelectProps<City>` object is not assignable to
+`<VSelect>`'s props: the accessor props (`optionValue`, `optionLabel`,
+`optionGroup`, `optionDisabled`) and `filter` are all contravariantly
+incompatible.
+
+Forwarding a typed prop bag therefore needs a cast at the hand-off:
+
+```ts
+<VSelect v-bind="(props as unknown) as VSelectProps<OptionLike>" />
+```
+
+This is a TSX limitation — it cannot carry the `<T extends OptionLike>` generic
+the SFC form supports. Your own wrapper API stays fully typed; only the
+hand-off to `<VSelect>` needs the cast.
+:::
 
 See the [`<VSelect>` reference](./v-select#props) for the complete table.
 
@@ -133,8 +155,8 @@ interface VSelectEmits<T = unknown> {
   (e: 'open'): void
   (e: 'close'): void
   (e: 'focus', event: FocusEvent): void
-  (e: 'blur',  event: FocusEvent): void
-  (e: 'select',   option: NormalizedOption<T>): void
+  (e: 'blur', event: FocusEvent): void
+  (e: 'select', option: NormalizedOption<T>): void
   (e: 'deselect', option: NormalizedOption<T>): void
   (e: 'create', value: string): void
   (e: 'search', query: string): void
@@ -269,10 +291,10 @@ interface VTreeSelectEmits<T = unknown> {
   (e: 'open'): void
   (e: 'close'): void
   (e: 'focus', event: FocusEvent): void
-  (e: 'blur',  event: FocusEvent): void
-  (e: 'select',   node: NormalizedTreeNode<T>): void
+  (e: 'blur', event: FocusEvent): void
+  (e: 'select', node: NormalizedTreeNode<T>): void
   (e: 'deselect', node: NormalizedTreeNode<T>): void
-  (e: 'expand',   node: NormalizedTreeNode<T>): void
+  (e: 'expand', node: NormalizedTreeNode<T>): void
   (e: 'collapse', node: NormalizedTreeNode<T>): void
   (e: 'search', query: string): void
 }
@@ -289,9 +311,9 @@ interface VTreeSelectInstance {
   blur: () => void
   clear: () => void
   selectAll: () => void
-  expand:   (id: string) => void
+  expand: (id: string) => void
   collapse: (id: string) => void
-  expandAll:   () => void
+  expandAll: () => void
   collapseAll: () => void
   flushSearch: () => void
   readonly isOpen: boolean

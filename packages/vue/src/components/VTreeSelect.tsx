@@ -1,0 +1,896 @@
+import {
+  computed,
+  defineComponent,
+  reactive,
+  ref,
+  Teleport,
+  watch,
+  withModifiers,
+  type PropType,
+  type SlotsType,
+} from 'vue'
+import type { OptionAccessor, SelectSize, SelectTheme } from '@anil-labs/select-core'
+import type { NormalizedTreeNode, TreeOptionLike } from '@anil-labs/select-core'
+import type { VTreeSelectSlots } from '@/types'
+import {
+  filterTree,
+  flattenTree,
+  getAncestorIds,
+  normalizeTree,
+  walkTree,
+} from '@anil-labs/select-core'
+import { afterTick } from '@/composables/afterTick'
+import { useControlFocus } from '@/composables/useControlFocus'
+import { useDebounced } from '@/composables/useDebounced'
+import { useFloatingMenu } from '@/composables/useFloatingMenu'
+import { useFormBinding } from '@/composables/useFormBinding'
+import { useOutsideClick } from '@/composables/useOutsideClick'
+import { useStableId } from '@/composables/useStableId'
+import { useTreeSelection } from '@/composables/useTreeSelection'
+import { useTriggerInteractions } from '@/composables/useTriggerInteractions'
+import { ChevronDownIcon, CloseIcon } from '@/components/icons'
+import VTreeSelectNode from '@/components/VTreeSelectNode'
+
+export default defineComponent({
+  name: 'VTreeSelect',
+  inheritAttrs: false,
+  props: {
+    modelValue: { type: Array as PropType<unknown[]>, default: () => [] },
+    options: { type: Array as PropType<TreeOptionLike[]>, default: () => [] },
+    // Loosened from `keyof T | (...)` for the same reason as VSelect — TSX
+    // can't keep the SFC's `<T extends TreeOptionLike>` generic, so the
+    // runtime prop accepts any string or accessor; the public
+    // `VTreeSelectProps<T>` type still narrows.
+    optionValue: {
+      type: [String, Function] as PropType<string | ((option: TreeOptionLike) => unknown)>,
+    },
+    optionLabel: {
+      type: [String, Function] as PropType<string | ((option: TreeOptionLike) => string)>,
+    },
+    optionChildren: {
+      type: [String, Function] as PropType<
+        string | ((option: TreeOptionLike) => TreeOptionLike[] | undefined)
+      >,
+    },
+    optionDisabled: {
+      type: [String, Function] as PropType<string | ((option: TreeOptionLike) => boolean)>,
+    },
+    placeholder: { type: String, default: 'Select…' },
+    searchable: { type: Boolean, default: true },
+    clearable: { type: Boolean, default: true },
+    disabled: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
+    maxSelections: { type: Number },
+    maxVisibleTags: { type: Number },
+    defaultExpandAll: { type: Boolean, default: false },
+    showToolbar: { type: Boolean, default: true },
+    closeOnSelect: { type: Boolean, default: false },
+    autofocus: { type: Boolean, default: false },
+    debounce: { type: Number },
+    emptyText: { type: String, default: 'No options' },
+    noResultsText: { type: String },
+    loadingText: { type: String, default: 'Loading…' },
+    size: { type: String as PropType<SelectSize>, default: 'md' },
+    theme: { type: String as PropType<SelectTheme>, default: 'light' },
+    ariaLabel: { type: String },
+    teleportTo: {
+      type: [String, Object, Boolean] as PropType<string | HTMLElement | false>,
+      default: false,
+    },
+    name: { type: String },
+    required: { type: Boolean, default: false },
+    id: { type: String },
+  },
+  emits: {
+    'update:modelValue': (_value: unknown[]) => true,
+    'update:search': (_value: string) => true,
+    open: () => true,
+    close: () => true,
+    focus: (_event: FocusEvent) => true,
+    blur: (_event: FocusEvent) => true,
+    select: (_node: NormalizedTreeNode<unknown>) => true,
+    deselect: (_node: NormalizedTreeNode<unknown>) => true,
+    expand: (_node: NormalizedTreeNode<unknown>) => true,
+    collapse: (_node: NormalizedTreeNode<unknown>) => true,
+    search: (_query: string) => true,
+  },
+  slots: Object as SlotsType<VTreeSelectSlots<TreeOptionLike>>,
+  setup(props, { emit, attrs, slots, expose }) {
+    const fallbackId = useStableId('vtreeselect')
+    const baseId = computed(() => props.id ?? fallbackId)
+    const treeId = computed(() => `${baseId.value}-tree`)
+
+    const rootEl = ref<HTMLElement | null>(null)
+    const controlEl = ref<HTMLElement | null>(null)
+    const menuEl = ref<HTMLElement | null>(null)
+    const searchEl = ref<HTMLInputElement | null>(null)
+
+    const isOpen = ref(false)
+
+    // `query` is the live input value (synced to the DOM input every keystroke);
+    // `effectiveQuery` is debounced and drives filterTree + the search emits.
+    const query = ref('')
+    const debounceMs = computed(() => props.debounce)
+    const {
+      debounced: effectiveQuery,
+      flush: flushSearch,
+      force: forceSearch,
+    } = useDebounced(query, debounceMs)
+
+    // `reactive(new Set(...))` makes Vue track reads/writes — `watch(... { deep })`
+    // in the node component picks up id-level mutations without us emitting.
+    const expanded = reactive(new Set<string>())
+
+    type T = TreeOptionLike
+
+    const tree = computed<NormalizedTreeNode<T>[]>(() =>
+      normalizeTree(props.options, {
+        optionValue: props.optionValue as OptionAccessor<T, unknown> | undefined,
+        optionLabel: props.optionLabel as OptionAccessor<T, string> | undefined,
+        optionChildren: props.optionChildren as OptionAccessor<T, T[] | undefined> | undefined,
+        optionDisabled: props.optionDisabled as OptionAccessor<T, boolean> | undefined,
+      }),
+    )
+
+    // Re-seed the expansion set to the `defaultExpandAll` baseline. We
+    // deliberately don't preserve old ids — they become invalid the moment the
+    // underlying option array changes identity.
+    function seedExpansion(nodes: NormalizedTreeNode<T>[]) {
+      expanded.clear()
+      if (props.defaultExpandAll) {
+        walkTree(nodes, (n) => {
+          if (!n.isLeaf) expanded.add(n.id)
+        })
+      }
+    }
+
+    watch(tree, seedExpansion, { immediate: true })
+
+    // Clearing the search collapses back to that baseline. This is what the
+    // search-time auto-expand below always CLAIMED happened, and what the docs
+    // promise — but the only re-seed was keyed on `tree` identity, and a query
+    // change never touches `props.options`. So ids added during a search just
+    // accumulated: every query permanently opened more of the tree until it was
+    // effectively fully expanded, leaving an expansion state the user never
+    // chose and that `default-expand-all="false"` explicitly disclaims.
+    watch(effectiveQuery, (q) => {
+      if (!q) seedExpansion(tree.value)
+    })
+
+    const filteredTree = computed(() => {
+      if (!effectiveQuery.value) return tree.value
+      return filterTree(tree.value, effectiveQuery.value)
+    })
+
+    // While searching, expand every parent in the filtered subtree so matches
+    // are visible without an extra click. Reverted on query clear by the
+    // `effectiveQuery` watcher above.
+    watch(filteredTree, (next, prev) => {
+      if (!effectiveQuery.value) return
+      if (next === prev) return
+      walkTree(next, (n) => {
+        if (!n.isLeaf) expanded.add(n.id)
+      })
+    })
+
+    watch(effectiveQuery, (q) => {
+      emit('search', q)
+      emit('update:search', q)
+    })
+
+    const modelRef = computed(() => props.modelValue)
+    const maxSelectionsRef = computed(() => props.maxSelections)
+
+    const { selectedValues, getCheckState, toggle, selectAll, clear } = useTreeSelection<T>({
+      modelValue: modelRef,
+      tree,
+      maxSelections: maxSelectionsRef,
+      emitUpdate: (v) => emit('update:modelValue', v),
+      emitSelect: (n) => emit('select', n),
+      emitDeselect: (n) => emit('deselect', n),
+    })
+
+    // Lookup of every leaf node in the current tree, by value. Lets us render
+    // labels in the trigger area without re-walking the tree on every paint.
+    const leafByValue = computed(() => {
+      const map = new Map<unknown, NormalizedTreeNode<T>>()
+      walkTree(tree.value, (n) => {
+        if (n.isLeaf) map.set(n.value, n)
+      })
+      return map
+    })
+
+    // Every node in the tree, keyed by id. Drives ancestor lookups when we
+    // auto-expand parent paths to selected leaves on open.
+    const nodeById = computed(() => {
+      const map = new Map<string, NormalizedTreeNode<T>>()
+      walkTree(tree.value, (n) => {
+        map.set(n.id, n)
+      })
+      return map
+    })
+
+    /**
+     * Resolve a node from the *filtered* tree back to its counterpart in the
+     * full tree.
+     *
+     * Rows render from `filteredTree`, but selection state must be derived from
+     * the whole branch. Passing a filtered node straight to `getCheckState`
+     * made it count only the leaves that survived the search: a partially
+     * selected parent rendered and announced itself `aria-checked="true"`, and
+     * clicking it to clear the branch removed only the visible leaves while
+     * silently leaving the filtered-out ones selected. `filterTree` preserves
+     * node ids, so the canonical node is a lookup away.
+     */
+    function canonical(node: NormalizedTreeNode<T>): NormalizedTreeNode<T> {
+      return nodeById.value.get(node.id) ?? node
+    }
+
+    const getCheckStateResolved = (node: NormalizedTreeNode<T>) => getCheckState(canonical(node))
+
+    // Drop values that are no longer selectable leaves.
+    //
+    // v-model holds leaf values only — that invariant was enforced when a value
+    // was picked but never re-checked when `options` changed. Lazy-loading is
+    // the canonical tree pattern: a node ships with `children: []`, so it is
+    // legitimately a selectable leaf; once its children arrive the value in
+    // v-model is a PARENT id, and every derived view disagrees about it. No tag
+    // rendered (leafByValue skips parents) so the user could not remove it, its
+    // own row showed unchecked so clicking added children instead of clearing
+    // it, yet the toolbar still counted it and the hidden form input still
+    // submitted it.
+    //
+    // Guarded on a non-empty tree so an async load that briefly passes `[]`
+    // cannot wipe the selection.
+    watch(tree, (next) => {
+      if (next.length === 0) return
+      const leaves = leafByValue.value
+      const kept = selectedValues.value.filter((v) => leaves.has(v))
+      if (kept.length !== selectedValues.value.length) emit('update:modelValue', kept)
+    })
+
+    const selectedLeaves = computed(() =>
+      selectedValues.value
+        .map((v) => leafByValue.value.get(v))
+        .filter((n): n is NormalizedTreeNode<T> => n !== undefined),
+    )
+
+    const visibleTags = computed(() => {
+      if (props.maxVisibleTags === undefined) return selectedLeaves.value
+      return selectedLeaves.value.slice(0, props.maxVisibleTags)
+    })
+
+    const overflowTagCount = computed(() => {
+      if (props.maxVisibleTags === undefined) return 0
+      return Math.max(selectedLeaves.value.length - props.maxVisibleTags, 0)
+    })
+
+    const hasSelection = computed(() => selectedValues.value.length > 0)
+
+    const flattened = computed(() => flattenTree(filteredTree.value))
+    const isEmpty = computed(() => flattened.value.length === 0)
+
+    // ---- keyboard model ----
+    //
+    // VTreeSelect previously bound no keydown handler at all: the popup could
+    // not be opened, navigated, or dismissed without a mouse, and no element
+    // ever carried `aria-activedescendant`, so nothing identified a current
+    // node to assistive tech. This is the tree-pattern equivalent of what
+    // `useKeyboardNav` does for VSelect — kept local because the tree needs
+    // ArrowLeft/ArrowRight expand/collapse semantics that the flat key map has
+    // no concept of.
+
+    /** Rows the user can actually see: depth-first, not descending into collapsed parents. */
+    const visibleNodes = computed(() => {
+      const out: NormalizedTreeNode<T>[] = []
+      const visit = (nodes: NormalizedTreeNode<T>[]) => {
+        for (const node of nodes) {
+          out.push(node)
+          if (!node.isLeaf && expanded.has(node.id)) visit(node.children)
+        }
+      }
+      visit(filteredTree.value)
+      return out
+    })
+
+    const activeIndex = ref(-1)
+    const activeNode = computed<NormalizedTreeNode<T> | undefined>(
+      () => visibleNodes.value[activeIndex.value],
+    )
+    const activeDescendantId = computed(() =>
+      activeNode.value ? `${baseId.value}-node-${activeNode.value.id}` : undefined,
+    )
+
+    // Keep the highlight inside the list as rows appear/disappear (searching,
+    // expanding, async option arrival).
+    watch(visibleNodes, (nodes) => {
+      if (activeIndex.value >= nodes.length) activeIndex.value = nodes.length > 0 ? 0 : -1
+    })
+
+    function moveActive(delta: number) {
+      const nodes = visibleNodes.value
+      if (nodes.length === 0) {
+        activeIndex.value = -1
+        return
+      }
+      let i = activeIndex.value
+      if (i < 0) i = delta > 0 ? -1 : nodes.length
+      for (let step = 0; step < nodes.length; step += 1) {
+        i = (i + delta + nodes.length) % nodes.length
+        if (!nodes[i]!.disabled) {
+          activeIndex.value = i
+          return
+        }
+      }
+      activeIndex.value = -1
+    }
+
+    function moveActiveEdge(toEnd: boolean) {
+      const nodes = visibleNodes.value
+      const order = toEnd ? [...nodes.keys()].reverse() : [...nodes.keys()]
+      for (const i of order) {
+        if (!nodes[i]!.disabled) {
+          activeIndex.value = i
+          return
+        }
+      }
+    }
+
+    /**
+     * Flush any pending debounced query, then re-resolve the active node
+     * against the freshly-filtered tree. Keeps the user's highlight when it
+     * survives the new query, otherwise falls back to the first selectable node.
+     */
+    function resolveActiveAfterFlush(): NormalizedTreeNode<T> | undefined {
+      const highlighted = activeNode.value
+      flushSearch()
+      const nodes = visibleNodes.value
+      let idx = highlighted ? nodes.findIndex((n) => n.id === highlighted.id) : -1
+      if (idx === -1) idx = nodes.findIndex((n) => !n.disabled)
+      if (idx === -1) return undefined
+      activeIndex.value = idx
+      return nodes[idx]
+    }
+
+    function onTreeKeydown(event: KeyboardEvent, fromSearch: boolean) {
+      const node = activeNode.value
+
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault()
+          if (!isOpen.value) open()
+          else moveActive(1)
+          return
+        case 'ArrowUp':
+          event.preventDefault()
+          if (!isOpen.value) open()
+          else moveActive(-1)
+          return
+        case 'ArrowRight':
+          // Tree-pattern required key: expand, or step into the first child.
+          if (!isOpen.value || !node || node.isLeaf) return
+          event.preventDefault()
+          if (!expanded.has(node.id)) onExpand(node)
+          else moveActive(1)
+          return
+        case 'ArrowLeft': {
+          if (!isOpen.value || !node) return
+          event.preventDefault()
+          if (!node.isLeaf && expanded.has(node.id)) {
+            onCollapse(node)
+            return
+          }
+          // Already collapsed (or a leaf): step out to the parent.
+          const parentIdx = visibleNodes.value.findIndex((n) => n.id === node.parentId)
+          if (parentIdx !== -1) activeIndex.value = parentIdx
+          return
+        }
+        case 'Home':
+          if (!isOpen.value) return
+          event.preventDefault()
+          moveActiveEdge(false)
+          return
+        case 'End':
+          if (!isOpen.value) return
+          event.preventDefault()
+          moveActiveEdge(true)
+          return
+        case 'Enter': {
+          if (!isOpen.value) {
+            event.preventDefault()
+            open()
+            return
+          }
+          // Act on the tree the QUERY implies, not the stale one still on
+          // screen — same class as VSelect.selectActive(). With `debounce`
+          // set, Enter before the trailing edge would toggle a node the
+          // typed query had already filtered out.
+          const target = resolveActiveAfterFlush()
+          if (!target) return
+          event.preventDefault()
+          onToggle(target)
+          return
+        }
+        case ' ': {
+          // Space types a literal space in the search box; only treat it as
+          // "toggle" when the caret isn't in a text field.
+          if (fromSearch) return
+          if (!isOpen.value) {
+            event.preventDefault()
+            open()
+            return
+          }
+          const spaceTarget = resolveActiveAfterFlush()
+          if (!spaceTarget) return
+          event.preventDefault()
+          onToggle(spaceTarget)
+          return
+        }
+        case 'Escape':
+          if (!isOpen.value) return
+          event.preventDefault()
+          close()
+          return
+        case 'Tab':
+          if (isOpen.value) close()
+          return
+        default:
+          return
+      }
+    }
+
+    const emptyMessage = computed(() => {
+      if (query.value) return props.noResultsText ?? props.emptyText
+      return props.emptyText
+    })
+
+    function open() {
+      if (props.disabled || isOpen.value) return
+      isOpen.value = true
+      emit('open')
+      // Reveal parents of every selected leaf so the user lands on the menu
+      // already showing what's checked, instead of an apparently-empty tree.
+      for (const leaf of selectedLeaves.value) {
+        for (const id of getAncestorIds(leaf, nodeById.value)) {
+          expanded.add(id)
+        }
+      }
+      // Seed the keyboard highlight so the first ArrowRight/Enter has a target.
+      // Prefer the first selected leaf, mirroring VSelect's open() behaviour.
+      if (activeIndex.value === -1) {
+        const nodes = visibleNodes.value
+        const chosen = new Set(selectedValues.value)
+        const selected = nodes.findIndex((n) => !n.disabled && chosen.has(n.value))
+        activeIndex.value = selected !== -1 ? selected : nodes.findIndex((n) => !n.disabled)
+      }
+      afterTick(() => {
+        if (props.searchable && searchEl.value) searchEl.value.focus()
+        if (isFloating.value) updateFloating()
+      })
+    }
+
+    function close() {
+      if (!isOpen.value) return
+      isOpen.value = false
+      activeIndex.value = -1
+      emit('close')
+    }
+
+    function toggleOpen() {
+      if (isOpen.value) close()
+      else open()
+    }
+
+    function onToggle(node: NormalizedTreeNode<T>) {
+      // canonical(): rows come from the filtered tree, but toggling must act on
+      // the whole branch — see the note on `canonical`.
+      toggle(canonical(node))
+      if (props.closeOnSelect) close()
+    }
+
+    function onExpand(node: NormalizedTreeNode<T>) {
+      expanded.add(node.id)
+      emit('expand', node)
+    }
+
+    function onCollapse(node: NormalizedTreeNode<T>) {
+      expanded.delete(node.id)
+      emit('collapse', node)
+    }
+
+    function expandAll() {
+      walkTree(tree.value, (n) => {
+        if (!n.isLeaf) expanded.add(n.id)
+      })
+    }
+
+    function collapseAll() {
+      expanded.clear()
+    }
+
+    // True when every non-leaf node in the *full* tree (not the filtered
+    // subset) is expanded. Driven from `tree` rather than `filteredTree` so
+    // the toolbar's toggle reflects the canonical state, not a search artefact.
+    const allExpanded = computed(() => {
+      let allOpen = true
+      let hasParents = false
+      walkTree(tree.value, (n) => {
+        if (n.isLeaf) return
+        hasParents = true
+        if (!expanded.has(n.id)) {
+          allOpen = false
+          return false
+        }
+      })
+      return hasParents && allOpen
+    })
+
+    const hasParents = computed(() => {
+      let found = false
+      walkTree(tree.value, (n) => {
+        if (!n.isLeaf) {
+          found = true
+          return false
+        }
+      })
+      return found
+    })
+
+    function onClearClick(event: MouseEvent) {
+      event.preventDefault()
+      event.stopPropagation()
+      clear()
+      query.value = ''
+      forceSearch('')
+    }
+
+    function onTagRemove(node: NormalizedTreeNode<T>) {
+      toggle(node)
+    }
+
+    const { onControlMousedown, onSearchInput } = useTriggerInteractions({
+      disabled: computed(() => props.disabled),
+      searchable: computed(() => props.searchable),
+      isOpen,
+      searchEl,
+      query,
+      open,
+      toggle: toggleOpen,
+      // The clear button stops propagation in `onClearClick`, so we don't need
+      // to ignore `.vselect-indicator` here — and ignoring it would also swallow
+      // chevron clicks, leaving users with no way to toggle the menu by icon.
+      ignoreSelectors: ['.vselect-tag-remove'],
+    })
+
+    const teleportToRef = computed(() => props.teleportTo)
+    const {
+      styles: floatingStyles,
+      target: teleportTarget,
+      floating: isFloating,
+      update: updateFloating,
+    } = useFloatingMenu(controlEl, menuEl, { teleportTo: teleportToRef })
+
+    useOutsideClick({ active: isOpen, contains: [rootEl, menuEl], onOutside: close })
+
+    const { focused, onFocusIn, onFocusOut } = useControlFocus({
+      root: rootEl,
+      onFocus: (event) => emit('focus', event),
+      onBlur: (event) => emit('blur', event),
+    })
+
+    const rootClass = computed(() => [
+      'vselect',
+      `vselect--${props.size}`,
+      props.theme === 'dark' && 'vselect--dark',
+      props.theme === 'auto' && 'vselect--auto',
+      {
+        'is-open': isOpen.value,
+        'is-focused': focused.value,
+        'is-disabled': props.disabled,
+        'is-multi': true,
+        'is-searchable': props.searchable,
+        'is-loading': props.loading,
+        'has-value': hasSelection.value,
+      },
+    ])
+
+    const isMultiRef = computed(() => true)
+    const { hiddenInputs } = useFormBinding({
+      name: computed(() => props.name),
+      required: computed(() => props.required),
+      values: selectedValues,
+      isMulti: isMultiRef,
+    })
+
+    watch(
+      () => props.autofocus,
+      (auto) => {
+        // Coalesce the ELEMENTS, not the call results: focus() returns undefined,
+        // so `a?.focus() ?? b?.focus()` always ran both and the control div won.
+        if (auto) afterTick(() => (searchEl.value ?? controlEl.value)?.focus())
+      },
+      { immediate: true },
+    )
+
+    expose({
+      open,
+      close,
+      toggle: toggleOpen,
+      focus: () => (searchEl.value ?? controlEl.value)?.focus(),
+      blur: () => (searchEl.value ?? controlEl.value)?.blur(),
+      clear,
+      selectAll,
+      expand: (id: string) => {
+        expanded.add(id)
+      },
+      collapse: (id: string) => {
+        expanded.delete(id)
+      },
+      expandAll,
+      collapseAll,
+      flushSearch,
+      get isOpen() {
+        return isOpen.value
+      },
+    })
+
+    const renderMenu = () => (
+      <div
+        v-show={isOpen.value}
+        id={treeId.value}
+        ref={(el) => {
+          menuEl.value = el as HTMLElement | null
+        }}
+        class={[
+          'vselect-menu',
+          'vselect-tree',
+          `vselect--${props.size}`,
+          props.theme === 'dark' && 'vselect--dark',
+          props.theme === 'auto' && 'vselect--auto',
+        ]}
+        role="tree"
+        aria-multiselectable={true}
+        style={floatingStyles.value}
+      >
+        {props.loading ? (
+          <div class="vselect-loading">
+            <span class="vselect-spinner" />
+            <span>{props.loadingText}</span>
+          </div>
+        ) : (
+          <>
+            {props.showToolbar &&
+              !isEmpty.value &&
+              (slots.toolbar ? (
+                slots.toolbar({
+                  selectAll,
+                  clear,
+                  expandAll,
+                  collapseAll,
+                  allExpanded: allExpanded.value,
+                  selectedCount: selectedValues.value.length,
+                })
+              ) : (
+                <div class="vselect-tree-toolbar">
+                  <span>{selectedValues.value.length} selected</span>
+                  <span>
+                    {hasParents.value && (
+                      <button
+                        type="button"
+                        class="vselect-tree-toolbar-action"
+                        tabindex={-1}
+                        onMousedown={withModifiers(
+                          () => (allExpanded.value ? collapseAll() : expandAll()),
+                          ['prevent'],
+                        )}
+                      >
+                        {allExpanded.value ? 'Collapse all' : 'Expand all'}
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      class="vselect-tree-toolbar-action"
+                      tabindex={-1}
+                      onMousedown={withModifiers(() => selectAll(), ['prevent'])}
+                    >
+                      Select all
+                    </button>
+                    <button
+                      type="button"
+                      class="vselect-tree-toolbar-action"
+                      tabindex={-1}
+                      disabled={!hasSelection.value}
+                      onMousedown={withModifiers(() => clear(), ['prevent'])}
+                    >
+                      Clear
+                    </button>
+                  </span>
+                </div>
+              ))}
+
+            {isEmpty.value ? (
+              slots.empty ? (
+                slots.empty({
+                  query: query.value,
+                  mode: query.value ? 'no-results' : 'no-options',
+                })
+              ) : (
+                <div class="vselect-tree-empty">{emptyMessage.value}</div>
+              )
+            ) : (
+              filteredTree.value.map((node) => (
+                <VTreeSelectNode
+                  key={node.id}
+                  node={node}
+                  expanded={expanded}
+                  getCheckState={getCheckStateResolved}
+                  idPrefix={baseId.value}
+                  activeId={activeNode.value?.id}
+                  onToggle={onToggle}
+                  onExpand={onExpand}
+                  onCollapse={onCollapse}
+                />
+              ))
+            )}
+          </>
+        )}
+      </div>
+    )
+
+    return () => (
+      <div
+        ref={(el) => {
+          rootEl.value = el as HTMLElement | null
+        }}
+        class={rootClass.value}
+        data-disabled={props.disabled || undefined}
+        onFocusin={onFocusIn}
+        onFocusout={onFocusOut}
+      >
+        <div
+          ref={(el) => {
+            controlEl.value = el as HTMLElement | null
+          }}
+          class="vselect-control"
+          // Combobox semantics follow the element that actually takes focus —
+          // the search input when searchable, this div otherwise. Same
+          // WAI-ARIA 1.2 rationale as VSelect.
+          role={props.searchable ? undefined : 'combobox'}
+          aria-expanded={props.searchable ? undefined : isOpen.value}
+          aria-controls={props.searchable ? undefined : treeId.value}
+          aria-haspopup={props.searchable ? undefined : 'tree'}
+          aria-disabled={props.searchable ? undefined : props.disabled || undefined}
+          aria-label={props.searchable ? undefined : (props.ariaLabel ?? props.placeholder)}
+          aria-activedescendant={props.searchable ? undefined : activeDescendantId.value}
+          tabindex={props.searchable ? -1 : props.disabled ? -1 : 0}
+          {...attrs}
+          onMousedown={onControlMousedown}
+          onKeydown={(e: KeyboardEvent) => {
+            if (!props.searchable) onTreeKeydown(e, false)
+          }}
+        >
+          {slots.prefix?.()}
+
+          <div class="vselect-values">
+            {slots.value && hasSelection.value && !query.value ? (
+              slots.value({ selected: selectedLeaves.value })
+            ) : hasSelection.value && !query.value ? (
+              <>
+                {visibleTags.value.map((node) =>
+                  slots.tag ? (
+                    <span key={node.id}>
+                      {slots.tag({
+                        node,
+                        remove: () => onTagRemove(node),
+                        disabled: props.disabled,
+                      })}
+                    </span>
+                  ) : (
+                    <span key={node.id} class="vselect-tag">
+                      <span class="vselect-tag-label">{node.label}</span>
+                      {!props.disabled && (
+                        <button
+                          type="button"
+                          class="vselect-tag-remove"
+                          aria-label={`Remove ${node.label}`}
+                          tabindex={-1}
+                          onMousedown={withModifiers(() => onTagRemove(node), ['prevent', 'stop'])}
+                        >
+                          <CloseIcon />
+                        </button>
+                      )}
+                    </span>
+                  ),
+                )}
+                {overflowTagCount.value > 0 && (
+                  <span class="vselect-tag vselect-tag--overflow">+{overflowTagCount.value}</span>
+                )}
+              </>
+            ) : null}
+
+            {!hasSelection.value && !query.value && !props.searchable && (
+              <span class="vselect-placeholder">{props.placeholder}</span>
+            )}
+
+            {props.searchable && (
+              <input
+                ref={(el) => {
+                  searchEl.value = el as HTMLInputElement | null
+                }}
+                class="vselect-search"
+                type="text"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck={false}
+                value={query.value}
+                placeholder={hasSelection.value ? undefined : props.placeholder}
+                disabled={props.disabled}
+                // This input is the combobox when searchable — it is what
+                // takes focus. It previously had no role, no aria-expanded,
+                // no aria-activedescendant and NO keydown handler at all.
+                role="combobox"
+                aria-expanded={isOpen.value}
+                aria-haspopup="tree"
+                aria-controls={treeId.value}
+                aria-autocomplete="list"
+                aria-disabled={props.disabled || undefined}
+                // Always set: the placeholder is stripped once a value exists,
+                // which would otherwise leave the focused input unnamed.
+                aria-label={props.ariaLabel ?? props.placeholder}
+                aria-activedescendant={activeDescendantId.value}
+                onInput={onSearchInput}
+                onKeydown={(e: KeyboardEvent) => onTreeKeydown(e, true)}
+              />
+            )}
+          </div>
+
+          <div class="vselect-indicators">
+            {props.clearable && hasSelection.value && !props.disabled ? (
+              slots.clearicon ? (
+                slots.clearicon({ clear })
+              ) : (
+                <button
+                  type="button"
+                  class="vselect-indicator"
+                  aria-label="Clear selection"
+                  tabindex={-1}
+                  onMousedown={onClearClick}
+                >
+                  <CloseIcon />
+                </button>
+              )
+            ) : null}
+            {slots.dropdownicon ? (
+              slots.dropdownicon({ open: isOpen.value })
+            ) : (
+              <span class="vselect-indicator" aria-hidden="true">
+                <ChevronDownIcon class="vselect-chevron" />
+              </span>
+            )}
+          </div>
+
+          {slots.suffix?.()}
+
+          {/* Hidden inputs for native form submission. */}
+          {hiddenInputs.value.map((input, i) => (
+            <input
+              key={i}
+              class="vselect-hidden-input"
+              type="hidden"
+              name={input.name}
+              value={input.value}
+              required={input.required || undefined}
+            />
+          ))}
+        </div>
+
+        {isOpen.value &&
+          (teleportTarget.value ? (
+            <Teleport to={teleportTarget.value}>{renderMenu()}</Teleport>
+          ) : (
+            renderMenu()
+          ))}
+      </div>
+    )
+  },
+})

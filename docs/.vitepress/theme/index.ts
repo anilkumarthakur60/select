@@ -1,7 +1,7 @@
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import { VueSelectPlugin } from '@anilkumarthakur/select/vue'
-import '@anilkumarthakur/select/style.css'
+import { VueSelectPlugin } from '@anil-labs/select-vue'
+import '@anil-labs/select-core/styles.css'
 import './style.css'
 
 // Register `<VSelect>` and `<VTreeSelect>` globally so every `.md` page can

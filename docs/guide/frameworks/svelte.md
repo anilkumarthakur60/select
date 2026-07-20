@@ -10,7 +10,7 @@ reference component you can drop into your project.
 ## Install
 
 ```bash
-npm i @anilkumarthakur/select
+npm i @anil-labs/select-core
 ```
 
 `svelte ^5` is an optional peer dep.
@@ -18,9 +18,9 @@ npm i @anilkumarthakur/select
 ## Import
 
 ```ts
-import { createSelectAdapter, toSvelteProps } from '@anilkumarthakur/select/svelte'
-import type { OptionLike, SelectMachineConfig } from '@anilkumarthakur/select/svelte'
-import '@anilkumarthakur/select/style.css'
+import { createSelectAdapter, toSvelteProps } from '@anil-labs/select-svelte'
+import type { OptionLike, SelectMachineConfig } from '@anil-labs/select-svelte'
+import '@anil-labs/select-core/styles.css'
 ```
 
 ## Reactivity bridge
@@ -32,8 +32,8 @@ state that `$state` can't observe. The pattern: subscribe once, bump a
 
 ```svelte
 <script lang="ts" generics="T extends OptionLike = OptionLike">
-  import { createSelectAdapter, toSvelteProps } from '@anilkumarthakur/select/svelte'
-  import type { OptionLike, SelectMachineConfig } from '@anilkumarthakur/select/svelte'
+  import { createSelectAdapter, toSvelteProps } from '@anil-labs/select-svelte'
+  import type { OptionLike, SelectMachineConfig } from '@anil-labs/select-svelte'
   import { onMount } from 'svelte'
 
   let { ...config }: SelectMachineConfig<T> = $props()
@@ -46,9 +46,18 @@ state that `$state` can't observe. The pattern: subscribe once, bump a
   // Re-push prop changes into the machine.
   $effect(() => adapter.machine.update(config))
 
-  const state = $derived.by(() => { void tick; return adapter.machine.getState() })
-  const filtered = $derived.by(() => { void tick; return adapter.machine.getFilteredOptions() })
-  const selected = $derived.by(() => { void tick; return adapter.machine.getSelectedOptions() })
+  const state = $derived.by(() => {
+    void tick
+    return adapter.machine.getState()
+  })
+  const filtered = $derived.by(() => {
+    void tick
+    return adapter.machine.getFilteredOptions()
+  })
+  const selected = $derived.by(() => {
+    void tick
+    return adapter.machine.getSelectedOptions()
+  })
 </script>
 
 <div {...toSvelteProps(adapter.machine.getRootProps())}>
@@ -72,7 +81,7 @@ Svelte's templates expect (`onmousedown`, `onkeydown`).
 ## Reference component
 
 A complete `Select.svelte` is included in the playground at
-[`playground/svelte/Select.svelte`](https://github.com/anilkumarthakur60/vue3-select/blob/main/playground/svelte/Select.svelte).
+[`playground/svelte/Select.svelte`](https://github.com/anilkumarthakur60/select/blob/main/playground/svelte/Select.svelte).
 Copy it into your project as a starting point.
 
 ## Limitations

@@ -7,7 +7,7 @@ Lit, Alpine, Astro, Qwik, vanilla JS, server-rendered HTML.
 ## Install
 
 ```bash
-npm i @anilkumarthakur/select
+npm i @anil-labs/select-core
 ```
 
 No peer dependencies. The element extends `HTMLElement` directly.
@@ -15,8 +15,8 @@ No peer dependencies. The element extends `HTMLElement` directly.
 ## Import
 
 ```ts
-import { defineSelectElement } from '@anilkumarthakur/select/web-component'
-import '@anilkumarthakur/select/style.css'
+import { defineSelectElement } from '@anil-labs/select-element'
+import '@anil-labs/select-core/styles.css'
 
 defineSelectElement('a-select') // tag name is configurable; default is 'a-select'
 ```
@@ -44,19 +44,19 @@ name is a no-op.
 
 ## Attributes
 
-| Attribute | Values | Purpose |
-| --- | --- | --- |
-| `mode` | `single` \| `multiple` \| `tags` | Selection shape |
-| `placeholder` | string | Placeholder text |
-| `disabled` | boolean | Disable interaction |
-| `loading` | boolean | Show spinner |
-| `taggable` | boolean | Allow create-on-Enter (with `mode="tags"`) |
-| `size` | `sm` \| `md` \| `lg` | Trigger size |
-| `theme` | `light` \| `dark` \| `auto` | Theme override |
-| `aria-label` | string | Accessible label |
-| `empty-text`, `no-results-text`, `loading-text` | string | Status copy |
-| `no-search` | boolean | Hide the search input |
-| `no-clear` | boolean | Hide the clear button |
+| Attribute                                       | Values                           | Purpose                                    |
+| ----------------------------------------------- | -------------------------------- | ------------------------------------------ |
+| `mode`                                          | `single` \| `multiple` \| `tags` | Selection shape                            |
+| `placeholder`                                   | string                           | Placeholder text                           |
+| `disabled`                                      | boolean                          | Disable interaction                        |
+| `loading`                                       | boolean                          | Show spinner                               |
+| `taggable`                                      | boolean                          | Allow create-on-Enter (with `mode="tags"`) |
+| `size`                                          | `sm` \| `md` \| `lg`             | Trigger size                               |
+| `theme`                                         | `light` \| `dark` \| `auto`      | Theme override                             |
+| `aria-label`                                    | string                           | Accessible label                           |
+| `empty-text`, `no-results-text`, `loading-text` | string                           | Status copy                                |
+| `no-search`                                     | boolean                          | Hide the search input                      |
+| `no-clear`                                      | boolean                          | Hide the clear button                      |
 
 Setting `options` (`OptionLike[]`) and `value` (any) **must** go through
 the JS property — attributes only carry strings.
@@ -65,14 +65,14 @@ the JS property — attributes only carry strings.
 
 All emitted as `CustomEvent` on the element:
 
-| Event | `event.detail` |
-| --- | --- |
-| `change` | The new value (single, array, or `null`) |
-| `select` | The just-selected option |
-| `deselect` | The just-removed option |
-| `create` | The string the user just created (tags mode) |
-| `search` | The current query string |
-| `open`, `close` | _(no detail)_ |
+| Event           | `event.detail`                               |
+| --------------- | -------------------------------------------- |
+| `change`        | The new value (single, array, or `null`)     |
+| `select`        | The just-selected option                     |
+| `deselect`      | The just-removed option                      |
+| `create`        | The string the user just created (tags mode) |
+| `search`        | The current query string                     |
+| `open`, `close` | _(no detail)_                                |
 
 ## Limitations
 

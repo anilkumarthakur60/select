@@ -23,7 +23,7 @@ prop. Set it and the component renders hidden inputs that participate in
 One hidden input. Empty string when the model is `null` / `undefined`.
 
 ```html
-<input type="hidden" name="country" value="us">
+<input type="hidden" name="country" value="us" />
 ```
 
 ## Multi / tags mode
@@ -32,8 +32,8 @@ Many hidden inputs, one per selected value, named with `[]` so PHP-style
 servers parse them as arrays:
 
 ```html
-<input type="hidden" name="skills[]" value="ts">
-<input type="hidden" name="skills[]" value="vue">
+<input type="hidden" name="skills[]" value="ts" />
+<input type="hidden" name="skills[]" value="vue" />
 ```
 
 Read them on the server as an array (most server frameworks already do).
@@ -47,16 +47,24 @@ the id field — primitives serialise cleanly.
 
 ## Required fields
 
-`required` marks the hidden input(s) so the browser's native form validation
-kicks in. The component itself doesn't render the red ring — that's a
+`required` renders a visually-hidden but **validatable** input, so the
+browser's native form validation kicks in and an empty selection blocks
+submission. The component itself doesn't render the red ring — that's a
 styling concern; key off `:invalid` or your form library's state.
+
+::: tip Why not `type="hidden"`?
+Hidden inputs are barred from constraint validation by the HTML standard, so
+`required` on one is ignored entirely. The validation input is a real text
+input positioned off-screen; focusing it hands focus to the visible control so
+the browser's validation bubble points somewhere the user can act on.
+:::
 
 ## Reading the form
 
 ```ts
 function onSubmit(event: SubmitEvent) {
   const data = new FormData(event.target as HTMLFormElement)
-  const country = data.get('country')          // 'us'
-  const skills = data.getAll('skills[]')       // ['ts', 'vue']
+  const country = data.get('country') // 'us'
+  const skills = data.getAll('skills[]') // ['ts', 'vue']
 }
 ```

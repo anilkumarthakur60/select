@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: '@anilkumarthakur/select'
+  name: '@anil-labs/select-core'
   text: One typed, accessible select. Every framework.
   tagline: Vue 3 · React · Svelte 5 · Solid · Web Components — single, multi, tags, async, grouped, tree. One core, idiomatic adapters.
   actions:
@@ -14,12 +14,12 @@ hero:
       link: /guide/why
     - theme: alt
       text: View on GitHub
-      link: https://github.com/anilkumarthakur60/vue3-select
+      link: https://github.com/anilkumarthakur60/select
 
 features:
   - icon: 🧩
     title: Framework-agnostic core
-    details: A pure-TS state machine drives every adapter. Vue, React, Svelte, Solid, and a Web Component all import from `@anilkumarthakur/select/<framework>` and share one set of behaviour, semantics, and tests.
+    details: A pure-TS state machine drives every adapter. Vue, React, Svelte, Solid, and a Web Component all import from `@anil-labs/select-core/<framework>` and share one set of behaviour, semantics, and tests.
   - icon: 🎯
     title: TypeScript-native
     details: Full generics over your option type. Accessors, slots/render props, and emits/handlers are all typed against `T` — no `any` escape hatches in any adapter.

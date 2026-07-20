@@ -1,6 +1,6 @@
 # Getting Started
 
-`@anilkumarthakur/select` is a single typed, accessible select that ships
+`@anil-labs/select-core` is a single typed, accessible select that ships
 adapters for **Vue 3, React, Svelte 5, Solid, and Web Components** on top
 of a framework-agnostic core. The state machine, ARIA semantics, keyboard
 map, and CSS are shared — you only pull in the adapter for the framework
@@ -11,41 +11,41 @@ you use.
 ::: code-group
 
 ```bash [npm]
-npm i @anilkumarthakur/select
+npm i @anil-labs/select-core
 ```
 
 ```bash [pnpm]
-pnpm add @anilkumarthakur/select
+pnpm add @anil-labs/select-core
 ```
 
 ```bash [yarn]
-yarn add @anilkumarthakur/select
+yarn add @anil-labs/select-core
 ```
 
 ```bash [bun]
-bun add @anilkumarthakur/select
+bun add @anil-labs/select-core
 ```
 
 :::
 
-The package ships ESM and CJS. Peer dependencies (`vue`, `react` /
-`react-dom`, `svelte`, `solid-js`, `nuxt`) are all optional — install only
-the ones you actually use. `@floating-ui/vue` is pulled in automatically
-and is only loaded by the Vue adapter.
+Every package ships ESM and CJS. Each adapter declares only the peer it
+actually imports — `vue`, `react`, `svelte`, `solid-js` — so you install just
+the framework you use. Beyond `@anil-labs/select-core`, no adapter has any
+runtime dependency.
 
 ## Pick your adapter
 
 Every adapter lives behind a subpath import so bundlers tree-shake the
 others:
 
-| Framework | Import | What you get |
-| --- | --- | --- |
-| Vue 3 | `@anilkumarthakur/select/vue` | `<VSelect>`, `<VTreeSelect>`, plugin, composables |
-| React | `@anilkumarthakur/select/react` | `<Select>` component, `useSelect` hook |
-| Svelte 5 | `@anilkumarthakur/select/svelte` | `createSelectAdapter` headless primitive |
-| Solid | `@anilkumarthakur/select/solid` | `createSelect` headless primitive |
-| Web Component | `@anilkumarthakur/select/web-component` | `<a-select>` custom element |
-| _Anything_ | `@anilkumarthakur/select` | `createSelectMachine` + helpers (the core) |
+| Framework     | Import                      | What you get                                      |
+| ------------- | --------------------------- | ------------------------------------------------- |
+| Vue 3         | `@anil-labs/select-vue`     | `<VSelect>`, `<VTreeSelect>`, plugin, composables |
+| React         | `@anil-labs/select-react`   | `<Select>` component, `useSelect` hook            |
+| Svelte 5      | `@anil-labs/select-svelte`  | `createSelectAdapter` headless primitive          |
+| Solid         | `@anil-labs/select-solid`   | `createSelect` headless primitive                 |
+| Web Component | `@anil-labs/select-element` | `<a-select>` custom element                       |
+| _Anything_    | `@anil-labs/select-core`    | `createSelectMachine` + helpers (the core)        |
 
 ## Use it
 
@@ -54,25 +54,21 @@ others:
 ```vue [Vue]
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VSelect } from '@anilkumarthakur/select/vue'
-import '@anilkumarthakur/select/style.css'
+import { VSelect } from '@anil-labs/select-vue'
+import '@anil-labs/select-core/styles.css'
 
 const fruit = ref<string | null>(null)
 </script>
 
 <template>
-  <VSelect
-    v-model="fruit"
-    :options="['Apple', 'Banana', 'Cherry']"
-    placeholder="Pick a fruit"
-  />
+  <VSelect v-model="fruit" :options="['Apple', 'Banana', 'Cherry']" placeholder="Pick a fruit" />
 </template>
 ```
 
 ```tsx [React]
 import { useState } from 'react'
-import { Select } from '@anilkumarthakur/select/react'
-import '@anilkumarthakur/select/style.css'
+import { Select } from '@anil-labs/select-react'
+import '@anil-labs/select-core/styles.css'
 
 export function FruitPicker() {
   const [fruit, setFruit] = useState<string | null>(null)
@@ -89,8 +85,8 @@ export function FruitPicker() {
 
 ```svelte [Svelte 5]
 <script lang="ts">
-  import { createSelectAdapter, toSvelteProps } from '@anilkumarthakur/select/svelte'
-  import '@anilkumarthakur/select/style.css'
+  import { createSelectAdapter, toSvelteProps } from '@anil-labs/select-svelte'
+  import '@anil-labs/select-core/styles.css'
 
   let fruit = $state<string | null>(null)
   const adapter = createSelectAdapter({
@@ -104,8 +100,8 @@ export function FruitPicker() {
 ```
 
 ```tsx [Solid]
-import { createSelect, toSolidProps } from '@anilkumarthakur/select/solid'
-import '@anilkumarthakur/select/style.css'
+import { createSelect, toSolidProps } from '@anil-labs/select-solid'
+import '@anil-labs/select-core/styles.css'
 
 export function FruitPicker() {
   const select = createSelect({
@@ -119,8 +115,8 @@ export function FruitPicker() {
 
 ```html [Web Component]
 <script type="module">
-  import { defineSelectElement } from '@anilkumarthakur/select/web-component'
-  import '@anilkumarthakur/select/style.css'
+  import { defineSelectElement } from '@anil-labs/select-element'
+  import '@anil-labs/select-core/styles.css'
 
   defineSelectElement('a-select')
   const el = document.querySelector('a-select')
@@ -156,10 +152,10 @@ once, anywhere in your app entry:
 
 ```ts
 // Compiled CSS — works in every bundler, every framework.
-import '@anilkumarthakur/select/style.css'
+import '@anil-labs/select-core/styles.css'
 
 // Or compose the SCSS source with your own design tokens:
-import '@anilkumarthakur/select/scss'
+import '@anil-labs/select-core/scss'
 ```
 
 See [Theming](./theming) for the full token surface.

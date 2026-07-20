@@ -10,27 +10,42 @@
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VTreeSelect } from '@anilkumarthakur/select/vue'
+import { VTreeSelect } from '@anil-labs/select-vue'
 
-interface Cat { id: number; name: string; children: Cat[] }
+interface Cat {
+  id: number
+  name: string
+  children: Cat[]
+}
 
 const categories: Cat[] = [
   {
-    id: 1, name: 'Web',
+    id: 1,
+    name: 'Web',
     children: [
-      { id: 2, name: 'Frontend', children: [
-        { id: 3, name: 'CSS', children: [] },
-        { id: 4, name: 'JavaScript', children: [] },
-        { id: 5, name: 'TypeScript', children: [] },
-      ]},
-      { id: 6, name: 'Backend', children: [
-        { id: 7, name: 'Node.js', children: [] },
-        { id: 8, name: 'Go', children: [] },
-      ]},
+      {
+        id: 2,
+        name: 'Frontend',
+        children: [
+          { id: 3, name: 'CSS', children: [] },
+          { id: 4, name: 'JavaScript', children: [] },
+          { id: 5, name: 'TypeScript', children: [] },
+        ],
+      },
+      {
+        id: 6,
+        name: 'Backend',
+        children: [
+          { id: 7, name: 'Node.js', children: [] },
+          { id: 8, name: 'Go', children: [] },
+        ],
+      },
     ],
   },
   {
-    id: 9, name: 'DevOps', children: [
+    id: 9,
+    name: 'DevOps',
+    children: [
       { id: 10, name: 'Docker', children: [] },
       { id: 11, name: 'Kubernetes', children: [] },
     ],
@@ -94,12 +109,12 @@ const picked = ref<number[]>([])
 
 ## Accessors
 
-| Prop | Default | Reads |
-|---|---|---|
-| `option-value` | `value` ?? `id` | The value emitted into v-model when this leaf is checked |
-| `option-label` | `label` ?? `name` | The visible label |
-| `option-children` | `children` | The children array — return `[]` for leaves |
-| `option-disabled` | `disabled` | Skip the node from selection / count |
+| Prop              | Default           | Reads                                                    |
+| ----------------- | ----------------- | -------------------------------------------------------- |
+| `option-value`    | `value` ?? `id`   | The value emitted into v-model when this leaf is checked |
+| `option-label`    | `label` ?? `name` | The visible label                                        |
+| `option-children` | `children`        | The children array — return `[]` for leaves              |
+| `option-disabled` | `disabled`        | Skip the node from selection / count                     |
 
 All four accept either a string (property name) or a function `(node) => …`.
 
@@ -149,10 +164,37 @@ tree.value?.collapseAll()
 
 ## Search
 
-Same input as `<VSelect>`. The search filters leaves *and* keeps their
-ancestor branches in the rendered tree so matches stay reachable. Matching
-subtrees auto-expand — clearing the query collapses back to the
-`default-expand-all` state.
+Same input as `<VSelect>`. The search filters leaves _and_ keeps their
+ancestor branches in the rendered tree so matches stay reachable. A branch
+that matches on its **own** label keeps its entire subtree, so you can search
+for a category and then pick freely inside it. Matching subtrees auto-expand,
+and clearing the query collapses back to the `default-expand-all` state.
+
+Selection state is always derived from the full tree, not the filtered view —
+a parent that is only partially selected still renders as indeterminate while
+you are searching, and toggling it acts on the whole branch rather than just
+the rows you can currently see.
+
+## Keyboard
+
+`<VTreeSelect>` implements the WAI-ARIA tree pattern. The focused element is
+the search input (or the control itself when `searchable` is `false`), and the
+current node is exposed through `aria-activedescendant`.
+
+| Key                              | Action                                                                                  |
+| -------------------------------- | --------------------------------------------------------------------------------------- |
+| <kbd>↓</kbd> / <kbd>↑</kbd>      | Open the menu, or move to the next / previous visible node                              |
+| <kbd>→</kbd>                     | Expand the active branch, or step into its first child                                  |
+| <kbd>←</kbd>                     | Collapse the active branch, or step out to its parent                                   |
+| <kbd>Home</kbd> / <kbd>End</kbd> | Jump to the first / last visible node                                                   |
+| <kbd>Enter</kbd>                 | Open the menu, or toggle the active node                                                |
+| <kbd>Space</kbd>                 | Toggle the active node (ignored while typing in the search box, where it types a space) |
+| <kbd>Esc</kbd>                   | Close the menu                                                                          |
+| <kbd>Tab</kbd>                   | Close the menu and move on                                                              |
+
+Navigation skips disabled nodes and never descends into a collapsed branch, so
+the order always matches what is on screen. Opening the menu highlights the
+first selected leaf when there is one, otherwise the first selectable node.
 
 ## When to reach for it
 

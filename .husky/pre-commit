@@ -1,4 +1,0 @@
-# Fast pre-commit guardrail — lint with auto-fix. The full test + type-check
-# chain runs in CI; running it on every commit hurts the local feedback loop.
-# Opt out of even this for a WIP commit with `git commit --no-verify`.
-npm run lint:fix
