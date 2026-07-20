@@ -7,6 +7,17 @@
       "@/*": ["./src/*"]
     },
     "types": ["node", "vitest/globals"],
+    // Stays "preserve" for *type-checking*: vue/jsx-runtime's JSX namespace
+    // declares no `ElementChildrenAttribute`, so under "react-jsx" TypeScript
+    // checks `children` as an ordinary prop and every element with children
+    // fails against Vue's `HTMLAttributes & ReservedProps` (TS2322).
+    //
+    // The emitted JS is a separate concern: esbuild only honours
+    // `jsxImportSource` under the automatic runtime, so with "preserve" it fell
+    // back to the classic `React.createElement` factory and shipped a bundle
+    // that threw `ReferenceError: React is not defined`. That is fixed in
+    // tsup.config.ts via esbuildOptions, which overrides the transform without
+    // touching type-checking. See test/dist-smoke.test.ts.
     "jsx": "preserve",
     "jsxImportSource": "vue"
   },

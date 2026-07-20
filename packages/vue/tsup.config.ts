@@ -17,5 +17,23 @@ export default defineConfig({
   treeshake: true,
   target: 'es2022',
   outDir: 'dist',
-  external: ['@anil-labs/select-core', ...['vue', '@floating-ui/vue', '@nuxt/kit', 'nuxt']],
+  external: [
+    '@anil-labs/select-core',
+    ...['vue', 'vue/jsx-runtime', '@floating-ui/vue', '@nuxt/kit', 'nuxt'],
+  ],
+
+  // REQUIRED — do not remove. tsconfig.json keeps `jsx: "preserve"` because
+  // Vue's jsx-runtime declares no `ElementChildrenAttribute`, so under the
+  // automatic runtime TypeScript checks `children` as a prop and every element
+  // with children fails against `HTMLAttributes & ReservedProps`. But esbuild
+  // only honours `jsxImportSource` when the runtime IS automatic — left alone
+  // it emitted the classic `React.createElement` factory, so every published
+  // component threw `ReferenceError: React is not defined` on first render.
+  // That stayed invisible because vitest compiles src through
+  // @vitejs/plugin-vue-jsx and no test used to import dist.
+  // test/dist-smoke.test.ts now mounts the built bundle and would catch it.
+  esbuildOptions(options) {
+    options.jsx = 'automatic'
+    options.jsxImportSource = 'vue'
+  },
 })
