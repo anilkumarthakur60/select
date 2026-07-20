@@ -112,15 +112,37 @@ Custom filter — return `true` to keep the option in the menu.
 
 ## `VSelectProps<T>`
 
-The full prop surface for `<VSelect>`. Use it to type wrappers:
+The full prop surface for `<VSelect>`. Use it to describe your own wrapper's
+props — note the `extends OptionLike` constraint, which `VSelectProps`
+requires and the previous version of this snippet omitted:
 
 ```ts
-import type { VSelectProps } from '@anil-labs/select-vue'
+import type { VSelectProps, OptionLike } from '@anil-labs/select-vue'
 
-interface MyPickerProps<T> extends VSelectProps<T> {
+interface MyPickerProps<T extends OptionLike> extends VSelectProps<T> {
   helperText?: string
 }
 ```
+
+::: warning `T` is erased at the component boundary
+
+`VSelectProps<T>` types _your_ props, but it is **not** a narrowing escape
+hatch for `<VSelect>` itself. The shipped declaration collapses the generic to
+`OptionLike`, so a `VSelectProps<City>` object is not assignable to
+`<VSelect>`'s props: the accessor props (`optionValue`, `optionLabel`,
+`optionGroup`, `optionDisabled`) and `filter` are all contravariantly
+incompatible.
+
+Forwarding a typed prop bag therefore needs a cast at the hand-off:
+
+```ts
+<VSelect v-bind="(props as unknown) as VSelectProps<OptionLike>" />
+```
+
+This is a TSX limitation — it cannot carry the `<T extends OptionLike>` generic
+the SFC form supports. Your own wrapper API stays fully typed; only the
+hand-off to `<VSelect>` needs the cast.
+:::
 
 See the [`<VSelect>` reference](./v-select#props) for the complete table.
 
