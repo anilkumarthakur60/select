@@ -71,7 +71,7 @@ export default defineNuxtConfig({
 ## SSR notes
 
 - The menu is wrapped in `v-if="isOpen"` so no DOM access happens on the server
-- `useFloating` from `@floating-ui/vue` only positions when both refs are mounted, which is post-hydration on the client
+- The menu is only positioned once both the control and menu elements are mounted, which is post-hydration on the client
 - The `id` accessor falls back to a per-instance counter on the server and the same counter on the client, so `aria-controls` / `aria-activedescendant` stay stable across hydration
 
 If you see hydration warnings, the most common cause is dynamic content

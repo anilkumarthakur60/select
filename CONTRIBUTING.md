@@ -113,7 +113,7 @@ Examples:
 feat: add caseSensitive prop to <VSelect>
 fix(tree): emit deselect for indeterminate parent toggle
 docs: clarify async loading example
-chore(deps): bump @floating-ui/vue to 1.1.0
+chore(deps): bump vitest to 4.1.5
 ```
 
 Breaking changes go in the footer with `BREAKING CHANGE:` prefix:

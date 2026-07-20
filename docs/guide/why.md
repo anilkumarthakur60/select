@@ -104,9 +104,11 @@ cascade level, no SCSS recompile required.
 | Web Component         | ~8 kB   |
 | CSS                   | ~3 kB   |
 
-Each subpath is its own entry — bundlers only pull in the adapter you
-import. The Vue adapter brings `@floating-ui/vue`; every other adapter has
-zero runtime deps. A Nuxt module is shipped under
+Each package is its own entry — bundlers only pull in the adapter you
+import, and every adapter's only runtime dependency is
+`@anil-labs/select-core`. Menu positioning is implemented in-house rather
+than pulling in a positioning library, so nothing is downloaded or executed
+unless you actually opt into `teleport-to`. A Nuxt module is shipped under
 `@anil-labs/select-vue/nuxt` for one-line setup.
 
 ## What it isn't

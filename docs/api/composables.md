@@ -175,9 +175,20 @@ const { styles, target, floating, update } = useFloatingMenu(controlEl, menuEl, 
 })
 ```
 
-Wraps `@floating-ui/vue` with the same middleware stack `<VSelect>` uses
-(offset / flip / shift / width-match). When `teleportTo === false`, `styles`
-is `undefined` and `target` is `null` so the menu sits in document flow.
+Positions the teleported menu against its control: a 6px offset, flipping
+above when there is no room below, clamping inside the viewport, and a
+`minWidth` matched to the control. Repositions on scroll, window resize and
+element resize, throttled to one update per animation frame.
+
+When `teleportTo === false` (the default) `styles` is `undefined` and `target`
+is `null`, the menu sits in document flow, and **nothing is observed or
+listened to** — no work is done for consumers who never teleport.
+
+Positioning uses `position: fixed` in viewport coordinates. If you teleport
+into a container with a `transform`, `filter`, `perspective` or `will-change`,
+that ancestor becomes the containing block for fixed elements and the menu
+will be offset — position that container and teleport there instead.
+Teleporting to `body` (the normal case) is unaffected.
 
 ## `useOutsideClick`
 

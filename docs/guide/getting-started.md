@@ -30,8 +30,8 @@ bun add @anil-labs/select-core
 
 The package ships ESM and CJS. Peer dependencies (`vue`, `react` /
 `react-dom`, `svelte`, `solid-js`, `nuxt`) are all optional — install only
-the ones you actually use. `@floating-ui/vue` is pulled in automatically
-and is only loaded by the Vue adapter.
+the ones you actually use. Every adapter has zero runtime dependencies
+beyond `@anil-labs/select-core`.
 
 ## Pick your adapter
 

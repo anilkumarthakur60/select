@@ -10,7 +10,7 @@ set of composables that power them.
 npm i @anil-labs/select-core
 ```
 
-`vue ^3.3` is a peer dep. `@floating-ui/vue` is pulled in automatically.
+`vue ^3.3` is a peer dep. There are no other runtime dependencies.
 
 ## Import
 

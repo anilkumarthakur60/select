@@ -9,7 +9,7 @@
 
 Split the single `@anilkumarthakur/select` package into six independently versioned packages under the `@anil-labs` scope.
 
-Each framework is now its own package rather than a subpath of one, so installing the React adapter no longer pulls Vue's `@floating-ui/vue` dependency into your lockfile, and each adapter declares only the peer dependency it actually needs.
+Each framework is now its own package rather than a subpath of one, so installing the React adapter no longer pulls Vue-only dependencies into your lockfile, and each adapter declares only the peer dependency it actually needs.
 
 | Before                                    | After                        |
 | ----------------------------------------- | ---------------------------- |
