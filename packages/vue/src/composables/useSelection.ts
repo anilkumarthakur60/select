@@ -1,4 +1,5 @@
 import { computed, type ComputedRef, type Ref } from 'vue'
+import { isPrimitive, safeLabel } from '@anil-labs/select-core'
 import type { NormalizedOption, SelectMode } from '@anil-labs/select-core'
 
 export interface UseSelectionOptions<T> {
@@ -36,7 +37,14 @@ export function useSelection<T>(opts: UseSelectionOptions<T>): UseSelectionRetur
 
   const selectedValues = computed<unknown[]>(() => {
     const value = opts.modelValue.value
-    if (value == null || value === '') return []
+    // Only nullish means "nothing selected". `''` used to be lumped in, so the
+    // classic `<option value="">None</option>` pattern appeared to do nothing:
+    // select() emitted '' and this refused to reflect it, blanking the
+    // trigger, dropping `has-value`, hiding the clear button and rendering
+    // aria-selected="false" on the row the user had just picked. `0` and
+    // `false` always worked, which is what marked '' as an accidental
+    // over-broad emptiness test rather than a deliberate sentinel.
+    if (value == null) return []
     return Array.isArray(value) ? value : [value]
   })
 
@@ -60,19 +68,24 @@ export function useSelection<T>(opts: UseSelectionOptions<T>): UseSelectionRetur
    */
   const selectedOptions = computed<NormalizedOption<T>[]>(() => {
     const lookup = optionByValue.value
-    return selectedValues.value.map((v) => {
+    return selectedValues.value.map((v, index) => {
       const found = lookup.get(v)
       if (found) return found
-      const label =
-        typeof v === 'object' && v !== null
-          ? String(
-              (v as Record<string, unknown>).label ?? (v as Record<string, unknown>).name ?? '',
-            )
-          : String(v)
+      // Route through the core's shared helper rather than a hardcoded
+      // `label ?? name` chain: that chain ignored a configured `optionLabel`,
+      // yielded '' for any other object shape (so tags rendered blank and the
+      // remove button announced only "Remove "), and coerced an i18n-shaped
+      // label to "[object Object]".
+      const rawLabel = isPrimitive(v)
+        ? v
+        : ((v as Record<string, unknown> | null)?.label ??
+          (v as Record<string, unknown> | null)?.name)
       return {
-        id: `synthetic-${label}`,
+        // Index-qualified: the id used to be derived from the label, so every
+        // value resolving to an empty label collided on `synthetic-`.
+        id: `synthetic-${index}`,
         value: v,
-        label,
+        label: safeLabel(rawLabel, v, 'useSelection'),
         raw: v as T,
       } satisfies NormalizedOption<T>
     })

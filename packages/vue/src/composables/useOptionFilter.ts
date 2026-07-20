@@ -1,4 +1,4 @@
-import { computed, type ComputedRef, type Ref } from 'vue'
+import { computed, unref, type ComputedRef, type MaybeRef, type Ref } from 'vue'
 import type { FilterFn } from '@anil-labs/select-core'
 import type { NormalizedOption } from '@anil-labs/select-core'
 import { defaultFilter } from '@anil-labs/select-core'
@@ -6,7 +6,12 @@ import { defaultFilter } from '@anil-labs/select-core'
 export interface UseOptionFilterOptions<T> {
   options: Ref<NormalizedOption<T>[]>
   query: Ref<string>
-  filter?: FilterFn<T>
+  // MaybeRef, not a bare value: read once during setup, the computed below
+  // closed over the setup-time function forever, so a UI that swaps matching
+  // strategy at runtime (fuzzy vs exact, by-code vs by-name) silently kept
+  // the first filter for the component's lifetime. Every neighbouring option
+  // here is already reactive, including `caseSensitive` on the next line.
+  filter?: MaybeRef<FilterFn<T> | undefined>
   caseSensitive?: Ref<boolean>
 }
 
@@ -22,7 +27,7 @@ export function useOptionFilter<T>(opts: UseOptionFilterOptions<T>): {
   const filtered = computed(() => {
     const query = opts.query.value.trim()
     if (!query) return opts.options.value
-    const fn = opts.filter
+    const fn = unref(opts.filter)
     const cs = opts.caseSensitive?.value ?? false
     return opts.options.value.filter((option) =>
       fn ? fn({ query, option }) : defaultFilter(query, option, cs),

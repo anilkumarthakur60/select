@@ -41,7 +41,11 @@ export function useKeyboardNav<T>(opts: UseKeyboardNavOptions<T>) {
     }
   }
 
-  function onKeydown(event: KeyboardEvent) {
+  /**
+   * @param fromSearch whether the event originated on the search input. Only
+   * Backspace cares — see the case below.
+   */
+  function onKeydown(event: KeyboardEvent, fromSearch = true) {
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault()
@@ -93,7 +97,14 @@ export function useKeyboardNav<T>(opts: UseKeyboardNavOptions<T>) {
         if (opts.isOpen.value) opts.close()
         break
       case 'Backspace':
-        if (!opts.hasQuery()) opts.deselectLast()
+        // Gated on `fromSearch` to match the core machine, which threads the
+        // same flag (machine.ts: `if (fromSearch && !state.query)`). Without
+        // it, a keyboard user tabbing to a NON-searchable multi-select — where
+        // the control itself is the focusable element — pressed Backspace and
+        // silently destroyed the last selection, while every other adapter
+        // did nothing. Backspace-to-delete is a search-input affordance and is
+        // surprising on a plain trigger.
+        if (fromSearch && !opts.hasQuery()) opts.deselectLast()
         break
       default:
         break
