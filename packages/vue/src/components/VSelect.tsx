@@ -1,7 +1,6 @@
 import {
   computed,
   defineComponent,
-  nextTick,
   ref,
   Teleport,
   watch,
@@ -22,6 +21,7 @@ import { normalize } from '@anil-labs/select-core'
 import { useControlFocus } from '@/composables/useControlFocus'
 import { useDebounced } from '@/composables/useDebounced'
 import { useFloatingMenu } from '@/composables/useFloatingMenu'
+import { afterTick } from '@/composables/afterTick'
 import { useFormBinding } from '@/composables/useFormBinding'
 import { useKeyboardNav } from '@/composables/useKeyboardNav'
 import { useMenuState } from '@/composables/useMenuState'
@@ -53,8 +53,13 @@ export default defineComponent({
     mode: { type: String as PropType<SelectMode>, default: 'single' },
     // Loosened from `keyof T | (...)` to `string | (...)` because TSX can't
     // carry the SFC `<T extends OptionLike>` generic that originally drove the
-    // `keyof T` narrowing. Consumers who want narrowing should reach for the
-    // public `VSelectProps<T>` type directly.
+    // `keyof T` narrowing.
+    //
+    // T is genuinely ERASED at this boundary — `VSelectProps<T>` is not an
+    // escape hatch that restores it. A `VSelectProps<City>` bag is not
+    // assignable to this component's props, because these accessors and
+    // `filter` are contravariantly incompatible once T collapses to
+    // OptionLike. Wrappers must cast at the hand-off; see docs/api/types.md.
     optionValue: {
       type: [String, Function] as PropType<string | ((option: OptionLike) => unknown)>,
     },
@@ -72,7 +77,14 @@ export default defineComponent({
     clearable: { type: Boolean, default: true },
     disabled: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
-    closeOnSelect: { type: Boolean },
+    // `default: undefined` is REQUIRED here, not decoration. Vue coerces an
+    // absent `type: Boolean` prop to `false`, not `undefined`, so the resolver
+    // `props.closeOnSelect ?? props.mode === 'single'` below could never reach
+    // its right-hand side — it was permanently false, and a default
+    // single-select never closed after a pick, leaving the listbox mounted and
+    // aria-expanded="true" forever. Every other adapter closed correctly,
+    // because the core machine sees a real `undefined`.
+    closeOnSelect: { type: Boolean, default: undefined },
     autofocus: { type: Boolean, default: false },
     maxVisibleTags: { type: Number },
     maxSelections: { type: Number },
@@ -161,7 +173,10 @@ export default defineComponent({
     const { filtered } = useOptionFilter<T>({
       options: normalizedOptions,
       query: effectiveQuery,
-      filter: props.filter,
+      // Wrapped in a computed, mirroring `caseSensitive` on the next line.
+      // Passing `props.filter` bare read it once during setup, so swapping the
+      // matching strategy at runtime had no effect.
+      filter: computed(() => props.filter),
       caseSensitive: computed(() => props.caseSensitive),
     })
 
@@ -242,7 +257,13 @@ export default defineComponent({
       if (!isOpen.value || !menuEl.value) return
       const opt = filtered.value[activeIndex.value]
       if (!opt) return
-      const el = menuEl.value.querySelector<HTMLElement>(`[id="${baseId.value}-opt-${opt.id}"]`)
+      // getElementById, not querySelector(`[id="…"]`): option ids embed the
+      // option's value, so a value containing a double quote ('5" nails', a
+      // Windows path, a quoted product name) produced an invalid selector and
+      // threw SyntaxError out of the nextTick callbacks below, where nothing
+      // could catch it. Ids are document-unique, so no selector is needed —
+      // and this keeps working when the menu is teleported out of the root.
+      const el = document.getElementById(`${baseId.value}-opt-${opt.id}`)
       // jsdom (test env) and some older browsers don't implement scrollIntoView.
       el?.scrollIntoView?.({ block: 'nearest' })
     }
@@ -250,7 +271,7 @@ export default defineComponent({
     watch(isOpen, (openVal) => {
       if (openVal) {
         emit('open')
-        nextTick(() => {
+        afterTick(() => {
           if (props.searchable && searchEl.value) searchEl.value.focus()
           if (activeIndex.value === -1) activeIndex.value = resolveDefaultActiveIndex()
           if (isFloating.value) updateFloating()
@@ -281,7 +302,7 @@ export default defineComponent({
 
     watch(activeIndex, () => {
       if (!isOpen.value) return
-      nextTick(scrollActiveIntoView)
+      afterTick(scrollActiveIntoView)
     })
 
     const { onControlMousedown, onSearchInput } = useTriggerInteractions({
@@ -320,6 +341,30 @@ export default defineComponent({
       query.value = ''
       forceSearch('')
       if (props.searchable && searchEl.value) searchEl.value.focus()
+    }
+
+    /**
+     * Keyboard activation of the clear button. The browser delivers Enter and
+     * Space on a `<button>` as a `click`, never a `mousedown`, so the
+     * mousedown-only handler above was unreachable without a pointer.
+     *
+     * `event.detail === 0` identifies a keyboard-synthesised click (a real
+     * pointer click reports its click-count), so a mouse press does not run
+     * both handlers.
+     */
+    function onClearActivate(event: MouseEvent) {
+      if (event.detail !== 0) return
+      onClearClick(event)
+    }
+
+    /**
+     * The browser focuses an invalid control before showing its validation
+     * bubble. That control is our visually-hidden validation input, which the
+     * user cannot see — so hand focus to the element they can actually
+     * interact with.
+     */
+    function onValidationInputFocus() {
+      ;(searchEl.value ?? controlEl.value)?.focus()
     }
 
     function onTagRemove(option: NormalizedOption<T>) {
@@ -388,8 +433,14 @@ export default defineComponent({
       open,
       close,
       toggle,
-      focus: () => searchEl.value?.focus() ?? controlEl.value?.focus(),
-      blur: () => searchEl.value?.blur() ?? controlEl.value?.blur(),
+      // `(a ?? b)?.focus()`, NOT `a?.focus() ?? b?.focus()`. HTMLElement.focus()
+      // returns undefined, so the `??` always evaluated its right-hand side:
+      // both calls ran and the control div won. Since the control carries
+      // tabindex={-1} when searchable and ignores keydown in that mode, the
+      // documented `focus()` left the user on an element that accepts neither
+      // text nor arrow keys — ArrowDown would not even open the menu.
+      focus: () => (searchEl.value ?? controlEl.value)?.focus(),
+      blur: () => (searchEl.value ?? controlEl.value)?.blur(),
       clear,
       flushSearch,
       get isOpen() {
@@ -407,7 +458,7 @@ export default defineComponent({
     watch(
       () => props.autofocus,
       (auto) => {
-        if (auto) nextTick(() => searchEl.value?.focus() ?? controlEl.value?.focus())
+        if (auto) afterTick(() => (searchEl.value ?? controlEl.value)?.focus())
       },
       { immediate: true },
     )
@@ -502,19 +553,29 @@ export default defineComponent({
             controlEl.value = el as HTMLElement | null
           }}
           class="vselect-control"
-          role="combobox"
-          aria-expanded={isOpen.value}
-          aria-controls={listboxId.value}
-          aria-haspopup="listbox"
-          aria-disabled={props.disabled || undefined}
-          aria-required={props.required || undefined}
-          aria-label={props.ariaLabel ?? props.placeholder}
-          aria-activedescendant={activeOptionId.value}
+          // Under the WAI-ARIA 1.2 combobox pattern the element that RECEIVES
+          // FOCUS is the combobox. When `searchable` (the default) that is the
+          // search input, not this div — this div carries tabindex={-1} and can
+          // never be focused. Declaring role="combobox" here meant a screen
+          // reader announced the focused element as a plain edit field and was
+          // never told the popup opened or closed. So the semantics live on
+          // whichever element is actually focusable: the input when searchable,
+          // this div otherwise.
+          role={props.searchable ? undefined : 'combobox'}
+          aria-expanded={props.searchable ? undefined : isOpen.value}
+          aria-controls={props.searchable ? undefined : listboxId.value}
+          aria-haspopup={props.searchable ? undefined : 'listbox'}
+          aria-disabled={props.searchable ? undefined : props.disabled || undefined}
+          aria-required={props.searchable ? undefined : props.required || undefined}
+          aria-label={props.searchable ? undefined : (props.ariaLabel ?? props.placeholder)}
+          aria-activedescendant={props.searchable ? undefined : activeOptionId.value}
           tabindex={props.searchable ? -1 : props.disabled ? -1 : 0}
           {...attrs}
           onMousedown={onControlMousedown}
           onKeydown={(e: KeyboardEvent) => {
-            if (!props.searchable) onKeydown(e)
+            // `false` = not from the search input, so Backspace does not
+            // deselect. Matches the core machine's `fromSearch` gate.
+            if (!props.searchable) onKeydown(e, false)
           }}
         >
           {slots.prefix?.()}
@@ -571,8 +632,20 @@ export default defineComponent({
                 value={query.value}
                 placeholder={hasSelection.value ? undefined : props.placeholder}
                 disabled={props.disabled}
+                // This input is the combobox — it is the element that takes
+                // focus. See the comment on the control div above.
+                role="combobox"
+                aria-expanded={isOpen.value}
+                aria-haspopup="listbox"
                 aria-controls={listboxId.value}
                 aria-autocomplete="list"
+                aria-disabled={props.disabled || undefined}
+                aria-required={props.required || undefined}
+                // Always present, not just while the placeholder shows. The
+                // placeholder is stripped once a value is picked, so the
+                // focused input was left with NO accessible name at all —
+                // and `ariaLabel` previously landed on the unfocusable div.
+                aria-label={props.ariaLabel ?? props.placeholder}
                 aria-activedescendant={activeOptionId.value}
                 onInput={onSearchInput}
                 onKeydown={onKeydown}
@@ -595,8 +668,16 @@ export default defineComponent({
                   type="button"
                   class="vselect-indicator"
                   aria-label="Clear selection"
-                  tabindex={-1}
+                  // tabindex 0, and onClick alongside onMousedown. This was
+                  // tabindex={-1} with a mousedown-only handler, so it was
+                  // both unreachable by Tab and inert to keyboard activation —
+                  // the browser delivers Enter/Space on a button as `click`,
+                  // not `mousedown`. In single mode there was then no keyboard
+                  // path to clear a value at all, since Backspace-to-deselect
+                  // returns early when not multi.
+                  tabindex={0}
                   onMousedown={onClearClick}
+                  onClick={onClearActivate}
                 >
                   <CloseIcon />
                 </button>
@@ -613,17 +694,44 @@ export default defineComponent({
 
           {slots.suffix?.()}
 
-          {/* Hidden inputs for native form submission. */}
-          {hiddenInputs.value.map((input, i) => (
-            <input
-              key={i}
-              class="vselect-hidden-input"
-              type="hidden"
-              name={input.name}
-              value={input.value}
-              required={input.required || undefined}
-            />
-          ))}
+          {/*
+            Inputs for native form submission.
+
+            The `required` one is deliberately NOT `type="hidden"`: hidden
+            inputs are "barred from constraint validation" per the HTML
+            standard, so `willValidate` is false and the constraint is ignored
+            entirely — a `<VSelect name required>` with no selection submitted
+            cleanly, with no validation bubble and no `:invalid`, while
+            `aria-required` told screen-reader users the field was required.
+            A visually-hidden text input still participates in validation.
+
+            It is kept out of the tab order and hidden from AT: the combobox
+            above already carries `aria-required`, so exposing this would
+            double-announce.
+          */}
+          {hiddenInputs.value.map((input, i) =>
+            input.required ? (
+              <input
+                key={i}
+                class="vselect-validation-input"
+                type="text"
+                name={input.name}
+                value={input.value}
+                required
+                tabindex={-1}
+                aria-hidden="true"
+                onFocus={onValidationInputFocus}
+              />
+            ) : (
+              <input
+                key={i}
+                class="vselect-hidden-input"
+                type="hidden"
+                name={input.name}
+                value={input.value}
+              />
+            ),
+          )}
         </div>
 
         {isOpen.value &&

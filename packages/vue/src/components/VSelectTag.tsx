@@ -21,6 +21,22 @@ export default defineComponent({
       emit('remove', props.option, event)
     }
 
+    /**
+     * Keyboard activation. Enter and Space on a `<button>` arrive as a `click`,
+     * never a `mousedown`, so the mousedown-only handler was inert without a
+     * pointer — and `tabindex={-1}` meant the button could not be reached by
+     * Tab either. Backspace was the only keyboard removal path, and it always
+     * pops the LAST tag, so a middle tag could not be removed without
+     * destroying the ones after it.
+     *
+     * `event.detail === 0` marks a keyboard-synthesised click (a pointer click
+     * reports its click-count), so a mouse press does not run both handlers.
+     */
+    function onRemoveActivate(event: MouseEvent) {
+      if (event.detail !== 0) return
+      onRemove(event)
+    }
+
     return () => (
       <span class="vselect-tag" data-value={String(props.option.value)}>
         <span class="vselect-tag-label">{props.option.label}</span>
@@ -29,8 +45,9 @@ export default defineComponent({
             type="button"
             class="vselect-tag-remove"
             aria-label={props.removeLabel ?? `Remove ${props.option.label}`}
-            tabindex={-1}
+            tabindex={0}
             onMousedown={onRemove}
+            onClick={onRemoveActivate}
           >
             <CloseIcon />
           </button>
