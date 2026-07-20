@@ -1,6 +1,7 @@
 import type { OptionAccessor } from '@/types/option'
 import type { NormalizedTreeNode, TreeOptionLike } from '@/types/tree-node'
-import { readAccessor } from '@/accessor'
+import { isPrimitive, readAccessor, safeLabel } from '@/accessor'
+import { devWarn } from '@/warn'
 
 interface NormalizeTreeConfig<T> {
   optionValue?: OptionAccessor<T, unknown>
@@ -19,27 +20,41 @@ export function normalizeTree<T extends TreeOptionLike>(
   options: readonly T[],
   config: NormalizeTreeConfig<T>,
 ): NormalizedTreeNode<T>[] {
+  // Nodes currently on the path from a root, so a node that is its own
+  // descendant is dropped instead of recursing forever. `visit()` runs inside a
+  // Vue `computed` that is read during render, so an unguarded cycle threw
+  // `RangeError: Maximum call stack size exceeded` out of the render function
+  // and took the component tree down — not a contained "bad data" outcome.
+  // Graph-shaped server data (org charts, ORM rows hydrating both `parent` and
+  // `children`) produces cycles by accident.
+  const onPath = new Set<T>()
+
   function visit(
     node: T,
     depth: number,
     parentId: string | null,
     indexPath: string,
-  ): NormalizedTreeNode<T> {
+  ): NormalizedTreeNode<T> | null {
+    if (onPath.has(node)) {
+      devWarn(
+        '[select-core] normalizeTree: cycle detected — a node is its own descendant. ' +
+          'The repeated node has been dropped.',
+      )
+      return null
+    }
+    onPath.add(node)
+
     const value = readAccessor(
       node,
       config.optionValue,
       (node as Record<string, unknown>).value ?? (node as Record<string, unknown>).id,
     )
-    const label = readAccessor(
+    const rawLabel = readAccessor<T, unknown>(
       node,
       config.optionLabel,
-      String(
-        (node as Record<string, unknown>).label ??
-          (node as Record<string, unknown>).name ??
-          value ??
-          '',
-      ),
+      (node as Record<string, unknown>).label ?? (node as Record<string, unknown>).name ?? value,
     )
+    const label = safeLabel(rawLabel, value, 'normalizeTree')
     const childrenRaw =
       readAccessor(node, config.optionChildren, undefined as T[] | undefined) ??
       ((node as Record<string, unknown>).children as T[] | undefined) ??
@@ -50,16 +65,21 @@ export function normalizeTree<T extends TreeOptionLike>(
       Boolean((node as Record<string, unknown>).disabled),
     )
 
-    const id = `tnode-${indexPath}-${String(value)}`
+    // `indexPath` alone is already unique, so a non-primitive value only ever
+    // contributed "[object Object]" to the id.
+    const id = isPrimitive(value) ? `tnode-${indexPath}-${String(value)}` : `tnode-${indexPath}`
     const children: NormalizedTreeNode<T>[] = []
     childrenRaw.forEach((child, i) => {
-      children.push(visit(child, depth + 1, id, `${indexPath}.${i}`))
+      const kept = visit(child, depth + 1, id, `${indexPath}.${i}`)
+      if (kept) children.push(kept)
     })
+
+    onPath.delete(node)
 
     return {
       id,
       value,
-      label: String(label),
+      label,
       depth,
       parentId,
       isLeaf: children.length === 0,
@@ -69,7 +89,12 @@ export function normalizeTree<T extends TreeOptionLike>(
     }
   }
 
-  return options.map((option, index) => visit(option, 0, null, String(index)))
+  const roots: NormalizedTreeNode<T>[] = []
+  options.forEach((option, index) => {
+    const kept = visit(option, 0, null, String(index))
+    if (kept) roots.push(kept)
+  })
+  return roots
 }
 
 /**
@@ -128,7 +153,17 @@ export function filterTree<T>(
 
   function visit(node: NormalizedTreeNode<T>): NormalizedTreeNode<T> | null {
     const haystack = caseSensitive ? node.label : node.label.toLowerCase()
-    const selfMatch = haystack.includes(needle)
+
+    // A node that matches on its own label keeps its ENTIRE subtree.
+    //
+    // This used to fall through and prune children that did not match, which
+    // produced a node with `isLeaf: false` and zero children — a completely
+    // dead row. `getLeafValues()` returned `[]` so toggling its checkbox
+    // emitted nothing, yet the checkbox stayed visually ticked (Vue never
+    // patched `checked` back, because the model never moved), and the chevron
+    // rendered `aria-expanded="true"` over an empty group. Searching
+    // "Frontend" in the documented tree-select example hit this exactly.
+    if (haystack.includes(needle)) return node
 
     const filteredChildren: NormalizedTreeNode<T>[] = []
     for (const child of node.children) {
@@ -136,10 +171,8 @@ export function filterTree<T>(
       if (kept) filteredChildren.push(kept)
     }
 
-    if (!selfMatch && filteredChildren.length === 0) return null
-    if (filteredChildren.length === node.children.length && selfMatch) return node
-    // Re-shape with surviving children. Keep `isLeaf` honest — a parent with
-    // all children filtered out behaves like a (still-non-selectable) leaf.
+    if (filteredChildren.length === 0) return null
+    // An ancestor kept only because a descendant matched: keep the path.
     return { ...node, children: filteredChildren }
   }
 
