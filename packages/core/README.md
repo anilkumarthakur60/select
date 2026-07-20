@@ -68,8 +68,8 @@ compiling:
 
 ## Adapters
 
-| Package                                                                                                    | Framework      |
-| ---------------------------------------------------------------------------------------------------------- | -------------- |
+| Package                                                                                               | Framework      |
+| ----------------------------------------------------------------------------------------------------- | -------------- |
 | [`@anil-labs/select-vue`](https://github.com/anilkumarthakur60/select/tree/main/packages/vue)         | Vue 3 / Nuxt   |
 | [`@anil-labs/select-react`](https://github.com/anilkumarthakur60/select/tree/main/packages/react)     | React          |
 | [`@anil-labs/select-svelte`](https://github.com/anilkumarthakur60/select/tree/main/packages/svelte)   | Svelte 5       |
