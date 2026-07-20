@@ -46,7 +46,8 @@ catches `option-value="cod"` typos and infers slot props correctly:
 
 - WAI-ARIA 1.2 combobox + listbox / treeitem patterns
 - `aria-activedescendant` updates as the user navigates
-- Full keyboard support: ↑ / ↓ / Home / End / Enter / Esc / Tab / Backspace
+- Full keyboard support: ↑ / ↓ / Home / End / Enter / Esc / Tab / Backspace,
+  plus → / ← / Space for expanding, collapsing and toggling tree nodes
 - Focus survives menu open / close, tag removal, async option swaps
 - `prefers-reduced-motion` honored
 

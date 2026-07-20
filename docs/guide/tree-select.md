@@ -165,9 +165,36 @@ tree.value?.collapseAll()
 ## Search
 
 Same input as `<VSelect>`. The search filters leaves _and_ keeps their
-ancestor branches in the rendered tree so matches stay reachable. Matching
-subtrees auto-expand — clearing the query collapses back to the
-`default-expand-all` state.
+ancestor branches in the rendered tree so matches stay reachable. A branch
+that matches on its **own** label keeps its entire subtree, so you can search
+for a category and then pick freely inside it. Matching subtrees auto-expand,
+and clearing the query collapses back to the `default-expand-all` state.
+
+Selection state is always derived from the full tree, not the filtered view —
+a parent that is only partially selected still renders as indeterminate while
+you are searching, and toggling it acts on the whole branch rather than just
+the rows you can currently see.
+
+## Keyboard
+
+`<VTreeSelect>` implements the WAI-ARIA tree pattern. The focused element is
+the search input (or the control itself when `searchable` is `false`), and the
+current node is exposed through `aria-activedescendant`.
+
+| Key                              | Action                                                                                  |
+| -------------------------------- | --------------------------------------------------------------------------------------- |
+| <kbd>↓</kbd> / <kbd>↑</kbd>      | Open the menu, or move to the next / previous visible node                              |
+| <kbd>→</kbd>                     | Expand the active branch, or step into its first child                                  |
+| <kbd>←</kbd>                     | Collapse the active branch, or step out to its parent                                   |
+| <kbd>Home</kbd> / <kbd>End</kbd> | Jump to the first / last visible node                                                   |
+| <kbd>Enter</kbd>                 | Open the menu, or toggle the active node                                                |
+| <kbd>Space</kbd>                 | Toggle the active node (ignored while typing in the search box, where it types a space) |
+| <kbd>Esc</kbd>                   | Close the menu                                                                          |
+| <kbd>Tab</kbd>                   | Close the menu and move on                                                              |
+
+Navigation skips disabled nodes and never descends into a collapsed branch, so
+the order always matches what is on screen. Opening the menu highlights the
+first selected leaf when there is one, otherwise the first selectable node.
 
 ## When to reach for it
 

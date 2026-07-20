@@ -47,9 +47,17 @@ the id field — primitives serialise cleanly.
 
 ## Required fields
 
-`required` marks the hidden input(s) so the browser's native form validation
-kicks in. The component itself doesn't render the red ring — that's a
+`required` renders a visually-hidden but **validatable** input, so the
+browser's native form validation kicks in and an empty selection blocks
+submission. The component itself doesn't render the red ring — that's a
 styling concern; key off `:invalid` or your form library's state.
+
+::: tip Why not `type="hidden"`?
+Hidden inputs are barred from constraint validation by the HTML standard, so
+`required` on one is ignored entirely. The validation input is a real text
+input positioned off-screen; focusing it hands focus to the visible control so
+the browser's validation bubble points somewhere the user can act on.
+:::
 
 ## Reading the form
 

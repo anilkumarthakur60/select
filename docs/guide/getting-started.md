@@ -28,10 +28,10 @@ bun add @anil-labs/select-core
 
 :::
 
-The package ships ESM and CJS. Peer dependencies (`vue`, `react` /
-`react-dom`, `svelte`, `solid-js`, `nuxt`) are all optional — install only
-the ones you actually use. Every adapter has zero runtime dependencies
-beyond `@anil-labs/select-core`.
+Every package ships ESM and CJS. Each adapter declares only the peer it
+actually imports — `vue`, `react`, `svelte`, `solid-js` — so you install just
+the framework you use. Beyond `@anil-labs/select-core`, no adapter has any
+runtime dependency.
 
 ## Pick your adapter
 

@@ -10,7 +10,9 @@ Vue adapter uses.
 npm i @anil-labs/select-core
 ```
 
-`react ^18 || ^19` and `react-dom ^18 || ^19` are optional peer deps.
+`react ^18 || ^19` is the only peer dep. `react-dom` is **not** required by
+the package — the components render host elements and never import it — so it
+is whatever your app already uses to render.
 
 ## Import
 
