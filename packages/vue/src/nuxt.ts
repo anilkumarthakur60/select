@@ -30,8 +30,17 @@ export interface ModuleOptions {
 
 // Resolved against the consumer's node_modules — must match the published
 // package name in package.json so Nuxt's bundler can find the entry.
-const PKG = '@anil-labs/select-core'
-const PKG_STYLE = `${PKG}/style.css`
+// The components and composables live HERE, in the Vue package. They were all
+// registered against `@anil-labs/select-core`, which is the framework-agnostic
+// package and exports none of them — so the documented one-liner setup failed
+// three independent ways: `<VSelect>` auto-imported from a package with no such
+// export, `composables: true` auto-imported nothing that exists, and the
+// stylesheet resolved to a subpath that does not exist (core exports
+// `./styles.css`, plural — this asked for `style.css`).
+const PKG = '@anil-labs/select-vue'
+// The stylesheet is deliberately the CORE package: every adapter shares one
+// copy instead of each shipping its own.
+const PKG_STYLE = '@anil-labs/select-core/styles.css'
 
 const COMPONENT_NAMES = [
   'VSelect',
@@ -66,7 +75,7 @@ const COMPOSABLE_NAMES = [
  */
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: '@anil-labs/select-core',
+    name: PKG,
     configKey: 'vue3Select',
     compatibility: {
       nuxt: '^3.0.0 || ^4.0.0',
