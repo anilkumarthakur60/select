@@ -34,7 +34,8 @@
     "docs:preview": "pnpm --filter docs run preview",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm run build && changeset publish"
+    "release": "pnpm run build && changeset publish",
+    "build:demos": "node scripts/build-demos.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
