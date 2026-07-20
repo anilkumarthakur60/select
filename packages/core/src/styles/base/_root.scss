@@ -14,7 +14,13 @@
     }
   }
 
-  .vselect-hidden-input {
+  // `.vselect-validation-input` is a real `type="text"` input, not a hidden
+  // one: hidden inputs are barred from constraint validation, so `required`
+  // on them is ignored and native form validation never fires. It therefore
+  // has to stay in the layout (a `display: none` control is also skipped),
+  // which is why this hides it visually rather than removing it.
+  .vselect-hidden-input,
+  .vselect-validation-input {
     position: absolute;
     width: 1px;
     height: 1px;
