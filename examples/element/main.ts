@@ -1,6 +1,6 @@
 import { defineSelectElement } from '@anil-labs/select-element'
 import { fruits, countries, plans, categories, flatCategories } from '../shared/data'
-import { renderTreeSelect } from './tree-select'
+import { renderTreeSelect } from '../shared/tree-select'
 import '@anil-labs/select-core/styles.css'
 
 defineSelectElement('a-select')

@@ -73,6 +73,28 @@ importers:
         specifier: ^8.0.8
         version: 8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0)
 
+  examples/landing:
+    dependencies:
+      '@anil-labs/select-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@anil-labs/select-element':
+        specifier: workspace:*
+        version: link:../../packages/element
+    devDependencies:
+      '@types/node':
+        specifier: ^24.12.2
+        version: 24.13.3
+      jsdom:
+        specifier: ^29.0.2
+        version: 29.1.1
+      typescript:
+        specifier: ~6.0.0
+        version: 6.0.3
+      vite:
+        specifier: ^8.0.8
+        version: 8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0)
+
   examples/react:
     dependencies:
       '@anil-labs/select-core':

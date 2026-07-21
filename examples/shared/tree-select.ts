@@ -1,21 +1,13 @@
-import {
-  flattenTree,
-  type NormalizedTreeNode,
-  type TreeOptionLike,
-} from '@anil-labs/select-element'
-import {
-  allParentIds,
-  buildTree,
-  checkStateOf,
-  searchTree,
-  toggleNode,
-} from '../shared/tree-helpers'
+import { flattenTree, type NormalizedTreeNode, type TreeOptionLike } from '@anil-labs/select-core'
+import { allParentIds, buildTree, checkStateOf, searchTree, toggleNode } from './tree-helpers'
 
 // Vanilla popover-style tree-select. Same UX as the Vue/React/Svelte/Solid
 // versions — control with selected tags + search input + chevron, opens a
 // menu containing the checkbox tree. No framework runtime; just the
 // package's pure tree helpers driving an innerHTML render with delegated
 // event listeners.
+
+type TreeTheme = 'light' | 'dark' | 'auto'
 
 interface RenderArgs<T extends TreeOptionLike> {
   mount: HTMLElement
@@ -28,15 +20,23 @@ interface RenderArgs<T extends TreeOptionLike> {
   placeholder?: string
   size?: 'sm' | 'md' | 'lg'
   maxVisibleTags?: number
+  theme?: TreeTheme
 }
 
-export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>): void {
+/** Handle returned to callers that need to drive the instance after mount. */
+export interface TreeSelectHandle {
+  /** Re-theme in place — mirrors the `theme` attribute on `<a-select>`. */
+  setTheme(theme: TreeTheme): void
+}
+
+export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>): TreeSelectHandle {
   const { mount, out, options, initial, outKey, optionChildren = 'children' } = args
   const tree = buildTree(options, optionChildren)
 
   let selected: unknown[] = [...initial]
   let query = ''
   let isOpen = false
+  let theme: TreeTheme = args.theme ?? 'light'
   const expanded = new Set<string>(allParentIds(tree))
 
   // Leaf-id → label, so the tags in the control can be looked up by value.
@@ -66,6 +66,9 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
     const rootClasses = [
       'vselect',
       `vselect--${args.size ?? 'md'}`,
+      // Matches what the machine's getRootProps() emits for <a-select>: only
+      // dark/auto get a class, light is the default token set.
+      theme !== 'light' && `vselect--${theme}`,
       isOpen && 'is-open',
       'is-multi',
       'is-searchable',
@@ -244,6 +247,13 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
 
   emit()
   render()
+
+  return {
+    setTheme(next) {
+      theme = next
+      render()
+    },
+  }
 }
 
 function renderNode<T>(

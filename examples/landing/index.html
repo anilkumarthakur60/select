@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@anil-labs/select — one typed, accessible select for every framework</title>
+    <meta
+      name="description"
+      content="Live demos of @anil-labs/select: a typed, accessible select/combobox with single, multi, tags, async, tree modes and Vue, React, Svelte, Solid and Web Component bindings."
+    />
+    <meta name="color-scheme" content="light dark" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="@anil-labs/select — one core, every framework" />
+    <meta
+      property="og:description"
+      content="A typed, accessible select/combobox. Single, multi, tags, async and tree — driven by one framework-agnostic state machine."
+    />
+
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <a class="skip-link" href="#demos">Skip to demos</a>
+
+    <header class="site-header">
+      <div class="shell header-inner">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">▚</span>
+          <span class="brand-name">@anil-labs/select</span>
+          <span class="brand-version" id="version-badge">v0.0.0</span>
+        </div>
+
+        <div class="header-actions">
+          <div
+            class="segmented"
+            role="group"
+            aria-label="Color theme"
+            id="theme-switch"
+            data-active="light"
+          >
+            <button type="button" data-theme="light" aria-pressed="true">Light</button>
+            <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
+            <button type="button" data-theme="auto" aria-pressed="false">Auto</button>
+          </div>
+          <nav class="header-links" aria-label="Project">
+            <a href="https://anilkumarthakur60.github.io/select/">Docs</a>
+            <a href="https://github.com/anilkumarthakur60/select">GitHub</a>
+            <a href="https://www.npmjs.com/package/@anil-labs/select-core">npm</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ---------------------------------------------------------------- -->
+      <section class="hero">
+        <div class="shell hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow">Vue 3 · React · Svelte 5 · Solid · Web Components</p>
+            <h1>One select.<br />Every framework.</h1>
+            <p class="lead">
+              A typed, accessible select/combobox driven by a single framework-agnostic state
+              machine. Single, multiple, tags, async and tree modes — with the same behaviour,
+              semantics and keyboard model everywhere.
+            </p>
+
+            <div class="install">
+              <code id="install-cmd">npm i @anil-labs/select-core</code>
+              <button type="button" id="install-copy" class="copy-btn">Copy</button>
+            </div>
+
+            <div class="hero-cta">
+              <a class="btn btn-primary" href="#demos">Try the demos</a>
+              <a
+                class="btn btn-ghost"
+                href="https://anilkumarthakur60.github.io/select/guide/getting-started"
+                >Get started</a
+              >
+            </div>
+
+            <ul class="hero-stats">
+              <li><strong>~5 kB</strong><span>core, gzipped</span></li>
+              <li><strong>201</strong><span>tests passing</span></li>
+              <li><strong>0</strong><span>runtime deps</span></li>
+            </ul>
+          </div>
+
+          <!-- The hero demo is the product: a real, working select. -->
+          <div class="hero-demo">
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Try it</span>
+                <span class="panel-hint">Type to filter · ↑ ↓ to move · ⏎ to pick</span>
+              </div>
+              <div class="panel-body">
+                <a-select id="hero-select" placeholder="Search countries…"></a-select>
+                <pre class="out" id="hero-out"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------------------------------------------------------- -->
+      <section class="section" id="demos">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Live demos</h2>
+            <p>
+              Every control below is the real component, running the published build. No framework
+              on this page — these are the <code>&lt;a-select&gt;</code> web component and the
+              core's tree helpers.
+            </p>
+          </div>
+
+          <div class="demo-grid">
+            <article class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Single</span>
+                <span class="panel-hint">searchable · clearable</span>
+              </div>
+              <div class="panel-body">
+                <a-select id="d-single" placeholder="Pick a fruit"></a-select>
+                <pre class="out" id="d-single-out"></pre>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Multiple</span>
+                <span class="panel-hint">object options · removable tags</span>
+              </div>
+              <div class="panel-body">
+                <a-select id="d-multi" mode="multiple" placeholder="Pick countries"></a-select>
+                <pre class="out" id="d-multi-out"></pre>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Tags</span>
+                <span class="panel-hint">creates values that don't exist yet</span>
+              </div>
+              <div class="panel-body">
+                <a-select id="d-tags" mode="tags" taggable placeholder="Add tags…"></a-select>
+                <pre class="out" id="d-tags-out"></pre>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Async</span>
+                <span class="panel-hint">loads on open</span>
+              </div>
+              <div class="panel-body">
+                <a-select
+                  id="d-async"
+                  mode="multiple"
+                  placeholder="Open to load users…"
+                  loading-text="Fetching users…"
+                ></a-select>
+                <div class="row">
+                  <button type="button" class="btn btn-small" id="d-async-reset">Reset</button>
+                  <span class="muted" id="d-async-status">Idle — open the menu to fetch.</span>
+                </div>
+                <pre class="out" id="d-async-out"></pre>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Sizes</span>
+                <span class="panel-hint">sm · md · lg, one shared value</span>
+              </div>
+              <div class="panel-body">
+                <div class="stack">
+                  <a-select id="d-size-sm" size="sm" placeholder="Plan (sm)"></a-select>
+                  <a-select id="d-size-md" size="md" placeholder="Plan (md)"></a-select>
+                  <a-select id="d-size-lg" size="lg" placeholder="Plan (lg)"></a-select>
+                </div>
+                <pre class="out" id="d-size-out"></pre>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <span class="panel-title">States</span>
+                <span class="panel-hint">disabled options, loading, locked</span>
+              </div>
+              <div class="panel-body">
+                <div class="stack">
+                  <a-select id="d-state-live" placeholder="Enterprise is disabled"></a-select>
+                  <a-select id="d-state-loading" loading placeholder="Loading…"></a-select>
+                  <a-select
+                    id="d-state-disabled"
+                    disabled
+                    placeholder="Disabled control"
+                  ></a-select>
+                </div>
+                <div class="row">
+                  <button type="button" class="btn btn-small" id="d-state-toggle">
+                    Toggle loading
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="demo-grid demo-grid-wide">
+            <article class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Tree</span>
+                <span class="panel-hint">tri-state parents · search auto-expands</span>
+              </div>
+              <div class="panel-body">
+                <p class="panel-note">
+                  Parent state is <em>derived</em> from the selected leaves, so the model stays a
+                  flat list of leaf values — check a parent and every leaf under it is selected.
+                  Searching matches whole subtrees and keeps ancestors visible.
+                </p>
+                <div id="d-tree-mount"></div>
+                <pre class="out" id="d-tree-out"></pre>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Tree — flat data</span>
+                <span class="panel-hint">same component, no nesting</span>
+              </div>
+              <div class="panel-body">
+                <p class="panel-note">
+                  When every node has <code>children: []</code> the same component degrades to a
+                  plain checkbox list — no separate mode to opt into.
+                </p>
+                <div id="d-tree-flat-mount"></div>
+                <pre class="out" id="d-tree-flat-out"></pre>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------------------------------------------------------- -->
+      <section class="section section-alt" id="theming">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Theming</h2>
+            <p>
+              Every visual token is a CSS custom property scoped to <code>.vselect</code>. Restyling
+              means setting variables — no overrides, no <code>!important</code>, no forked
+              stylesheet.
+            </p>
+          </div>
+
+          <div class="theming-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Accent</span>
+                <span class="panel-hint">live — pick one</span>
+              </div>
+              <div class="panel-body">
+                <div class="swatches" role="group" aria-label="Accent color" id="accent-switch">
+                  <button type="button" data-accent="indigo" aria-pressed="true">
+                    <span class="swatch" style="background: #6366f1"></span>Indigo
+                  </button>
+                  <button type="button" data-accent="emerald" aria-pressed="false">
+                    <span class="swatch" style="background: #10b981"></span>Emerald
+                  </button>
+                  <button type="button" data-accent="rose" aria-pressed="false">
+                    <span class="swatch" style="background: #f43f5e"></span>Rose
+                  </button>
+                  <button type="button" data-accent="amber" aria-pressed="false">
+                    <span class="swatch" style="background: #f59e0b"></span>Amber
+                  </button>
+                </div>
+                <div id="theming-scope">
+                  <a-select id="d-theme" mode="multiple" placeholder="Pick a few fruits"></a-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><span class="panel-title">What just changed</span></div>
+              <div class="panel-body">
+                <pre class="code" id="accent-code"></pre>
+                <p class="panel-note">
+                  <code>emerald</code> and <code>rose</code> also ship as SCSS presets if you build
+                  from source — <code>@use '@anil-labs/select-core/scss/themes/emerald'</code>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------------------------------------------------------- -->
+      <section class="section" id="keyboard">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Keyboard &amp; accessibility</h2>
+            <p>
+              ARIA 1.2 combobox and tree semantics, implemented once in the core so every adapter
+              behaves identically. Try any of these on the demos above.
+            </p>
+          </div>
+
+          <div class="kbd-grid">
+            <table class="kbd-table">
+              <caption>
+                Select &amp; combobox
+              </caption>
+              <tbody>
+                <tr>
+                  <th><kbd>↓</kbd> <kbd>↑</kbd></th>
+                  <td>Move the active option</td>
+                </tr>
+                <tr>
+                  <th><kbd>Home</kbd> <kbd>End</kbd></th>
+                  <td>Jump to first / last option</td>
+                </tr>
+                <tr>
+                  <th><kbd>Enter</kbd></th>
+                  <td>Select the active option</td>
+                </tr>
+                <tr>
+                  <th><kbd>Esc</kbd></th>
+                  <td>Close the menu, keeping the value</td>
+                </tr>
+                <tr>
+                  <th><kbd>Backspace</kbd></th>
+                  <td>Remove the last tag when the query is empty</td>
+                </tr>
+                <tr>
+                  <th><kbd>Tab</kbd></th>
+                  <td>Leave the control and close the menu</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="kbd-table">
+              <caption>
+                Tree
+              </caption>
+              <tbody>
+                <tr>
+                  <th><kbd>↓</kbd> <kbd>↑</kbd></th>
+                  <td>Move between visible rows</td>
+                </tr>
+                <tr>
+                  <th><kbd>→</kbd></th>
+                  <td>Expand a branch, or step into it</td>
+                </tr>
+                <tr>
+                  <th><kbd>←</kbd></th>
+                  <td>Collapse a branch, or step out to its parent</td>
+                </tr>
+                <tr>
+                  <th><kbd>Space</kbd></th>
+                  <td>Toggle the active row</td>
+                </tr>
+                <tr>
+                  <th><kbd>Enter</kbd></th>
+                  <td>Toggle the active row and keep the menu open</td>
+                </tr>
+                <tr>
+                  <th><kbd>Esc</kbd></th>
+                  <td>Close the menu</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------------------------------------------------------- -->
+      <section class="section section-alt" id="features">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Why this one</h2>
+          </div>
+          <div class="feature-grid">
+            <div class="feature">
+              <h3>One core, real adapters</h3>
+              <p>
+                A pure-TS state machine holds all behaviour. Each adapter is a thin, idiomatic
+                binding — <code>v-model</code> in Vue, controlled props in React,
+                <code>$bindable</code>
+                in Svelte, signals in Solid — not a lowest-common-denominator wrapper.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Typed over your data</h3>
+              <p>
+                Full generics over your option type. Accessors, slots and handlers are all typed
+                against <code>T</code>, with no <code>any</code> escape hatch in any adapter.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Accessible by construction</h3>
+              <p>
+                Combobox and tree roles, focus management across open, close and tag removal, and a
+                complete keyboard model — written once, covered by tests, shared by all five
+                adapters.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Tree mode included</h3>
+              <p>
+                Tri-state parents derived from a flat leaf model, search that matches whole subtrees
+                and auto-expands to the hits, and an optional toolbar.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Themeable by variable</h3>
+              <p>
+                Design tokens are CSS custom properties under one scope, and every rule sits in
+                <code>@layer vselect</code> — so your overrides win without specificity fights.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Small and tree-shakeable</h3>
+              <p>
+                Core ~5 kB gz · Vue ~13 kB · React ~8 kB · Svelte/Solid ~6 kB · Web Component ~8 kB
+                · CSS ~3 kB. You pay for the adapter you import, nothing else.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------------------------------------------------------- -->
+      <section class="section" id="frameworks">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Per-framework playgrounds</h2>
+            <p>
+              This page is deliberately framework-free. Each adapter has its own playground showing
+              the idiomatic binding and slot/render-prop API.
+            </p>
+          </div>
+          <div class="fw-grid" id="fw-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <p>
+          Built by
+          <a href="https://github.com/anilkumarthakur60">Anil Kumar Thakur</a> · MIT licensed
+        </p>
+        <p class="muted">
+          Every demo on this page runs the same <code>@anil-labs/select-core</code> engine.
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
