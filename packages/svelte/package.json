@@ -1,6 +1,6 @@
 {
   "name": "@anil-labs/select-svelte",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Svelte 5 headless adapter for @anil-labs/select — a reactive store wrapper you compose into your own components.",
   "type": "module",
   "main": "./dist/index.cjs",
