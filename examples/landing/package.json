@@ -1,7 +1,7 @@
 {
   "name": "example-landing",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "Framework-neutral landing page for @anil-labs/select — every demo on it runs the web component and the core tree helpers, so it needs no framework runtime.",
   "scripts": {

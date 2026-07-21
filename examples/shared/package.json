@@ -1,7 +1,7 @@
 {
   "name": "example-shared",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "Shared fixture data for the @anil-labs/select examples.",
   "scripts": {
