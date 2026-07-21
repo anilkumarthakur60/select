@@ -1,6 +1,6 @@
 {
   "name": "@anil-labs/select-vue",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Vue 3 components for @anil-labs/select — accessible single, multi, tags, async, grouped and tree select.",
   "type": "module",
   "main": "./dist/index.cjs",

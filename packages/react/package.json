@@ -1,6 +1,6 @@
 {
   "name": "@anil-labs/select-react",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "React components and hooks for @anil-labs/select — accessible single, multi, tags, async and grouped select.",
   "type": "module",
   "main": "./dist/index.cjs",

@@ -1,6 +1,6 @@
 {
   "name": "@anil-labs/select-core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Framework-agnostic core for @anil-labs/select — the headless select/combobox state machine, option normalization, filtering and tree helpers, plus the shared stylesheet.",
   "type": "module",
   "main": "./dist/index.cjs",
