@@ -73,7 +73,7 @@
     "@types/react-dom": "19.2.4",
     "@vitejs/plugin-react": "6.0.5",
     "jsdom": "^29.0.2",
-    "@types/node": "^24.12.2"
+    "@types/node": "^26.2.0"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0"
