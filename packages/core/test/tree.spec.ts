@@ -142,7 +142,7 @@ describe('filterTree', () => {
   })
 
   // These two are the point of the test above. It asserted only that the
-  // matched parent survived — never that it kept its subtree — so filterTree
+  // matched parent survived  never that it kept its subtree  so filterTree
   // shipped returning `{ isLeaf: false, children: [] }` for a matched branch.
   // That row rendered a checkbox and an expand chevron but had nothing to
   // select or expand: clicking it emitted no model update while the checkbox
@@ -173,7 +173,7 @@ describe('filterTree', () => {
   })
 })
 
-describe('normalizeTree — malformed input', () => {
+describe('normalizeTree  malformed input', () => {
   it('drops a cyclic node instead of blowing the stack', () => {
     interface Node {
       id: string

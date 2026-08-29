@@ -1,7 +1,7 @@
 # Web Components
 
 The Web Component adapter registers a `<a-select>` custom element and
-covers every framework that doesn't get a dedicated package — Angular,
+covers every framework that doesn't get a dedicated package  Angular,
 Lit, Alpine, Astro, Qwik, vanilla JS, server-rendered HTML.
 
 ## Install
@@ -21,7 +21,7 @@ import '@anil-labs/select-core/styles.css'
 defineSelectElement('a-select') // tag name is configurable; default is 'a-select'
 ```
 
-`defineSelectElement` is idempotent — calling it twice with the same tag
+`defineSelectElement` is idempotent  calling it twice with the same tag
 name is a no-op.
 
 ## Markup
@@ -59,7 +59,7 @@ name is a no-op.
 | `no-clear`                                      | boolean                          | Hide the clear button                      |
 
 Setting `options` (`OptionLike[]`) and `value` (any) **must** go through
-the JS property — attributes only carry strings.
+the JS property  attributes only carry strings.
 
 ## Events
 
@@ -77,7 +77,7 @@ All emitted as `CustomEvent` on the element:
 ## Limitations
 
 - **No tree-select.** Use the Vue adapter for hierarchical selection.
-- **No shadow DOM.** Consumer styles apply directly — by design, so the
+- **No shadow DOM.** Consumer styles apply directly  by design, so the
   shared `style.css` works without `::part` plumbing.
 - **No internal slots.** Render-customisation is attribute-driven; for
   custom option markup, use a framework adapter instead.
@@ -87,9 +87,9 @@ All emitted as `CustomEvent` on the element:
 The module is import-safe in Node (Astro, Nuxt SSR, Next.js). The class
 falls back to a no-op base when `HTMLElement` is undefined, so server
 rendering won't crash. Actual element behaviour still requires a browser
-or jsdom runtime — call `defineSelectElement` from a client-only entry.
+or jsdom runtime  call `defineSelectElement` from a client-only entry.
 
 ## What's next
 
-- [Theming](../theming) — CSS custom properties shared with every adapter
-- [Composables API reference](/api/composables) — the same machine, headless
+- [Theming](../theming)  CSS custom properties shared with every adapter
+- [Composables API reference](/api/composables)  the same machine, headless

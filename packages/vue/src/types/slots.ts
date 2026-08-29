@@ -25,7 +25,7 @@ export interface OptionGroupSlotProps {
   group: string
 }
 
-/** Empty state slot — `mode` distinguishes "no options at all" from "no match". */
+/** Empty state slot  `mode` distinguishes "no options at all" from "no match". */
 export interface EmptySlotProps {
   query: string
   mode: 'no-options' | 'no-results'
@@ -49,7 +49,7 @@ export interface LoaderSlotProps {
   inMenu: boolean
 }
 
-/** Aggregate map of every slot `<VSelect>` exposes — useful for typing wrappers. */
+/** Aggregate map of every slot `<VSelect>` exposes  useful for typing wrappers. */
 export interface VSelectSlots<T = unknown> {
   prefix?: () => unknown
   suffix?: () => unknown

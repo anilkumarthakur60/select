@@ -6,10 +6,10 @@ import '@anil-labs/select-core/styles.css'
 defineSelectElement('a-select')
 
 // Type alias for accessing the SelectElement-specific properties without
-// importing the class — keeps this file framework-free.
+// importing the class  keeps this file framework-free.
 type SelectEl = HTMLElement & { options: unknown[]; value: unknown }
 
-// Theme switch — the WC honours `theme="dark|light|auto"` directly.
+// Theme switch  the WC honours `theme="dark|light|auto"` directly.
 const main = document.getElementById('root')!
 const themeSwitch = document.getElementById('theme-switch') as HTMLSelectElement
 themeSwitch.addEventListener('change', () => {

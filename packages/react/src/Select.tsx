@@ -24,7 +24,7 @@ export interface SelectProps<T extends OptionLike = OptionLike> extends SelectMa
 }
 
 /**
- * Default React `<Select>` — built on top of `useSelect`. Most consumers will
+ * Default React `<Select>`  built on top of `useSelect`. Most consumers will
  * use this; those wanting custom DOM should use `useSelect` directly and
  * spread the prop bags onto their own elements.
  */

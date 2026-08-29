@@ -4,12 +4,12 @@ import type { NormalizedOption } from '@anil-labs/select-core'
 export interface UseTaggableOptions<T> {
   /**
    * Whether taggable mode is active. Combine `props.taggable` with
-   * `mode === 'tags'` upstream — this composable doesn't peek at mode.
+   * `mode === 'tags'` upstream  this composable doesn't peek at mode.
    */
   enabled: Ref<boolean>
   /** Live (non-debounced) query value. */
   query: Ref<string>
-  /** Filtered option list — used to suppress the create-row when the query already matches. */
+  /** Filtered option list  used to suppress the create-row when the query already matches. */
   filtered: Ref<readonly NormalizedOption<T>[]>
   /** Fired when the user accepts the create suggestion. Receives the trimmed query. */
   onCreate: (value: string) => void
@@ -17,7 +17,7 @@ export interface UseTaggableOptions<T> {
 
 export interface UseTaggableReturn {
   /**
-   * `true` when a "Create '<query>'" row should appear in the menu — i.e. the
+   * `true` when a "Create '<query>'" row should appear in the menu  i.e. the
    * query is non-empty and no existing option's label matches it (case-insensitive).
    */
   showCreate: ComputedRef<boolean>

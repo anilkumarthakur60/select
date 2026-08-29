@@ -1,6 +1,6 @@
 # `<VSelect>`
 
-The flagship component — single, multi, tags, async, grouped, all in one.
+The flagship component  single, multi, tags, async, grouped, all in one.
 
 ```ts
 import { VSelect } from '@anil-labs/select-vue'
@@ -10,12 +10,12 @@ import { VSelect } from '@anil-labs/select-vue'
 
 | Prop             | Type                                       | Default                   | Description                                                           |
 | ---------------- | ------------------------------------------ | ------------------------- | --------------------------------------------------------------------- |
-| `modelValue`     | `unknown \| unknown[]`                     | —                         | v-model — single value in `single` mode, array in `multiple` / `tags` |
+| `modelValue`     | `unknown \| unknown[]`                     |                          | v-model  single value in `single` mode, array in `multiple` / `tags` |
 | `options`        | `T[]`                                      | `[]`                      | Source list                                                           |
 | `mode`           | `'single' \| 'multiple' \| 'tags'`         | `'single'`                | Selection shape                                                       |
 | `optionValue`    | `keyof T \| (o: T) => unknown`             | `'value'`                 | Value accessor                                                        |
 | `optionLabel`    | `keyof T \| (o: T) => string`              | `'label'`                 | Label accessor                                                        |
-| `optionGroup`    | `keyof T \| (o: T) => string \| undefined` | —                         | Group key accessor                                                    |
+| `optionGroup`    | `keyof T \| (o: T) => string \| undefined` |                          | Group key accessor                                                    |
 | `optionDisabled` | `keyof T \| (o: T) => boolean`             | `'disabled'`              | Disabled flag                                                         |
 | `placeholder`    | `string`                                   | `'Select…'`               | Placeholder text                                                      |
 | `searchable`     | `boolean`                                  | `true`                    | Show the search input                                                 |
@@ -25,11 +25,11 @@ import { VSelect } from '@anil-labs/select-vue'
 | `closeOnSelect`  | `boolean`                                  | `mode === 'single'`       | Close menu after a pick                                               |
 | `autofocus`      | `boolean`                                  | `false`                   | Focus the search input on mount                                       |
 | `taggable`       | `boolean`                                  | `false`                   | Allow creating new options (tags mode)                                |
-| `maxVisibleTags` | `number`                                   | —                         | Collapse extras into a `+N` chip past this count                      |
-| `maxSelections`  | `number`                                   | —                         | Hard cap on multi / tags selections                                   |
+| `maxVisibleTags` | `number`                                   |                          | Collapse extras into a `+N` chip past this count                      |
+| `maxSelections`  | `number`                                   |                          | Hard cap on multi / tags selections                                   |
 | `filter`         | `FilterFn<T>`                              | substring                 | Custom filter function                                                |
 | `caseSensitive`  | `boolean`                                  | `false`                   | Case-sensitive matching                                               |
-| `debounce`       | `number`                                   | —                         | ms between keystrokes and `@search` / filter recomputation            |
+| `debounce`       | `number`                                   |                          | ms between keystrokes and `@search` / filter recomputation            |
 | `emptyText`      | `string`                                   | `'No options'`            | Menu text when there are no options                                   |
 | `noResultsText`  | `string`                                   | falls back to `emptyText` | Menu text when search yields nothing                                  |
 | `loadingText`    | `string`                                   | `'Loading…'`              | Menu text while loading                                               |
@@ -37,7 +37,7 @@ import { VSelect } from '@anil-labs/select-vue'
 | `theme`          | `'light' \| 'dark' \| 'auto'`              | `'light'`                 | Visual theme                                                          |
 | `ariaLabel`      | `string`                                   | `placeholder`             | ARIA label override                                                   |
 | `teleportTo`     | `string \| HTMLElement \| false`           | `false`                   | Mount the menu via `<Teleport>` to this target                        |
-| `name`           | `string`                                   | —                         | Hidden input name for native form submission                          |
+| `name`           | `string`                                   |                          | Hidden input name for native form submission                          |
 | `required`       | `boolean`                                  | `false`                   | Mark the hidden input as required                                     |
 | `id`             | `string`                                   | auto                      | Override the auto-generated id                                        |
 
@@ -47,12 +47,12 @@ import { VSelect } from '@anil-labs/select-vue'
 | ------------------- | --------------------- | ------------------------------------------------------ |
 | `update:modelValue` | `unknown`             | The selection changes                                  |
 | `update:search`     | `string`              | The (debounced) query changes                          |
-| `search`            | `string`              | Same as above — fire for `@search` listeners           |
+| `search`            | `string`              | Same as above  fire for `@search` listeners           |
 | `select`            | `NormalizedOption<T>` | An option is added to the selection                    |
 | `deselect`          | `NormalizedOption<T>` | An option is removed                                   |
-| `create`            | `string`              | Tags mode — user pressed Enter on a non-matching query |
-| `open`              | —                     | Menu opens                                             |
-| `close`             | —                     | Menu closes                                            |
+| `create`            | `string`              | Tags mode  user pressed Enter on a non-matching query |
+| `open`              |                      | Menu opens                                             |
+| `close`             |                      | Menu closes                                            |
 | `focus`             | `FocusEvent`          | Focus enters the control                               |
 | `blur`              | `FocusEvent`          | Focus leaves the control entirely                      |
 
@@ -66,8 +66,8 @@ See the [Slots guide](../guide/slots) for usage. Quick reference:
 
 | Slot           | Props                                           |
 | -------------- | ----------------------------------------------- |
-| `prefix`       | —                                               |
-| `suffix`       | —                                               |
+| `prefix`       |                                                |
+| `suffix`       |                                                |
 | `value`        | `{ selected, isMulti }`                         |
 | `tag`          | `{ option, remove, disabled }`                  |
 | `option`       | `{ option, selected, active, disabled }`        |
@@ -91,7 +91,7 @@ sel.value?.focus() // focus the search input (or trigger if not searchable)
 sel.value?.blur() // blur whichever element has focus
 sel.value?.clear() // wipe the selection
 sel.value?.flushSearch() // commit the pending debounced search now
-sel.value?.isOpen // boolean — readable mirror of the open state
+sel.value?.isOpen // boolean  readable mirror of the open state
 ```
 
 ## Subcomponents
@@ -101,7 +101,7 @@ you want to reuse them outside the parent control:
 
 | Component       | Use for                                                                                           |
 | --------------- | ------------------------------------------------------------------------------------------------- |
-| `VSelectOption` | A single menu row — handles `pick` / `highlight` events and renders the active / selected styling |
+| `VSelectOption` | A single menu row  handles `pick` / `highlight` events and renders the active / selected styling |
 | `VSelectTag`    | One tag chip with a remove button, used in multi / tags mode                                      |
 
 ```ts

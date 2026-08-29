@@ -11,7 +11,7 @@ export default defineNuxtConfig({
 
 That's the whole setup. `<VSelect>` and `<VTreeSelect>` are auto-imported
 as global components and the stylesheet is injected. SSR is supported out
-of the box — the menu renders client-side via `<Teleport>` when configured.
+of the box  the menu renders client-side via `<Teleport>` when configured.
 
 ## Module options
 
@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   vue3Select: {
     /** Disable to keep tree-shaken named imports only. Default: true */
     components: true,
-    /** Prefix the auto-registered tags — e.g. 'My' → <MySelect /> */
+    /** Prefix the auto-registered tags  e.g. 'My' → <MySelect /> */
     prefix: '',
     /** Auto-import the headless composables too. Default: false */
     composables: false,
@@ -35,7 +35,7 @@ With `composables: true` the following are auto-imported across your app
 without an explicit `import`: `useSelection`, `useTreeSelection`,
 `useOptionFilter`, `useKeyboardNav`, `useStableId`, `useDebounced`. The
 remaining composables (e.g. `useFloatingMenu`, `useFormBinding`) are still
-available — just `import` them from `@anil-labs/select-vue` directly.
+available  just `import` them from `@anil-labs/select-vue` directly.
 
 ## Without the module
 
@@ -60,7 +60,7 @@ import { VSelect } from '@anil-labs/select-vue'
 </script>
 ```
 
-The CSS still has to be imported once — easiest in `nuxt.config.ts`:
+The CSS still has to be imported once  easiest in `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({

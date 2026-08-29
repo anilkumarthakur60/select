@@ -25,7 +25,7 @@ export interface SvelteSelectAdapter<T extends OptionLike = OptionLike> {
   machine: SelectMachine<T>
   subscribe: (listener: () => void) => () => void
   /**
-   * Manual tick counter — increment inside an effect to force a Svelte
+   * Manual tick counter  increment inside an effect to force a Svelte
    * `$state` re-read when the machine notifies. Svelte 5 runes can't observe
    * external pub/sub on their own.
    */
@@ -42,7 +42,7 @@ export function createSelectAdapter<T extends OptionLike = OptionLike>(
     // of closures over its factory scope, so `subscribe` never reads `this` and
     // detaching it is safe. The rule flags the shape, not an actual defect.
     //
-    // Directive stays on the line directly above its target — Prettier reflows
+    // Directive stays on the line directly above its target  Prettier reflows
     // a long trailing `--` reason and would move it off.
     // eslint-disable-next-line @typescript-eslint/unbound-method
     subscribe: machine.subscribe,

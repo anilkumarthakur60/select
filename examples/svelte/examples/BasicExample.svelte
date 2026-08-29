@@ -7,7 +7,7 @@
 </script>
 
 <article class="card">
-  <h2>Single — primitives</h2>
+  <h2>Single  primitives</h2>
   <p>Pass an array of strings; modelValue is two-way through onChange.</p>
   <Select
     modelValue={fruit}

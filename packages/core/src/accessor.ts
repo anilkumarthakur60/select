@@ -26,13 +26,13 @@ export function isPrimitive(value: unknown): value is string | number | boolean 
  *
  * A bare `String(x)` on a non-primitive silently renders "[object Object]" as
  * the row text, the collapsed control's accessible name, the tag text and the
- * remove button's `aria-label` — and, because `label` is the only field search
+ * remove button's `aria-label`  and, because `label` is the only field search
  * matches against, makes the option unreachable by typing. An i18n-shaped
  * label (`{ en: 'Apple', fr: 'Pomme' }`) is the realistic way to hit it.
  *
  * So: primitives stringify, a non-primitive falls back to the option's value
  * and warns once telling the caller to supply an `optionLabel` accessor. An
- * empty string is the last resort — callers that need a non-empty accessible
+ * empty string is the last resort  callers that need a non-empty accessible
  * name must handle that case themselves.
  */
 export function safeLabel(raw: unknown, fallback: unknown, where: string): string {

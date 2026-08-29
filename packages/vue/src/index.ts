@@ -4,7 +4,7 @@
 // Styles are NOT imported here. They live in `@anil-labs/select-core` and are
 // shared by every adapter, so importing them from one adapter would give Vue
 // consumers stylesheets automatically while React/Svelte/Solid consumers had
-// to opt in — and would defeat the `sideEffects: false` tree-shaking hint.
+// to opt in  and would defeat the `sideEffects: false` tree-shaking hint.
 // Consumers import them explicitly:
 //   import '@anil-labs/select-core/styles.css'      // compiled
 //   @use '@anil-labs/select-core/scss' as select;   // source, to compose tokens
@@ -20,7 +20,7 @@ export * from '@/components/icons'
 // Plugin
 export { VueSelectPlugin, type VueSelectPluginOptions } from '@/plugin'
 
-// Composables — re-exported so users can build headless variants on top.
+// Composables  re-exported so users can build headless variants on top.
 export {
   useControlFocus,
   useDebounced,
@@ -58,7 +58,7 @@ export {
   type UseTriggerInteractionsReturn,
 } from '@/composables'
 
-// Core helpers — useful for custom filter functions and option pre-processing.
+// Core helpers  useful for custom filter functions and option pre-processing.
 export {
   normalize,
   defaultFilter,

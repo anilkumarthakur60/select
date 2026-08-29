@@ -1,6 +1,6 @@
 /**
  * Internal shape every option is normalised into. Consumers may pass
- * primitives (string/number) or arbitrary objects — the component reads
+ * primitives (string/number) or arbitrary objects  the component reads
  * identity via `optionValue` and label via `optionLabel`, then keeps a
  * reference to the original raw option on `raw`.
  */
@@ -11,7 +11,7 @@ export interface NormalizedOption<T = unknown> {
   value: unknown
   /** Display label. */
   label: string
-  /** Optional group key — options sharing a key render under the same heading. */
+  /** Optional group key  options sharing a key render under the same heading. */
   group?: string
   /** Disabled options are visible but not selectable. */
   disabled?: boolean

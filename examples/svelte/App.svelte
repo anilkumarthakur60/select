@@ -20,7 +20,7 @@
       <span class="tag">v0.0.1</span>
     </div>
     <p class="lead">
-      Headless Svelte 5 adapter — drop-in <code>Select.svelte</code> example included. Powered by the
+      Headless Svelte 5 adapter  drop-in <code>Select.svelte</code> example included. Powered by the
       same framework-agnostic core as the Vue, React, and Web Component builds.
     </p>
     <label class="theme-switch">

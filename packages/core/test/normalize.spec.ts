@@ -43,7 +43,7 @@ describe('normalize', () => {
   })
 })
 
-describe('normalize — label coercion', () => {
+describe('normalize  label coercion', () => {
   it('does not render a non-primitive label as "[object Object]"', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     resetWarnings()

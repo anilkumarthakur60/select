@@ -18,7 +18,7 @@ export interface UseDebouncedReturn<T> {
 /**
  * Debounces a reactive source. The returned `debounced` ref updates `delay`
  * ms after the source last changed; `flush()` and `cancel()` give callers
- * control over the trailing edge — useful when the user presses Enter in an
+ * control over the trailing edge  useful when the user presses Enter in an
  * async picker and expects the request to fire **now**, not after the wait.
  *
  * `delay` is itself a ref so consumers can flip the prop at runtime; passing

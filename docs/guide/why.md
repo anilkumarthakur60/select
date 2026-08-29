@@ -1,6 +1,6 @@
 # Why @anil-labs/select-core?
 
-There are plenty of select components — for Vue, for React, for Svelte,
+There are plenty of select components  for Vue, for React, for Svelte,
 for everyone. This one earns its place by sweating the parts that other
 libraries leave fuzzy, and by doing so **once** in a framework-agnostic
 core that every adapter shares.
@@ -11,18 +11,18 @@ A pure-TypeScript state machine drives every adapter. The keyboard map,
 ARIA wiring, focus management, filtering, and tag/create-on-Enter logic
 live in `@anil-labs/select-core` (the root entry) and are reused by:
 
-- **Vue** — `<VSelect>`, `<VTreeSelect>`, plugin, composables
-- **React** — `<Select>` component + `useSelect` hook
-- **Svelte 5** — `createSelectAdapter` headless primitive
-- **Solid** — `createSelect` headless primitive
-- **Web Component** — `<a-select>` custom element (covers Angular, Lit, Alpine, vanilla, …)
+- **Vue**  `<VSelect>`, `<VTreeSelect>`, plugin, composables
+- **React**  `<Select>` component + `useSelect` hook
+- **Svelte 5**  `createSelectAdapter` headless primitive
+- **Solid**  `createSelect` headless primitive
+- **Web Component**  `<a-select>` custom element (covers Angular, Lit, Alpine, vanilla, …)
 
 You don't switch select libraries when you switch frameworks, and behaviour
-parity is a test pass — not a hope.
+parity is a test pass  not a hope.
 
 ## One component, every shape
 
-Single, multi, tags (with create-on-Enter), grouped, async, and tree — same
+Single, multi, tags (with create-on-Enter), grouped, async, and tree  same
 props surface, same slot names, same keyboard map. You don't switch
 component imports when the design changes.
 
@@ -83,7 +83,7 @@ framework-free TypeScript.
 
 The default stylesheet is wrapped in `@layer vselect`, so consumer rules
 written outside any layer always win. All colors, spacing, and motion live
-as CSS custom properties under the `.vselect` namespace — override at any
+as CSS custom properties under the `.vselect` namespace  override at any
 cascade level, no SCSS recompile required.
 
 ```css
@@ -93,7 +93,7 @@ cascade level, no SCSS recompile required.
 }
 ```
 
-## Tiny — pay only for what you import
+## Tiny  pay only for what you import
 
 | Entry                 | gzipped |
 | --------------------- | ------- |
@@ -105,7 +105,7 @@ cascade level, no SCSS recompile required.
 | Web Component         | ~8 kB   |
 | CSS                   | ~3 kB   |
 
-Each package is its own entry — bundlers only pull in the adapter you
+Each package is its own entry  bundlers only pull in the adapter you
 import, and every adapter's only runtime dependency is
 `@anil-labs/select-core`. Menu positioning is implemented in-house rather
 than pulling in a positioning library, so nothing is downloaded or executed

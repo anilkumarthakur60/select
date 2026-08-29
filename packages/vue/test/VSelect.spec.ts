@@ -16,7 +16,7 @@ function open(w: VueWrapper) {
   return w.find('.vselect-control').trigger('mousedown')
 }
 
-describe('<VSelect> — single mode', () => {
+describe('<VSelect>  single mode', () => {
   it('renders the placeholder when nothing is selected', () => {
     wrapper = mount(VSelect, {
       props: { options: FRUITS, placeholder: 'Pick…' },
@@ -118,7 +118,7 @@ describe('<VSelect> — single mode', () => {
   })
 })
 
-describe('<VSelect> — multiple mode', () => {
+describe('<VSelect>  multiple mode', () => {
   it('renders one tag per selected value', () => {
     wrapper = mount(VSelect, {
       props: { options: FRUITS, mode: 'multiple', modelValue: ['Apple', 'Banana'] },
@@ -151,7 +151,7 @@ describe('<VSelect> — multiple mode', () => {
   })
 })
 
-describe('<VSelect> — accessors and grouping', () => {
+describe('<VSelect>  accessors and grouping', () => {
   interface Country {
     code: string
     name: string
@@ -180,9 +180,9 @@ describe('<VSelect> — accessors and grouping', () => {
   })
 })
 
-describe('<VSelect> — aria wiring', () => {
+describe('<VSelect>  aria wiring', () => {
   // Under WAI-ARIA 1.2 the combobox is the element that RECEIVES FOCUS. When
-  // searchable (the default) that is the search input — the control div carries
+  // searchable (the default) that is the search input  the control div carries
   // tabindex={-1} and can never be focused, so declaring the role there meant a
   // screen reader announced the focused element as a plain edit field and was
   // never told the popup opened or closed. This test used to assert the role
@@ -221,7 +221,7 @@ describe('<VSelect> — aria wiring', () => {
       attachTo: document.body,
     })
     // The placeholder is stripped once a value exists, and `ariaLabel` used to
-    // land on the unfocusable div — leaving the focused input with no
+    // land on the unfocusable div  leaving the focused input with no
     // accessible name at all.
     const search = wrapper.find('input.vselect-search')
     expect(search.attributes('placeholder')).toBeUndefined()

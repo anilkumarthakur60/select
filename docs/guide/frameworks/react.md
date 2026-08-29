@@ -11,7 +11,7 @@ npm i @anil-labs/select-core
 ```
 
 `react ^18 || ^19` is the only peer dep. `react-dom` is **not** required by
-the package — the components render host elements and never import it — so it
+the package  the components render host elements and never import it  so it
 is whatever your app already uses to render.
 
 ## Import
@@ -61,7 +61,7 @@ const [selected, setSelected] = useState<string[]>([])
 />
 ```
 
-The component is generic over `T` — `optionValue` / `optionLabel` are
+The component is generic over `T`  `optionValue` / `optionLabel` are
 type-checked against `keyof T`.
 
 ## Hook usage (headless)
@@ -113,6 +113,6 @@ runtime accepts.
 
 ## What's next
 
-- [Headless Composables](../headless) — same primitives, framework-agnostic
-- [Theming](../theming) — CSS custom properties shared across adapters
-- [Composables API reference](/api/composables) — every primitive's signature
+- [Headless Composables](../headless)  same primitives, framework-agnostic
+- [Theming](../theming)  CSS custom properties shared across adapters
+- [Composables API reference](/api/composables)  every primitive's signature

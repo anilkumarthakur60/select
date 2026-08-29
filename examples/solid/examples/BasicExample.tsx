@@ -8,7 +8,7 @@ export default function BasicExample(props: { theme: Theme }) {
 
   return (
     <article class="card">
-      <h2>Single — primitives</h2>
+      <h2>Single  primitives</h2>
       <p>Pass an array of strings; controlled via Solid signal.</p>
       <Select
         modelValue={fruit()}

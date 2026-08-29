@@ -1,7 +1,7 @@
 # Tags Mode
 
 Tags mode is multi-select with create-on-the-fly. Type something the option
-list doesn't contain, press <kbd>Enter</kbd>, and a `create` event fires —
+list doesn't contain, press <kbd>Enter</kbd>, and a `create` event fires 
 you decide whether to push it into the source list.
 
 ```vue
@@ -53,10 +53,10 @@ function onCreate(value) {
 
 - The "Create &lt;query&gt;" row appears when the search query has no match in `options`
 - <kbd>Enter</kbd> on a highlighted option picks it
-- <kbd>Enter</kbd> with no highlight, on a query that **exactly matches a visible option**, selects that option — it does not create a duplicate
+- <kbd>Enter</kbd> with no highlight, on a query that **exactly matches a visible option**, selects that option  it does not create a duplicate
 - <kbd>Enter</kbd> with no highlight, on a query with no match, fires `@create`
 - The query is trimmed, so a whitespace-only query is not creatable and `"Vue "` will not offer to create a second `"Vue"`
-- The host owns the source list — you typically push the new value into `options` so future searches find it
+- The host owns the source list  you typically push the new value into `options` so future searches find it
 - The component **doesn't auto-select** the created value; bind `@create` and call `tags.value.push(value)` (or use the model directly) for that behaviour
 
 ## Customising the create row

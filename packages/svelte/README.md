@@ -43,7 +43,7 @@ npm install @anil-labs/select-svelte @anil-labs/select-core
 </div>
 ```
 
-`tick` is read inside the markup so Svelte re-renders on machine notifications —
+`tick` is read inside the markup so Svelte re-renders on machine notifications 
 runes cannot observe external pub/sub on their own.
 
 `toSvelteProps` maps the core's Vue-JSX-style event keys (`onMousedown`) to
@@ -52,7 +52,7 @@ Svelte 5's lowercased ones (`onmousedown`).
 ## Styles
 
 The stylesheet lives in `@anil-labs/select-core` so every adapter shares one
-copy — importing it from this package will not work.
+copy  importing it from this package will not work.
 
 ## License
 

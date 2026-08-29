@@ -1,6 +1,6 @@
 # Solid
 
-The Solid adapter is **headless** — it ships `createSelect`, a primitive
+The Solid adapter is **headless**  it ships `createSelect`, a primitive
 that wraps the framework-agnostic state machine and exposes a `tick`
 accessor so Solid's fine-grained reactivity can subscribe to machine
 notifications. No JSX component is shipped; consumers wire their own DOM
@@ -73,10 +73,10 @@ Copy it into your project as a starting point.
 
 - Tree-select is not supported. Use the Vue adapter for hierarchical
   selection.
-- The signal pattern (`tick()`) is the only way to subscribe — Solid
+- The signal pattern (`tick()`) is the only way to subscribe  Solid
   cannot observe arbitrary class mutations on its own.
 
 ## What's next
 
 - [Theming](../theming)
-- [Composables API reference](/api/composables) — the underlying primitives
+- [Composables API reference](/api/composables)  the underlying primitives

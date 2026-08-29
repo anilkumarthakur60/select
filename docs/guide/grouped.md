@@ -68,7 +68,7 @@ const country = ref<string | null>(null)
 
 - `option-group` is read **per option**, not as a top-level structure
 - Adjacent options with the same group key collapse into one heading
-- Options without a group render under no heading — mix freely
+- Options without a group render under no heading  mix freely
 - Search filters individual options; group headings disappear if their last child does
 
 ## Customising the heading

@@ -44,7 +44,7 @@ function FruitPicker() {
 ```
 
 `select.tick()` must be read inside any reactive scope that should re-run when
-the machine changes — the signal flips on every notification. Cleanup is
+the machine changes  the signal flips on every notification. Cleanup is
 registered automatically via `onCleanup`.
 
 `toSolidProps` maps the core's Vue-JSX-style event keys (`onMousedown`) to
@@ -52,14 +52,14 @@ Solid's lowercased ones (`onmousedown`).
 
 ## Not supported here
 
-Tree select is Vue-only for now — use
+Tree select is Vue-only for now  use
 [`@anil-labs/select-vue`](https://github.com/anilkumarthakur60/select/tree/main/packages/vue)
 if you need hierarchical selection.
 
 ## Styles
 
 The stylesheet lives in `@anil-labs/select-core` so every adapter shares one
-copy — importing it from this package will not work.
+copy  importing it from this package will not work.
 
 ## License
 

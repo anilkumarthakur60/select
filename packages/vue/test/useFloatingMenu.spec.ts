@@ -3,7 +3,7 @@ import { effectScope, nextTick, ref, type CSSProperties } from 'vue'
 import { useFloatingMenu } from '@/composables/useFloatingMenu'
 
 // jsdom gives every element a zero rect and does no layout, so positioning has
-// to be driven from stubbed rects. That is fine — the arithmetic is exactly
+// to be driven from stubbed rects. That is fine  the arithmetic is exactly
 // what we want to pin down.
 
 const VIEWPORT = { width: 1000, height: 800 }
@@ -63,7 +63,7 @@ async function run(
 const px = (styles: CSSProperties | undefined, key: 'top' | 'left' | 'minWidth') =>
   Number.parseFloat(String(styles?.[key] ?? ''))
 
-describe('useFloatingMenu — in-flow (teleportTo: false)', () => {
+describe('useFloatingMenu  in-flow (teleportTo: false)', () => {
   // The whole reason for replacing @floating-ui/vue: useFloating() ran
   // unconditionally, so a DEFAULT select built a ResizeObserver, attached four
   // window scroll/resize listeners, computed a position and then discarded it
@@ -97,7 +97,7 @@ describe('useFloatingMenu — in-flow (teleportTo: false)', () => {
   })
 })
 
-describe('useFloatingMenu — floating', () => {
+describe('useFloatingMenu  floating', () => {
   it('places the menu below the control, offset by the gap', async () => {
     const api = await run('body', {
       anchor: { top: 100, bottom: 130, left: 50, width: 200, height: 30 },
@@ -166,7 +166,7 @@ describe('useFloatingMenu — floating', () => {
       menu: { width: 200, height: 150 },
     })
 
-    // Capture phase, so scrolls in ancestor containers are heard too — those
+    // Capture phase, so scrolls in ancestor containers are heard too  those
     // do not bubble.
     const scrollCall = addSpy.mock.calls.find((c) => c[0] === 'scroll')
     expect(scrollCall?.[2]).toBe(true)

@@ -10,7 +10,7 @@ const fruit = ref<string | null>(null)
 
 <template>
   <article class="card">
-    <h2>Single — primitives</h2>
+    <h2>Single  primitives</h2>
     <p>Pass an array of strings; v-model binds the chosen value.</p>
     <VSelect v-model="fruit" :options="fruits" :theme="theme" placeholder="Pick a fruit" />
     <pre>{{ JSON.stringify({ fruit }, null, 2) }}</pre>

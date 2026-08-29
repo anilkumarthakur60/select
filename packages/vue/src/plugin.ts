@@ -16,7 +16,7 @@ export interface VueSelectPluginOptions {
 }
 
 /**
- * Optional plugin entry — `app.use(VueSelectPlugin)` registers `<VSelect />`
+ * Optional plugin entry  `app.use(VueSelectPlugin)` registers `<VSelect />`
  * and `<VTreeSelect />` globally. Most consumers should prefer the named
  * import for tree-shaking; the plugin is most useful in app shells where
  * components are referenced from runtime templates.

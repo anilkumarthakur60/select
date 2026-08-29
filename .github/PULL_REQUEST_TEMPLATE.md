@@ -36,4 +36,4 @@
 
 ## Related issues
 
-<!-- "Fixes #123" / "Closes #456" — leave blank if N/A. -->
+<!-- "Fixes #123" / "Closes #456"  leave blank if N/A. -->

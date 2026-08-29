@@ -185,7 +185,7 @@ describe('<VTreeSelect>', () => {
     })
     await open(wrapper)
     await nextTick()
-    // Nothing expanded by default — only the two roots are rendered.
+    // Nothing expanded by default  only the two roots are rendered.
     expect(wrapper.findAll('[role="treeitem"]')).toHaveLength(2)
 
     const action = () =>
@@ -196,7 +196,7 @@ describe('<VTreeSelect>', () => {
     expect(action().text()).toBe('Expand all')
     await action().trigger('mousedown')
     await nextTick()
-    // Every parent now expanded — leaves render too (2 roots + 3 leaves = 5).
+    // Every parent now expanded  leaves render too (2 roots + 3 leaves = 5).
     expect(wrapper.findAll('[role="treeitem"]')).toHaveLength(5)
     expect(action().text()).toBe('Collapse all')
 

@@ -1,7 +1,7 @@
 # @anil-labs/select-element
 
 `<a-select>` custom element for
-[`@anil-labs/select`](https://github.com/anilkumarthakur60/select) — a
+[`@anil-labs/select`](https://github.com/anilkumarthakur60/select)  a
 framework-free select you can drop into any page, built on the shared
 [`@anil-labs/select-core`](https://github.com/anilkumarthakur60/select/tree/main/packages/core)
 state machine.
@@ -52,7 +52,7 @@ into the machine and re-renders.
 ## Styles
 
 The stylesheet lives in `@anil-labs/select-core` so every adapter shares one
-copy — importing it from this package will not work.
+copy  importing it from this package will not work.
 
 ## License
 

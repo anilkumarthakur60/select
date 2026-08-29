@@ -8,7 +8,7 @@ import type { OptionLike } from '@anil-labs/select-core'
 
 // Solid adapter is *headless*: no JSX component shipped, just a primitive
 // that wires the framework-agnostic machine to a Solid signal so consumers
-// get reactivity in their own `.tsx`. Tree-select is not supported here —
+// get reactivity in their own `.tsx`. Tree-select is not supported here 
 // use the Vue adapter for hierarchical selection.
 //
 // Usage:
@@ -17,7 +17,7 @@ import type { OptionLike } from '@anil-labs/select-core'
 //   <div {...toSolidProps(select.machine.getRootProps())}>...</div>
 //
 // `select.tick()` is read inside any reactive scope that should re-run on
-// machine state change — derived signals, effects, JSX. The signal flips
+// machine state change  derived signals, effects, JSX. The signal flips
 // on every `subscribe` notification.
 
 export interface SolidSelect<T extends OptionLike = OptionLike> {
@@ -45,7 +45,7 @@ export function createSelect<T extends OptionLike = OptionLike>(
 // bags the machine returns (`RootProps`, `ControlProps`, …) are interfaces, and
 // interfaces have no implicit index signature, so they are NOT assignable to
 // `Record<string, unknown>`. With the old signature the usage documented above
-// — `toSolidProps(select.machine.getRootProps())` — did not typecheck.
+//  `toSolidProps(select.machine.getRootProps())`  did not typecheck.
 export function toSolidProps<T extends object>(props: T): Record<string, unknown> {
   const out: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(props)) {

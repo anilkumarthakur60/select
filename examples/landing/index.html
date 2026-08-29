@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@anil-labs/select — one typed, accessible select for every framework</title>
+    <title>@anil-labs/select  one typed, accessible select for every framework</title>
     <meta
       name="description"
       content="Live demos of @anil-labs/select: a typed, accessible select/combobox with single, multi, tags, async, tree modes and Vue, React, Svelte, Solid and Web Component bindings."
@@ -11,10 +11,10 @@
     <meta name="color-scheme" content="light dark" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="@anil-labs/select — one core, every framework" />
+    <meta property="og:title" content="@anil-labs/select  one core, every framework" />
     <meta
       property="og:description"
-      content="A typed, accessible select/combobox. Single, multi, tags, async and tree — driven by one framework-agnostic state machine."
+      content="A typed, accessible select/combobox. Single, multi, tags, async and tree  driven by one framework-agnostic state machine."
     />
 
     <link rel="icon" href="data:," />
@@ -60,7 +60,7 @@
             <h1>One select.<br />Every framework.</h1>
             <p class="lead">
               A typed, accessible select/combobox driven by a single framework-agnostic state
-              machine. Single, multiple, tags, async and tree modes — with the same behaviour,
+              machine. Single, multiple, tags, async and tree modes  with the same behaviour,
               semantics and keyboard model everywhere.
             </p>
 
@@ -108,7 +108,7 @@
             <h2>Live demos</h2>
             <p>
               Every control below is the real component, running the published build. No framework
-              on this page — these are the <code>&lt;a-select&gt;</code> web component and the
+              on this page  these are the <code>&lt;a-select&gt;</code> web component and the
               core's tree helpers.
             </p>
           </div>
@@ -161,7 +161,7 @@
                 ></a-select>
                 <div class="row">
                   <button type="button" class="btn btn-small" id="d-async-reset">Reset</button>
-                  <span class="muted" id="d-async-status">Idle — open the menu to fetch.</span>
+                  <span class="muted" id="d-async-status">Idle  open the menu to fetch.</span>
                 </div>
                 <pre class="out" id="d-async-out"></pre>
               </div>
@@ -215,7 +215,7 @@
               <div class="panel-body">
                 <p class="panel-note">
                   Parent state is <em>derived</em> from the selected leaves, so the model stays a
-                  flat list of leaf values — check a parent and every leaf under it is selected.
+                  flat list of leaf values  check a parent and every leaf under it is selected.
                   Searching matches whole subtrees and keeps ancestors visible.
                 </p>
                 <div id="d-tree-mount"></div>
@@ -225,13 +225,13 @@
 
             <article class="panel">
               <div class="panel-head">
-                <span class="panel-title">Tree — flat data</span>
+                <span class="panel-title">Tree  flat data</span>
                 <span class="panel-hint">same component, no nesting</span>
               </div>
               <div class="panel-body">
                 <p class="panel-note">
                   When every node has <code>children: []</code> the same component degrades to a
-                  plain checkbox list — no separate mode to opt into.
+                  plain checkbox list  no separate mode to opt into.
                 </p>
                 <div id="d-tree-flat-mount"></div>
                 <pre class="out" id="d-tree-flat-out"></pre>
@@ -248,7 +248,7 @@
             <h2>Theming</h2>
             <p>
               Every visual token is a CSS custom property scoped to <code>.vselect</code>. Restyling
-              means setting variables — no overrides, no <code>!important</code>, no forked
+              means setting variables  no overrides, no <code>!important</code>, no forked
               stylesheet.
             </p>
           </div>
@@ -257,7 +257,7 @@
             <div class="panel">
               <div class="panel-head">
                 <span class="panel-title">Accent</span>
-                <span class="panel-hint">live — pick one</span>
+                <span class="panel-hint">live  pick one</span>
               </div>
               <div class="panel-body">
                 <div class="swatches" role="group" aria-label="Accent color" id="accent-switch">
@@ -286,7 +286,7 @@
                 <pre class="code" id="accent-code"></pre>
                 <p class="panel-note">
                   <code>emerald</code> and <code>rose</code> also ship as SCSS presets if you build
-                  from source — <code>@use '@anil-labs/select-core/scss/themes/emerald'</code>.
+                  from source  <code>@use '@anil-labs/select-core/scss/themes/emerald'</code>.
                 </p>
               </div>
             </div>
@@ -384,9 +384,9 @@
               <h3>One core, real adapters</h3>
               <p>
                 A pure-TS state machine holds all behaviour. Each adapter is a thin, idiomatic
-                binding — <code>v-model</code> in Vue, controlled props in React,
+                binding  <code>v-model</code> in Vue, controlled props in React,
                 <code>$bindable</code>
-                in Svelte, signals in Solid — not a lowest-common-denominator wrapper.
+                in Svelte, signals in Solid  not a lowest-common-denominator wrapper.
               </p>
             </div>
             <div class="feature">
@@ -400,7 +400,7 @@
               <h3>Accessible by construction</h3>
               <p>
                 Combobox and tree roles, focus management across open, close and tag removal, and a
-                complete keyboard model — written once, covered by tests, shared by all five
+                complete keyboard model  written once, covered by tests, shared by all five
                 adapters.
               </p>
             </div>
@@ -415,7 +415,7 @@
               <h3>Themeable by variable</h3>
               <p>
                 Design tokens are CSS custom properties under one scope, and every rule sits in
-                <code>@layer vselect</code> — so your overrides win without specificity fights.
+                <code>@layer vselect</code>  so your overrides win without specificity fights.
               </p>
             </div>
             <div class="feature">

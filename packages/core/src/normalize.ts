@@ -32,7 +32,7 @@ export function normalize<T extends OptionLike>(
       config.optionValue,
       (option as Record<string, unknown>).value,
     )
-    // Resolve the label WITHOUT coercing, then coerce through safeLabel — the
+    // Resolve the label WITHOUT coercing, then coerce through safeLabel  the
     // old `String(option.label ?? value ?? '')` rendered "[object Object]" for
     // an i18n-shaped label and made the row unsearchable, since `label` is the
     // only field the filter matches against.
@@ -50,7 +50,7 @@ export function normalize<T extends OptionLike>(
     )
     return {
       // The index already makes the id unique, so a non-primitive value
-      // contributes nothing but "[object Object]" — and this id is
+      // contributes nothing but "[object Object]"  and this id is
       // interpolated into DOM attributes downstream.
       id: isPrimitive(value) ? `opt-${index}-${String(value)}` : `opt-${index}`,
       value,

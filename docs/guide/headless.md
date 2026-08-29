@@ -25,7 +25,7 @@ use the dedicated headless adapters:
 | `useDebounced`           | Debounce a `Ref` source with `flush` / `cancel` / `force` escape hatches      |
 | `useKeyboardNav`         | Arrow / Home / End / Enter / Esc / Backspace key handling                     |
 | `useTriggerInteractions` | Mouse + input handlers shared by both triggers                                |
-| `useFloatingMenu`        | Menu positioning — offset / flip / clamp / width-match, teleport gating       |
+| `useFloatingMenu`        | Menu positioning  offset / flip / clamp / width-match, teleport gating       |
 | `useOutsideClick`        | Pointerdown outside a set of refs while active                                |
 | `useControlFocus`        | Track "focus is inside this subtree" with rAF-deferred blur                   |
 | `useFormBinding`         | Hidden-input descriptors for native `<form>` participation                    |
@@ -109,7 +109,7 @@ const { onKeydown } = useKeyboardNav({
 </script>
 ```
 
-You now have a fully-functional state machine — render the input, list,
+You now have a fully-functional state machine  render the input, list,
 and selected display with whatever markup your design system uses.
 
 ## Why this matters

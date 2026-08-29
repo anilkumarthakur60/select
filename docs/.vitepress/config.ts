@@ -4,7 +4,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
   title: '@anil-labs/select-core',
   description:
-    'A typed, accessible, headless-friendly select for Vue, React, Svelte, Solid, and Web Components — one core, idiomatic adapters.',
+    'A typed, accessible, headless-friendly select for Vue, React, Svelte, Solid, and Web Components  one core, idiomatic adapters.',
   lang: 'en-US',
   cleanUrls: true,
   lastUpdated: true,
@@ -22,7 +22,7 @@ export default defineConfig({
       {
         name: 'og:description',
         content:
-          'A typed, accessible select for Vue, React, Svelte, Solid, and Web Components — framework-agnostic core, framework-idiomatic adapters.',
+          'A typed, accessible select for Vue, React, Svelte, Solid, and Web Components  framework-agnostic core, framework-idiomatic adapters.',
       },
     ],
   ],
@@ -127,7 +127,7 @@ export default defineConfig({
   },
 
   // Docs consume the real workspace packages, so every example on every page
-  // is exactly the code a consumer writes — and the docs build fails if a
+  // is exactly the code a consumer writes  and the docs build fails if a
   // package's published entry points break.
   vite: {
     plugins: [vueJsx()],

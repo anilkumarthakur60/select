@@ -3,7 +3,7 @@ import type { NormalizedTreeNode, TreeNodeCheckState } from '@anil-labs/select-c
 import { flattenTree, getLeafValues, walkTree } from '@anil-labs/select-core'
 
 export interface UseTreeSelectionOptions<T> {
-  /** v-model — array of leaf values. */
+  /** v-model  array of leaf values. */
   modelValue: Ref<unknown>
   /** Normalised tree to evaluate state against. */
   tree: Ref<NormalizedTreeNode<T>[]>
@@ -17,16 +17,16 @@ export interface UseTreeSelectionOptions<T> {
 export interface UseTreeSelectionReturn<T> {
   selectedValues: ComputedRef<unknown[]>
   isLeafSelected: (node: NormalizedTreeNode<T>) => boolean
-  /** Tri-state for parents — for leaves, `'checked'` or `'unchecked'`. */
+  /** Tri-state for parents  for leaves, `'checked'` or `'unchecked'`. */
   getCheckState: (node: NormalizedTreeNode<T>) => TreeNodeCheckState
-  /** Toggle a leaf or — if the node is a parent — every selectable leaf below it. */
+  /** Toggle a leaf or  if the node is a parent  every selectable leaf below it. */
   toggle: (node: NormalizedTreeNode<T>) => void
   selectAll: () => void
   clear: () => void
 }
 
 /**
- * Tree-aware selection state. Only **leaves** are stored in v-model — parent
+ * Tree-aware selection state. Only **leaves** are stored in v-model  parent
  * checkbox state is always derived from the leaves below it. This keeps the
  * caller's value contract simple ("here's an array of ids") and matches the
  * common UX of tree-pickers like Element Plus / Ant Design.
@@ -43,7 +43,7 @@ export function useTreeSelection<T>(opts: UseTreeSelectionOptions<T>): UseTreeSe
   })
 
   // Set keeps `getCheckState` (called per row on every render) at O(1)
-  // average lookup — for trees of any non-trivial size the previous
+  // average lookup  for trees of any non-trivial size the previous
   // `Array.some` walk was the dominant cost.
   const selectedSet = computed(() => new Set(selectedValues.value))
 
@@ -57,7 +57,7 @@ export function useTreeSelection<T>(opts: UseTreeSelectionOptions<T>): UseTreeSe
     const set = selectedSet.value
     let total = 0
     let selected = 0
-    // Walk descendants, counting only enabled leaves — disabled leaves can't
+    // Walk descendants, counting only enabled leaves  disabled leaves can't
     // be toggled, so they shouldn't influence the parent's tri-state.
     const stack: NormalizedTreeNode<T>[] = node.children.slice()
     while (stack.length) {
@@ -121,7 +121,7 @@ export function useTreeSelection<T>(opts: UseTreeSelectionOptions<T>): UseTreeSe
     }
     // Cap FIRST, then emit events off the capped result. This used to emit the
     // truncated array but then walk the whole branch and fire @select for every
-    // enabled leaf — with `max-selections=2`, clicking a 5-leaf parent emitted
+    // enabled leaf  with `max-selections=2`, clicking a 5-leaf parent emitted
     // update:modelValue [3,4] alongside five @select events, three of which
     // described selections that never happened. The leaf path already gets this
     // right (it checks the cap before emitting), so the two paths in this same
@@ -154,7 +154,7 @@ export function useTreeSelection<T>(opts: UseTreeSelectionOptions<T>): UseTreeSe
     if (selectedValues.value.length === 0) return
     const cleared = selectedSet.value
     opts.emitUpdate([])
-    // Best-effort deselect — only emit for leaves that exist in the current tree.
+    // Best-effort deselect  only emit for leaves that exist in the current tree.
     for (const node of flattenTree(opts.tree.value)) {
       if (node.isLeaf && cleared.has(node.value)) opts.emitDeselect(node)
     }

@@ -7,7 +7,7 @@ import type { TreeOptionLike } from '@anil-labs/select-core'
  * `.d.ts` without tripping on synthesized private names.
  */
 export interface VTreeSelectProps<T extends TreeOptionLike = TreeOptionLike> {
-  /** v-model — array of leaf values currently selected. */
+  /** v-model  array of leaf values currently selected. */
   modelValue?: unknown[]
   options?: T[]
 
@@ -34,7 +34,7 @@ export interface VTreeSelectProps<T extends TreeOptionLike = TreeOptionLike> {
   defaultExpandAll?: boolean
   /** Show "select all" / "clear" actions above the tree. */
   showToolbar?: boolean
-  /** Auto-close after every toggle (rarely useful for trees — default false). */
+  /** Auto-close after every toggle (rarely useful for trees  default false). */
   closeOnSelect?: boolean
   /** Focus the search input on mount. */
   autofocus?: boolean
@@ -56,7 +56,7 @@ export interface VTreeSelectProps<T extends TreeOptionLike = TreeOptionLike> {
   ariaLabel?: string
   teleportTo?: string | HTMLElement | false
 
-  /** Form integration — emits hidden inputs under this name (one per leaf). */
+  /** Form integration  emits hidden inputs under this name (one per leaf). */
   name?: string
   /** Marks the hidden input as required. */
   required?: boolean

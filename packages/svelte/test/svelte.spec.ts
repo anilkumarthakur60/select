@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createSelectAdapter, toSvelteProps } from '@/index'
 
-// The Svelte adapter is headless — no .svelte component ships from this
+// The Svelte adapter is headless  no .svelte component ships from this
 // package, so the smoke test asserts only that:
 //   1. the wrapper returns a working machine + subscribe pair
 //   2. the prop translator lowercases event keys for Svelte 5's `onevent`

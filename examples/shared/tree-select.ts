@@ -2,7 +2,7 @@ import { flattenTree, type NormalizedTreeNode, type TreeOptionLike } from '@anil
 import { allParentIds, buildTree, checkStateOf, searchTree, toggleNode } from './tree-helpers'
 
 // Vanilla popover-style tree-select. Same UX as the Vue/React/Svelte/Solid
-// versions — control with selected tags + search input + chevron, opens a
+// versions  control with selected tags + search input + chevron, opens a
 // menu containing the checkbox tree. No framework runtime; just the
 // package's pure tree helpers driving an innerHTML render with delegated
 // event listeners.
@@ -25,7 +25,7 @@ interface RenderArgs<T extends TreeOptionLike> {
 
 /** Handle returned to callers that need to drive the instance after mount. */
 export interface TreeSelectHandle {
-  /** Re-theme in place — mirrors the `theme` attribute on `<a-select>`. */
+  /** Re-theme in place  mirrors the `theme` attribute on `<a-select>`. */
   setTheme(theme: TreeTheme): void
 }
 
@@ -122,7 +122,7 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
       if (fresh) {
         fresh.focus()
         if (caretStart !== null && caretEnd !== null) {
-          // Best-effort caret restore — input.value is set from `query` so
+          // Best-effort caret restore  input.value is set from `query` so
           // the offsets line up with what the user just typed.
           try {
             fresh.setSelectionRange(caretStart, caretEnd)
@@ -149,7 +149,7 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
         isOpen = !isOpen
         render()
         if (isOpen) {
-          // After render the captured `search` is detached — query the fresh node.
+          // After render the captured `search` is detached  query the fresh node.
           const fresh = mount.querySelector<HTMLInputElement>('input.vselect-search')
           fresh?.focus()
         }
@@ -160,7 +160,7 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
       if (!isOpen) isOpen = true
       render()
       // render() already re-focused the (fresh) search input via the
-      // wasSearchFocused branch — nothing more to do here.
+      // wasSearchFocused branch  nothing more to do here.
     })
     search.addEventListener('focus', () => {
       if (!isOpen) {
@@ -224,7 +224,7 @@ export function renderTreeSelect<T extends TreeOptionLike>(args: RenderArgs<T>):
       })
     })
 
-    // Set indeterminate flags after render — runtime-only property.
+    // Set indeterminate flags after render  runtime-only property.
     const selectedSet = new Set(selected)
     mount.querySelectorAll<HTMLInputElement>('input[data-action="toggle"]').forEach((el) => {
       const id = el.dataset.id!

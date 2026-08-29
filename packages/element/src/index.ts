@@ -1,7 +1,7 @@
 import { createSelectMachine, type SelectMachine } from '@anil-labs/select-core'
 import type { OptionLike } from '@anil-labs/select-core'
 
-// Web Component adapter — covers every framework that doesn't get a
+// Web Component adapter  covers every framework that doesn't get a
 // dedicated package: Angular, Lit, Alpine, vanilla JS, Astro, Qwik, etc.
 // The element is registered as <a-select> by default; consumers wanting a
 // different tag can call `defineSelectElement('my-select')` themselves.
@@ -10,14 +10,14 @@ import type { OptionLike } from '@anil-labs/select-core'
 //   - Tree-select is not supported (Vue adapter only)
 //   - Slots are real DOM <slot> elements, not framework idioms
 //   - Options are passed via the `options` property (not attribute) when
-//     they are objects — strings/numbers can come via attributes or text
+//     they are objects  strings/numbers can come via attributes or text
 //   - Events are dispatched as CustomEvents on the element; listen via
 //     `el.addEventListener('change', ...)` etc.
 //
 // SSR / Node import safety: `class extends HTMLElement` evaluates at module
 // load, and `HTMLElement` is undefined outside the browser. Falling back to
 // a no-op base class lets the module import cleanly in Node so consumers
-// can `import` it from SSR-rendered code without crashing — actual element
+// can `import` it from SSR-rendered code without crashing  actual element
 // behaviour still requires a browser/jsdom runtime via `defineSelectElement`.
 const HTMLElementBase: typeof HTMLElement =
   typeof HTMLElement !== 'undefined' ? HTMLElement : (class {} as unknown as typeof HTMLElement)
@@ -68,13 +68,13 @@ export class SelectElement extends HTMLElementBase {
   }
 
   connectedCallback(): void {
-    // The MACHINE is created once — re-connecting must not reset state.
+    // The MACHINE is created once  re-connecting must not reset state.
     if (!this.machine) {
       this.machine = createSelectMachine<OptionLike>(this.collectConfig())
     }
     // The WIRING is re-established on every connect. disconnectedCallback
     // tears it down unconditionally, but this whole block used to sit behind
-    // `if (!this.machine)` — so after an unmount + re-append (v-if, *ngIf,
+    // `if (!this.machine)`  so after an unmount + re-append (v-if, *ngIf,
     // list reordering, moving into a portal) `this.machine` was still truthy,
     // the subscription was never restored, and the DOM simply stopped
     // updating. The machine kept working, so state and UI silently desynced:
@@ -164,7 +164,7 @@ export class SelectElement extends HTMLElementBase {
     // Capture focus + caret BEFORE the subtree is replaced.
     //
     // render() runs on every machine notify() and replaces every child node,
-    // including the focused search input — so focus fell to document.body on
+    // including the focused search input  so focus fell to document.body on
     // *every* interaction: tabbing in (focusin flips state.focused and
     // notifies), each keystroke (the second character went to <body> and the
     // query stuck at one char), and each arrow key. The element was entirely
@@ -254,7 +254,7 @@ export class SelectElement extends HTMLElementBase {
       }
     }
 
-    // Wire events. We re-bind on every render — innerHTML wipes existing
+    // Wire events. We re-bind on every render  innerHTML wipes existing
     // listeners. For larger lists a stable DOM + event delegation would be
     // faster, but a single delegated handler on the root is enough here.
     this.onmousedown = (event) => {
@@ -266,7 +266,7 @@ export class SelectElement extends HTMLElementBase {
         // Resolve by INDEX, mirroring the option rows below. This used to
         // round-trip through `String(o.value)`, so every object-valued tag
         // carried the identical string "[object Object]" and `find()` always
-        // returned the FIRST selected option — clicking × on "Gamma" silently
+        // returned the FIRST selected option  clicking × on "Gamma" silently
         // removed "Alpha", and the `deselect` event reported the wrong one.
         const host = target.closest<HTMLElement>('[data-tag-index]')
         const opt = selected[Number(host?.dataset.tagIndex)]
@@ -295,7 +295,7 @@ export class SelectElement extends HTMLElementBase {
         machine.createFromQuery()
         return
       }
-      // Click landed on the control itself (background) — toggle.
+      // Click landed on the control itself (background)  toggle.
       if (target.closest('.vselect-control')) {
         event.preventDefault()
         machine.toggle()

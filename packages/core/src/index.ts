@@ -1,5 +1,5 @@
 export { readAccessor, isPrimitive, safeLabel } from '@/accessor'
-// Shared by the adapters so every package warns through one deduped registry —
+// Shared by the adapters so every package warns through one deduped registry 
 // these fire from render paths, so an undeduped warning prints once per frame.
 export { devWarn, resetWarnings } from '@/warn'
 export { normalize } from '@/normalize'

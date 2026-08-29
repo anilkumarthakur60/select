@@ -10,5 +10,5 @@
 // shim) never saw it; anyone else had to write their own declaration. Wiring a
 // `types` condition onto the export is the fix that costs consumers nothing.
 //
-// A side-effect import needs no shape, only a module — hence the empty export.
+// A side-effect import needs no shape, only a module  hence the empty export.
 export {}

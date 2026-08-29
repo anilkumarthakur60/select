@@ -24,7 +24,7 @@ export function normalizeTree<T extends TreeOptionLike>(
   // descendant is dropped instead of recursing forever. `visit()` runs inside a
   // Vue `computed` that is read during render, so an unguarded cycle threw
   // `RangeError: Maximum call stack size exceeded` out of the render function
-  // and took the component tree down — not a contained "bad data" outcome.
+  // and took the component tree down  not a contained "bad data" outcome.
   // Graph-shaped server data (org charts, ORM rows hydrating both `parent` and
   // `children`) produces cycles by accident.
   const onPath = new Set<T>()
@@ -37,7 +37,7 @@ export function normalizeTree<T extends TreeOptionLike>(
   ): NormalizedTreeNode<T> | null {
     if (onPath.has(node)) {
       devWarn(
-        '[select-core] normalizeTree: cycle detected — a node is its own descendant. ' +
+        '[select-core] normalizeTree: cycle detected  a node is its own descendant. ' +
           'The repeated node has been dropped.',
       )
       return null
@@ -157,7 +157,7 @@ export function filterTree<T>(
     // A node that matches on its own label keeps its ENTIRE subtree.
     //
     // This used to fall through and prune children that did not match, which
-    // produced a node with `isLeaf: false` and zero children — a completely
+    // produced a node with `isLeaf: false` and zero children  a completely
     // dead row. `getLeafValues()` returned `[]` so toggling its checkbox
     // emitted nothing, yet the checkbox stayed visually ticked (Vue never
     // patched `checked` back, because the model never moved), and the chevron

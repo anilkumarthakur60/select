@@ -1,6 +1,6 @@
 # @anil-labs/select-react
 
-React bindings for [`@anil-labs/select`](https://github.com/anilkumarthakur60/select) —
+React bindings for [`@anil-labs/select`](https://github.com/anilkumarthakur60/select) 
 a ready-made `<Select>` plus the `useSelect` hook it is built on, both driven by
 the shared
 [`@anil-labs/select-core`](https://github.com/anilkumarthakur60/select/tree/main/packages/core)
@@ -34,7 +34,7 @@ export function FruitPicker() {
 ```
 
 The stylesheet lives in `@anil-labs/select-core` so every adapter shares one
-copy — importing it from this package will not work.
+copy  importing it from this package will not work.
 
 ### Custom rendering
 

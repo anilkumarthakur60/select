@@ -15,7 +15,7 @@ import type { FilterFn } from '@/types/filter'
 // Framework-agnostic select state machine.
 //
 // The Vue adapter has its own implementation (composables) for historical
-// reasons — this machine drives the React, Svelte, Solid, and Web Component
+// reasons  this machine drives the React, Svelte, Solid, and Web Component
 // adapters. Tree-select is intentionally out of scope here; consumers needing
 // hierarchical selection should use the Vue adapter for now.
 //
@@ -33,7 +33,7 @@ function generateId(prefix: string): string {
 export interface SelectMachineConfig<T extends OptionLike = OptionLike> {
   options?: T[]
   mode?: SelectMode
-  /** When provided, the machine runs *controlled* — internal selectedValues mirrors this. */
+  /** When provided, the machine runs *controlled*  internal selectedValues mirrors this. */
   modelValue?: unknown
 
   optionValue?: string | ((option: T) => unknown)
@@ -232,7 +232,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
   /**
    * Normalises an *incoming* modelValue. The `value === ''` carve-out is for
    * forms that initialise a select with an empty string meaning "nothing
-   * chosen" — it must NOT be applied to values the machine emits, or an option
+   * chosen"  it must NOT be applied to values the machine emits, or an option
    * legitimately valued `''` (the native-`<select>` "any / no preference"
    * sentinel) is emitted and then immediately forgotten.
    */
@@ -270,7 +270,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
     // passed. A parent that validates and rejects a change, reverts after a
     // failed save, or resets a form to its initial value pushed the same
     // modelValue back, the diff saw "no change", and the machine kept its own
-    // selection forever — the UI showed the rejected option indefinitely.
+    // selection forever  the UI showed the rejected option indefinitely.
     config = { ...config, modelValue: next }
     config.onChange?.(next)
     notify()
@@ -497,7 +497,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
       }
     }
     // Every visible option is disabled. Falling out of the loop silently left
-    // a stale index behind — a disabled row kept rendering as active, Enter on
+    // a stale index behind  a disabled row kept rendering as active, Enter on
     // it preventDefault-ed and selected nothing, and no adapter re-rendered
     // because notify() never fired.
     state.activeIndex = -1
@@ -525,7 +525,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
         return
       }
     }
-    // No enabled option — clear rather than leaving a stale index. See moveActive().
+    // No enabled option  clear rather than leaving a stale index. See moveActive().
     state.activeIndex = -1
     notify()
   }
@@ -538,7 +538,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
   }
 
   function createFromQuery() {
-    // Trimmed, so the created tag is the same string the user sees offered —
+    // Trimmed, so the created tag is the same string the user sees offered 
     // and a whitespace-only query creates nothing at all.
     const q = state.query.trim()
     if (!taggableResolved() || !q) return
@@ -563,7 +563,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
   function handleControlMousedown(event: MouseEvent) {
     if (config.disabled) return
     // Prevent the focus-grab from a click stealing focus from the (possibly
-    // hidden) search input — adapter's render decides the actual focus target.
+    // hidden) search input  adapter's render decides the actual focus target.
     event.preventDefault()
     toggle()
   }
@@ -623,7 +623,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
           break
         }
         // In tags mode, typing an exact match shows the real row and NO create
-        // row (showCreate() returns false) — but Enter used to fire onCreate
+        // row (showCreate() returns false)  but Enter used to fire onCreate
         // anyway, producing a duplicate tag while onChange never fired.
         // setQuery() resets activeIndex to -1, so there is no highlight to
         // fall back on; match the query against the list explicitly.
@@ -637,7 +637,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
           event.preventDefault()
           createFromQuery()
         }
-        // Otherwise Enter means nothing here — leave the event alone so it can
+        // Otherwise Enter means nothing here  leave the event alone so it can
         // submit the surrounding form.
         break
       }
@@ -820,7 +820,7 @@ export function createSelectMachine<T extends OptionLike = OptionLike>(
       // is recomputed on demand, so after an async result replaced a longer
       // list activeIndex pointed past the end: no row rendered as active,
       // `aria-activedescendant` was undefined (screen readers announced
-      // nothing), and Enter still took the "has active index" branch — calling
+      // nothing), and Enter still took the "has active index" branch  calling
       // preventDefault(), swallowing form submit, and then selecting nothing.
       // This is the documented async pattern, which replaces `:options` on
       // every search response.

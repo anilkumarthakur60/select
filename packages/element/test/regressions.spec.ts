@@ -23,7 +23,7 @@ const mousedown = () => new MouseEvent('mousedown', { bubbles: true, cancelable:
 
 describe('HTML injection', () => {
   // Labels were escaped but the option id was interpolated raw into the `id`
-  // attribute — and ids embed the option value. Option lists routinely come
+  // attribute  and ids embed the option value. Option lists routinely come
   // from an API or CMS, so this was a live XSS sink. React and Vue build DOM
   // through their renderers, so only this adapter was exploitable.
   it('does not let an option value break out of the id attribute', () => {
@@ -45,7 +45,7 @@ describe('HTML injection', () => {
 describe('focus across re-render', () => {
   // render() replaces the whole subtree on every notify(), including the
   // focused input. Merely tabbing in re-rendered (focusin flips state.focused
-  // and notifies), so focus fell to <body> on every interaction — the element
+  // and notifies), so focus fell to <body> on every interaction  the element
   // was entirely keyboard-inoperable.
   it('keeps focus when focusin triggers a re-render', () => {
     const node = create()
@@ -133,7 +133,7 @@ describe('tag removal', () => {
 
 describe('remount', () => {
   // disconnectedCallback tore the wiring down unconditionally, but
-  // connectedCallback re-established it only behind `if (!this.machine)` —
+  // connectedCallback re-established it only behind `if (!this.machine)` 
   // still truthy on re-connect. The machine kept working while the DOM stopped
   // updating: state and UI silently desynced. Triggered by v-if, list
   // reordering, or moving a node into a portal.

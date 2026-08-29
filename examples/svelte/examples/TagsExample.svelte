@@ -12,7 +12,7 @@
 </script>
 
 <article class="card">
-  <h2>Tags — create on the fly</h2>
+  <h2>Tags  create on the fly</h2>
   <p>Type and press Enter to create new options.</p>
   <Select
     modelValue={tags}

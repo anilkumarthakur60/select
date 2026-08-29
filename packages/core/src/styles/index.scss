@@ -1,5 +1,5 @@
 // Public stylesheet entry. Every rule is wrapped in `@layer vselect` so
-// consumer overrides — even those written without `@layer` themselves —
+// consumer overrides  even those written without `@layer` themselves 
 // naturally win the cascade without specificity wars.
 
 @use 'tokens' as tokens;
@@ -32,7 +32,7 @@
     @include tokens.tokens;
   }
 
-  // Theme variants — apply via class on the root.
+  // Theme variants  apply via class on the root.
   .vselect--dark {
     @include tokens.dark-tokens;
   }

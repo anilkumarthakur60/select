@@ -110,7 +110,7 @@ a {
   color: var(--pg-fg-muted);
 }
 
-/* Visible only once focused — keyboard users can jump straight to the demos
+/* Visible only once focused  keyboard users can jump straight to the demos
  * instead of tabbing through the whole header. */
 .skip-link {
   position: absolute;

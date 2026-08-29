@@ -10,7 +10,7 @@ const userLoading = ref(false)
 const userResults = ref<User[]>([])
 const selectedUser = ref<number | null>(null)
 
-// `:debounce="350"` does the trailing-edge wait — the handler only fires
+// `:debounce="350"` does the trailing-edge wait  the handler only fires
 // once the user stops typing, no manual setTimeout dance required.
 async function onUserSearch(q: string) {
   userQuery.value = q
@@ -34,7 +34,7 @@ async function onUserSearch(q: string) {
 
 <template>
   <article class="card">
-    <h2>Async — debounced search</h2>
+    <h2>Async  debounced search</h2>
     <p>
       <code>:debounce="350"</code> waits for the user to stop typing before firing
       <code>@search</code>, so you only make one request per pause.

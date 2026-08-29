@@ -6,7 +6,7 @@ import type { OptionAccessor } from '@/types/option'
  * the hierarchy without recomputing on every paint.
  */
 export interface NormalizedTreeNode<T = unknown> {
-  /** Stable key — used by Vue's v-for and aria. */
+  /** Stable key  used by Vue's v-for and aria. */
   id: string
   /** The value emitted via v-model when this node is a leaf. */
   value: unknown

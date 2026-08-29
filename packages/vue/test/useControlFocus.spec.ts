@@ -34,7 +34,7 @@ describe('useControlFocus', () => {
 
     expect(focused.value).toBe(false)
     inner.focus()
-    // Drive the handler manually — jsdom dispatches focusin synchronously
+    // Drive the handler manually  jsdom dispatches focusin synchronously
     // but the composable is bound by the consumer; we just call onFocusIn.
     scope.stop()
   })

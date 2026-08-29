@@ -6,14 +6,14 @@ Hierarchical multi-select with tri-state parents.
 import { VTreeSelect } from '@anil-labs/select-vue'
 ```
 
-v-model holds **leaf values only** — parent state is always derived. See
+v-model holds **leaf values only**  parent state is always derived. See
 the [Tree Select guide](../guide/tree-select) for examples.
 
 ## Props
 
 | Prop               | Type                                    | Default                   | Description                                     |
 | ------------------ | --------------------------------------- | ------------------------- | ----------------------------------------------- |
-| `modelValue`       | `unknown[]`                             | `[]`                      | v-model — array of selected leaf values         |
+| `modelValue`       | `unknown[]`                             | `[]`                      | v-model  array of selected leaf values         |
 | `options`          | `T[]`                                   | `[]`                      | Tree roots                                      |
 | `optionValue`      | `keyof T \| (o: T) => unknown`          | `value` ?? `id`           | Leaf value accessor                             |
 | `optionLabel`      | `keyof T \| (o: T) => string`           | `label` ?? `name`         | Label accessor                                  |
@@ -24,13 +24,13 @@ the [Tree Select guide](../guide/tree-select) for examples.
 | `clearable`        | `boolean`                               | `true`                    | Show the clear button                           |
 | `disabled`         | `boolean`                               | `false`                   | Disable the whole control                       |
 | `loading`          | `boolean`                               | `false`                   | Show the loading spinner                        |
-| `maxSelections`    | `number`                                | —                         | Hard cap on selected leaves                     |
-| `maxVisibleTags`   | `number`                                | —                         | Collapse to `+N` past this count                |
+| `maxSelections`    | `number`                                |                          | Hard cap on selected leaves                     |
+| `maxVisibleTags`   | `number`                                |                          | Collapse to `+N` past this count                |
 | `defaultExpandAll` | `boolean`                               | `false`                   | Expand every parent on first render             |
 | `showToolbar`      | `boolean`                               | `true`                    | Show "Select all" / "Clear" actions             |
 | `closeOnSelect`    | `boolean`                               | `false`                   | Close after every toggle (rarely useful)        |
 | `autofocus`        | `boolean`                               | `false`                   | Focus the search input on mount                 |
-| `debounce`         | `number`                                | —                         | ms between keystrokes and search emits          |
+| `debounce`         | `number`                                |                          | ms between keystrokes and search emits          |
 | `emptyText`        | `string`                                | `'No options'`            | Menu text when there are no nodes               |
 | `noResultsText`    | `string`                                | falls back to `emptyText` | Text when search yields nothing                 |
 | `loadingText`      | `string`                                | `'Loading…'`              | Menu text while loading                         |
@@ -38,7 +38,7 @@ the [Tree Select guide](../guide/tree-select) for examples.
 | `theme`            | `'light' \| 'dark' \| 'auto'`           | `'light'`                 | Visual theme                                    |
 | `ariaLabel`        | `string`                                | `placeholder`             | ARIA label override                             |
 | `teleportTo`       | `string \| HTMLElement \| false`        | `false`                   | Mount the menu via `<Teleport>`                 |
-| `name`             | `string`                                | —                         | Hidden input name (one input per selected leaf) |
+| `name`             | `string`                                |                          | Hidden input name (one input per selected leaf) |
 | `required`         | `boolean`                               | `false`                   | Mark the hidden input as required               |
 | `id`               | `string`                                | auto                      | Override the auto-generated id                  |
 
@@ -53,8 +53,8 @@ the [Tree Select guide](../guide/tree-select) for examples.
 | `deselect`          | `NormalizedTreeNode<T>` | A leaf is unchecked                                                  |
 | `expand`            | `NormalizedTreeNode<T>` | Parent expanded                                                      |
 | `collapse`          | `NormalizedTreeNode<T>` | Parent collapsed                                                     |
-| `open`              | —                       | Menu opens                                                           |
-| `close`             | —                       | Menu closes                                                          |
+| `open`              |                        | Menu opens                                                           |
+| `close`             |                        | Menu closes                                                          |
 | `focus`             | `FocusEvent`            | Focus enters the control                                             |
 | `blur`              | `FocusEvent`            | Focus leaves the control entirely                                    |
 
@@ -66,8 +66,8 @@ import type { VTreeSelectEmits } from '@anil-labs/select-vue'
 
 | Slot           | Props                                                                      |
 | -------------- | -------------------------------------------------------------------------- |
-| `prefix`       | —                                                                          |
-| `suffix`       | —                                                                          |
+| `prefix`       |                                                                           |
+| `suffix`       |                                                                           |
 | `value`        | `{ selected: NormalizedTreeNode<T>[] }`                                    |
 | `tag`          | `{ node, remove, disabled }`                                               |
 | `toolbar`      | `{ selectAll, clear, expandAll, collapseAll, allExpanded, selectedCount }` |
@@ -100,7 +100,7 @@ tree.value?.isOpen
 
 | Component         | Use for                                                                                                        |
 | ----------------- | -------------------------------------------------------------------------------------------------------------- |
-| `VTreeSelectNode` | A single tree row — exported in case you build a custom toolbar / virtualisation around the same node renderer |
+| `VTreeSelectNode` | A single tree row  exported in case you build a custom toolbar / virtualisation around the same node renderer |
 
 ```ts
 import { VTreeSelectNode } from '@anil-labs/select-vue'

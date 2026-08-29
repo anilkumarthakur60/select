@@ -24,7 +24,7 @@ export default defineComponent({
     /**
      * Keyboard activation. Enter and Space on a `<button>` arrive as a `click`,
      * never a `mousedown`, so the mousedown-only handler was inert without a
-     * pointer — and `tabindex={-1}` meant the button could not be reached by
+     * pointer  and `tabindex={-1}` meant the button could not be reached by
      * Tab either. Backspace was the only keyboard removal path, and it always
      * pops the LAST tag, so a middle tag could not be removed without
      * destroying the ones after it.

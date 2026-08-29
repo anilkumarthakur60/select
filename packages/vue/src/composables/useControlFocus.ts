@@ -1,7 +1,7 @@
 import { onScopeDispose, ref, type Ref } from 'vue'
 
 export interface UseControlFocusOptions {
-  /** Root element — focus is treated as "still inside" while it contains the active element. */
+  /** Root element  focus is treated as "still inside" while it contains the active element. */
   root: Ref<HTMLElement | null>
   /** Fired when the control gains focus from outside. */
   onFocus?: (event: FocusEvent) => void
@@ -21,7 +21,7 @@ export interface UseControlFocusReturn {
 /**
  * Tracks whether focus is anywhere inside the control. The trick is that
  * tabbing between the input, indicators, and tag-remove buttons all fire
- * `focusout` immediately followed by a `focusin` — so we defer the blur
+ * `focusout` immediately followed by a `focusin`  so we defer the blur
  * decision to the next animation frame and only fire `onBlur` if focus
  * really left the root subtree.
  *

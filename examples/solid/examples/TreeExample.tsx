@@ -10,7 +10,7 @@ export default function TreeExample(props: { theme: Theme }) {
   return (
     <>
       <article class="card">
-        <h2>Tree — checkbox select</h2>
+        <h2>Tree  checkbox select</h2>
         <p>
           Multi-level categories. Tick a parent to select all leaves under it; tick leaves
           individually for partial coverage. Search filters across every level.
@@ -28,8 +28,8 @@ export default function TreeExample(props: { theme: Theme }) {
       </article>
 
       <article class="card" style={{ 'margin-top': '20px' }}>
-        <h2>Tree — flat (children: [])</h2>
-        <p>Same component handles a flat list — renders as a plain checkbox list.</p>
+        <h2>Tree  flat (children: [])</h2>
+        <p>Same component handles a flat list  renders as a plain checkbox list.</p>
         <TreeSelect
           options={flatCategories}
           modelValue={selectedFlat()}

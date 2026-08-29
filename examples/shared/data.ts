@@ -47,7 +47,7 @@ export interface Category {
   children: Category[]
 }
 
-// Three-level tree — same dataset the Vue playground uses, lifted to /shared
+// Three-level tree  same dataset the Vue playground uses, lifted to /shared
 // so React/Svelte/Solid/WC playgrounds can render the same example.
 export const categories: Category[] = [
   {
@@ -149,7 +149,7 @@ export const categories: Category[] = [
   },
 ]
 
-// Same data, but flat — every node has children: []. Renders as a plain checkbox list.
+// Same data, but flat  every node has children: []. Renders as a plain checkbox list.
 export const flatCategories: Category[] = [
   { id: 3, name: 'HTML, CSS & UI Frameworks', slug: 'html-css-ui-frameworks', children: [] },
   {

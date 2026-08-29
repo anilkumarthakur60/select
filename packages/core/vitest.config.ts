@@ -10,7 +10,7 @@ export default defineConfig({
   },
   test: {
     include: ['test/**/*.spec.ts', 'test/**/*.spec.tsx'],
-    // jsdom, not node: the machine is framework-agnostic but DOM-aware — it
+    // jsdom, not node: the machine is framework-agnostic but DOM-aware  it
     // builds DOM prop objects and handles KeyboardEvent, which node lacks.
     environment: 'jsdom',
     globals: true,

@@ -23,7 +23,7 @@ export interface UseSelectionReturn<T> {
 }
 
 /**
- * Selection state machine. Owns *only* selection — translating between the
+ * Selection state machine. Owns *only* selection  translating between the
  * v-model shape (one value vs an array) and the list of selected normalised
  * options the UI renders. Open/close + activeIndex live in `useMenuState`
  * so callers building headless variants can compose the two independently.
@@ -54,7 +54,7 @@ export function useSelection<T>(opts: UseSelectionOptions<T>): UseSelectionRetur
   const selectedSet = computed(() => new Set(selectedValues.value))
 
   // Index options by value so `selectedOptions` can resolve labels in O(n)
-  // total instead of O(n × m) — important when both the option list and the
+  // total instead of O(n × m)  important when both the option list and the
   // selected list grow.
   const optionByValue = computed(() => {
     const map = new Map<unknown, NormalizedOption<T>>()

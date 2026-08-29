@@ -8,7 +8,7 @@ version 2.1.
 - Be respectful. Disagree with ideas, not people.
 - Assume good faith. Reviews are about the code, not the author.
 - No harassment, slurs, sexualised content, doxxing, or sustained
-  disruption — in issues, PRs, discussions, or any project space.
+  disruption  in issues, PRs, discussions, or any project space.
 
 ## Reporting
 

@@ -29,7 +29,7 @@ export interface UseFloatingMenuReturn {
   target: ComputedRef<string | HTMLElement | null>
   /** Whether floating mode is active (i.e. teleporting). */
   floating: ComputedRef<boolean>
-  /** Imperative reposition trigger — fire after layout-affecting changes. */
+  /** Imperative reposition trigger  fire after layout-affecting changes. */
   update: () => void
 }
 
@@ -39,22 +39,22 @@ export interface UseFloatingMenuReturn {
  * This replaces `@floating-ui/vue`. That library is excellent, but it was a
  * hard dependency (~7.6 KB gzipped after tree-shaking, plus three transitive
  * packages) used by exactly one file, for a feature that is **opt-in and off by
- * default** — `teleportTo` defaults to `false`. Worse, `useFloating()` was
+ * default**  `teleportTo` defaults to `false`. Worse, `useFloating()` was
  * called unconditionally, so a default-configured select constructed a
  * ResizeObserver and attached four window scroll/resize listeners on every
  * mount, computed a position, and then discarded it because `floating` was
  * false. Nothing is attached now unless the menu is actually teleported.
  *
  * What this implements, matching the previous middleware chain:
- *   - `offset(6)`      — gap between control and menu
- *   - `flip`           — place above when there isn't room below
- *   - `shift(8)`       — clamp horizontally inside the viewport
- *   - `size`           — menu is at least as wide as the control
- *   - `autoUpdate`     — reposition on scroll, resize, and element resize
+ *   - `offset(6)`       gap between control and menu
+ *   - `flip`            place above when there isn't room below
+ *   - `shift(8)`        clamp horizontally inside the viewport
+ *   - `size`            menu is at least as wide as the control
+ *   - `autoUpdate`      reposition on scroll, resize, and element resize
  *
  * **Strategy: `position: fixed`, in viewport coordinates.** This is the one
  * decision worth understanding. `absolute` would need the offset-parent's
- * containing block resolved — body margins, positioned ancestors, and
+ * containing block resolved  body margins, positioned ancestors, and
  * transformed ancestors all change the origin, and getting that wrong is the
  * classic hand-rolled-positioning bug. Fixed coordinates come straight from
  * `getBoundingClientRect()` with no arithmetic, at the cost of having to
@@ -91,7 +91,7 @@ export function useFloatingMenu(
     const menuRect = menu.getBoundingClientRect()
 
     // The menu is at least as wide as the control (the old `size` middleware),
-    // so clamp against whichever is wider — the rect may still report the
+    // so clamp against whichever is wider  the rect may still report the
     // pre-minWidth width on the very first pass.
     const width = Math.max(menuRect.width, anchorRect.width)
     const height = menuRect.height

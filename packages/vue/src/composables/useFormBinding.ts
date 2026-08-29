@@ -3,7 +3,7 @@ import { devWarn } from '@anil-labs/select-core'
 
 export interface UseFormBindingOptions {
   /**
-   * Form field name. When unset the composable returns no inputs — form
+   * Form field name. When unset the composable returns no inputs  form
    * integration is opt-in. For multi-select the rendered `name` becomes
    * `${name}[]` so PHP / Rails-style array parsers see all values.
    */
@@ -36,14 +36,14 @@ function stringifyValue(value: unknown): string {
   if (value == null) return ''
   if (typeof value === 'object') {
     // `hiddenInputs` is a computed read during render, so an unguarded throw
-    // here took the whole component down — and only when `name` was set, so
+    // here took the whole component down  and only when `name` was set, so
     // adding native-form support to a working select is what broke it.
     // Circular object values are ordinary in ORM-shaped data
     // (`employee.manager.reports[0] === employee`), and object values are
     // documented as supported.
     try {
       // JSON.stringify returns undefined for some inputs (a bare function,
-      // a symbol), independently of throwing — hence the ?? as well.
+      // a symbol), independently of throwing  hence the ?? as well.
       return JSON.stringify(value) ?? ''
     } catch {
       devWarn(
@@ -59,7 +59,7 @@ function stringifyValue(value: unknown): string {
   // primitive and can never stringify to "[object Object]". The rule cannot
   // see through the early return.
   //
-  // Keep this directive on the line directly above the return — Prettier
+  // Keep this directive on the line directly above the return  Prettier
   // reflows a long trailing `--` reason onto following lines, which silently
   // moves the directive off its target.
   // eslint-disable-next-line @typescript-eslint/no-base-to-string
@@ -69,7 +69,7 @@ function stringifyValue(value: unknown): string {
 /**
  * Centralises the native-form integration shared by `<VSelect>` and
  * `<VTreeSelect>`. The component is left to render the inputs (it owns the
- * DOM tree); this composable just owns the *shape* — names, multi-suffixing,
+ * DOM tree); this composable just owns the *shape*  names, multi-suffixing,
  * and the empty-state-with-required edge case.
  */
 export function useFormBinding(opts: UseFormBindingOptions): UseFormBindingReturn {
@@ -84,7 +84,7 @@ export function useFormBinding(opts: UseFormBindingOptions): UseFormBindingRetur
       // FormData key flipped between `skills[]` and `skills` depending on how
       // many items were selected. The documented read path
       // (`data.getAll('skills[]')`) returned nothing precisely on the request
-      // where the user had deselected everything — the request most likely to
+      // where the user had deselected everything  the request most likely to
       // hit a server-side validation branch expecting an array.
       return [{ name: fieldName, value: '', required: opts.required.value }]
     }

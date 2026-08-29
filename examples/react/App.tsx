@@ -28,7 +28,7 @@ export default function App() {
           <span className="tag">v0.0.1</span>
         </div>
         <p className="lead">
-          A typed, accessible, headless-friendly select for React 18+ — single, multi, tags, async,
+          A typed, accessible, headless-friendly select for React 18+  single, multi, tags, async,
           custom-render. Built on the same framework-agnostic core as the Vue and Web Component
           builds.
         </p>

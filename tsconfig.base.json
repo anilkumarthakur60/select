@@ -1,7 +1,7 @@
 {
   // Mirrors what this codebase was actually written against: the settings from
   // `@vue/tsconfig/tsconfig.dom.json` plus the `noUncheckedIndexedAccess` the
-  // old `tsconfig.lib.json` added. Deliberately NOT stricter than that — the
+  // old `tsconfig.lib.json` added. Deliberately NOT stricter than that  the
   // monorepo split should preserve semantics, and flags like
   // `exactOptionalPropertyTypes` (which the Vue preset leaves commented out as
   // "hard to land in the current ecosystem") or

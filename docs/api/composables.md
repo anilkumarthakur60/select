@@ -58,7 +58,7 @@ const { isOpen, activeIndex, open, close, toggle } = useMenuState({
 ## `useTreeSelection`
 
 Hierarchical analogue of `useSelection`. Only **leaves** are stored in
-v-model — parent state is always derived.
+v-model  parent state is always derived.
 
 ```ts
 import { useTreeSelection } from '@anil-labs/select-vue'
@@ -145,7 +145,7 @@ Bind `onKeydown` to a `<input>` / `<button>` `@keydown` and you get
 
 ## `useTriggerInteractions`
 
-Mouse + input handlers shared by `<VSelect>` and `<VTreeSelect>` triggers —
+Mouse + input handlers shared by `<VSelect>` and `<VTreeSelect>` triggers 
 keeps clicking the trigger, focusing the search input, and toggling the
 menu in lockstep across components.
 
@@ -182,12 +182,12 @@ element resize, throttled to one update per animation frame.
 
 When `teleportTo === false` (the default) `styles` is `undefined` and `target`
 is `null`, the menu sits in document flow, and **nothing is observed or
-listened to** — no work is done for consumers who never teleport.
+listened to**  no work is done for consumers who never teleport.
 
 Positioning uses `position: fixed` in viewport coordinates. If you teleport
 into a container with a `transform`, `filter`, `perspective` or `will-change`,
 that ancestor becomes the containing block for fixed elements and the menu
-will be offset — position that container and teleport there instead.
+will be offset  position that container and teleport there instead.
 Teleporting to `body` (the normal case) is unaffected.
 
 ## `useOutsideClick`
@@ -257,7 +257,7 @@ context (handy in tests).
 
 ## Pure helpers
 
-These are not composables — just plain functions exported from the package
+These are not composables  just plain functions exported from the package
 root. They're the same code the components use internally, so reaching for
 them stays in lockstep with the component behaviour.
 
@@ -291,8 +291,8 @@ import {
 | `toggleValue(current, value)`                  | Add-or-remove from a value array (immutable)                          |
 | `readAccessor(option, accessor, fallback)`     | Resolve a `keyof T \| (o) => …` accessor                              |
 | `isPrimitive(value)`                           | Type guard for `string \| number \| boolean`                          |
-| `walkTree(nodes, visit)`                       | Depth-first traversal — return `false` from `visit` to skip a subtree |
+| `walkTree(nodes, visit)`                       | Depth-first traversal  return `false` from `visit` to skip a subtree |
 | `flattenTree(nodes)`                           | Depth-first array of every node                                       |
-| `filterTree(nodes, query, caseSensitive?)`     | Keep nodes whose label or descendants match — preserves ancestors     |
+| `filterTree(nodes, query, caseSensitive?)`     | Keep nodes whose label or descendants match  preserves ancestors     |
 | `getLeafValues(node \| nodes)`                 | Collect every selectable leaf value reachable from the input          |
 | `getAncestorIds(node, byId)`                   | Ids on the path from the node to the root, inclusive                  |

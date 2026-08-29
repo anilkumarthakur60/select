@@ -174,7 +174,7 @@ describe('createSelectMachine', () => {
   })
 })
 
-describe('createSelectMachine — regressions', () => {
+describe('createSelectMachine  regressions', () => {
   const key = (k: string) => {
     const event = { key: k, preventDefault: vi.fn(), stopPropagation: vi.fn() }
     return event as unknown as KeyboardEvent & { preventDefault: ReturnType<typeof vi.fn> }
@@ -183,8 +183,8 @@ describe('createSelectMachine — regressions', () => {
   describe('controlled modelValue', () => {
     // emitChange() wrote state.selectedValues but left config.modelValue stale,
     // and update() diffed against that stale value. A parent re-asserting the
-    // value it last passed — rejecting a change, reverting a failed save,
-    // resetting a form — saw "no change" and the machine kept its own
+    // value it last passed  rejecting a change, reverting a failed save,
+    // resetting a form  saw "no change" and the machine kept its own
     // selection forever.
     it('reverts when the parent re-asserts the value it already had', () => {
       const m = createSelectMachine({ options: ['a', 'b', 'c'], mode: 'single', modelValue: 'a' })
@@ -238,7 +238,7 @@ describe('createSelectMachine — regressions', () => {
     })
 
     // Enter used to preventDefault() purely because activeIndex >= 0, then
-    // select nothing — swallowing the surrounding form's submit.
+    // select nothing  swallowing the surrounding form's submit.
     it('does not swallow Enter when there is nothing to select', () => {
       const m = createSelectMachine({ options: [] })
       m.open()
@@ -267,7 +267,7 @@ describe('createSelectMachine — regressions', () => {
 
   describe('tags mode', () => {
     // showCreate() correctly reported "not creatable" for an exact match, but
-    // the Enter handler never consulted it — so the user saw the real row,
+    // the Enter handler never consulted it  so the user saw the real row,
     // pressed Enter, and got a duplicate tag instead of a selection.
     it('Enter on an exact match selects rather than creating a duplicate', () => {
       const onCreate = vi.fn()
@@ -310,7 +310,7 @@ describe('createSelectMachine — regressions', () => {
   })
 
   describe('empty-string option value', () => {
-    // toArray() maps '' to [] — right for an incoming modelValue, wrong on the
+    // toArray() maps '' to []  right for an incoming modelValue, wrong on the
     // emit path. '' is the native-<select> "any / no preference" sentinel, so
     // the control emitted onChange('') and then rendered as though nothing
     // were chosen. Multiple mode already behaved correctly.
@@ -375,7 +375,7 @@ describe('createSelectMachine — regressions', () => {
       })
       m.selectOption(m.getNormalizedOptions()[0]!)
 
-      // docs/guide/async.md empties `results` whenever the query clears — which
+      // docs/guide/async.md empties `results` whenever the query clears  which
       // used to turn the chosen name back into the raw database id on screen.
       m.update({ options: [] })
 

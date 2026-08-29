@@ -52,7 +52,7 @@ const skills = ref(['Vue', 'TypeScript'])
 
 ## Checkbox-style options
 
-A common multi-select skin — a leading checkbox per row instead of the
+A common multi-select skin  a leading checkbox per row instead of the
 default trailing check glyph:
 
 ```vue
@@ -92,7 +92,7 @@ Replace per-tag rendering in multi / tags mode:
 ## Empty state
 
 The `empty` slot fires either with `mode: 'no-options'` (the source list is
-empty — typical of a fresh async control) or `mode: 'no-results'` (a query
+empty  typical of a fresh async control) or `mode: 'no-results'` (a query
 yielded nothing). Use the distinction to render different copy.
 
 ```vue
@@ -118,8 +118,8 @@ through the same slot. Distinguish with `inMenu`:
 
 | Slot           | Props                                    | Replaces                                    |
 | -------------- | ---------------------------------------- | ------------------------------------------- |
-| `prefix`       | —                                        | Leading edge of the control                 |
-| `suffix`       | —                                        | Trailing edge of the control                |
+| `prefix`       |                                         | Leading edge of the control                 |
+| `suffix`       |                                         | Trailing edge of the control                |
 | `value`        | `{ selected, isMulti }`                  | Whole value display area                    |
 | `tag`          | `{ option, remove, disabled }`           | One tag in multi / tags mode                |
 | `option`       | `{ option, selected, active, disabled }` | One row in the menu                         |

@@ -10,7 +10,7 @@ const country = ref<string | null>('fr')
 
 <template>
   <article class="card">
-    <h2>Custom slots — flags &amp; meta</h2>
+    <h2>Custom slots  flags &amp; meta</h2>
     <p>Override option and selection rendering for richer UI.</p>
     <VSelect
       v-model="country"

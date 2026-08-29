@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { createRequire } from 'node:module'
 
 // The Nuxt module registered every component, composable and the stylesheet
-// against `@anil-labs/select-core`, which exports none of them — core is the
+// against `@anil-labs/select-core`, which exports none of them  core is the
 // framework-agnostic package. The documented one-liner setup therefore failed
 // three independent ways, and it shipped in dist. There was no test.
 
@@ -55,7 +55,7 @@ describe('nuxt module', () => {
     const { nuxt } = await runModule({ css: true })
 
     const [styleEntry] = nuxt.options.css
-    // Plural — core exports "./styles.css". The module asked for "style.css".
+    // Plural  core exports "./styles.css". The module asked for "style.css".
     expect(styleEntry).toBe('@anil-labs/select-core/styles.css')
 
     // And prove it resolves, so the singular/plural typo cannot come back.

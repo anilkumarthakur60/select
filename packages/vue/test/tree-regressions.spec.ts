@@ -124,7 +124,7 @@ describe('VTreeSelect keyboard support', () => {
 
 describe('VTreeSelect check state under a search', () => {
   // useTreeSelection got the FULL tree, but getCheckState received whatever
-  // node the renderer handed it — and rows render from the FILTERED tree. So a
+  // node the renderer handed it  and rows render from the FILTERED tree. So a
   // partially-selected parent counted only the surviving leaves: it rendered
   // and announced itself fully checked, and clicking it dropped only the
   // visible leaves while silently leaving the filtered-out ones selected.
@@ -184,7 +184,7 @@ describe('VTreeSelect lazy children', () => {
   // v-model holds leaf values only, but that was enforced only at selection
   // time. Lazy loading is the canonical tree pattern: a node ships with
   // `children: []` so it is a legitimate leaf; once its children arrive the
-  // value is a PARENT id — no tag rendered, its own row showed unchecked, yet
+  // value is a PARENT id  no tag rendered, its own row showed unchecked, yet
   // the toolbar counted it and the hidden input still submitted it.
   it('drops a value that is no longer a leaf', async () => {
     const lazy: Cat[] = [{ id: 2, name: 'Frontend', children: [] }]

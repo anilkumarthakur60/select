@@ -6,7 +6,7 @@ import './styles.css'
 
 defineSelectElement('a-select')
 
-// The element's public surface, without importing the class — keeps this file
+// The element's public surface, without importing the class  keeps this file
 // honest about being framework-free and dependency-light.
 type SelectEl = HTMLElement & { options: unknown[]; value: unknown }
 
@@ -55,7 +55,7 @@ copyBtn.addEventListener('click', async () => {
 // --- Theme -----------------------------------------------------------------
 
 // Tree instances aren't custom elements, so they can't be found by querying the
-// DOM for a tag — collect their handles as they're created.
+// DOM for a tag  collect their handles as they're created.
 const treeHandles: TreeSelectHandle[] = []
 
 type Theme = 'light' | 'dark' | 'auto'
@@ -66,7 +66,7 @@ function applyTheme(theme: Theme): void {
   document.documentElement.dataset.theme = theme
 
   // The components read `theme` themselves rather than inheriting from the
-  // page, so every instance has to be told — including ones added later.
+  // page, so every instance has to be told  including ones added later.
   document.querySelectorAll<SelectEl>('a-select').forEach((node) => {
     node.setAttribute('theme', theme)
   })
@@ -122,7 +122,7 @@ bindOutput(tags, tagsOut, 'tags')
 
 tags.addEventListener('create', (event) => {
   const created = (event as CustomEvent<string>).detail
-  // `create` only announces the intent — the value doesn't exist as an option
+  // `create` only announces the intent  the value doesn't exist as an option
   // yet, so the host owns adding it to the pool and to the selection.
   if (!tagPool.includes(created)) tagPool = [...tagPool, created]
   tags.options = tagPool
@@ -146,7 +146,7 @@ function loadAsyncOptions(): void {
   asyncSelect.setAttribute('loading', '')
   asyncStatus.textContent = 'Fetching…'
 
-  // Stand-in for a real request — the point is that `loading` is just an
+  // Stand-in for a real request  the point is that `loading` is just an
   // attribute the host drives, not something the component fetches for you.
   setTimeout(() => {
     asyncSelect.options = countries.map((country) => ({
@@ -164,7 +164,7 @@ el<HTMLButtonElement>('d-async-reset').addEventListener('click', () => {
   asyncLoaded = false
   asyncSelect.options = []
   asyncSelect.value = []
-  asyncStatus.textContent = 'Idle — open the menu to fetch.'
+  asyncStatus.textContent = 'Idle  open the menu to fetch.'
   show(asyncOut, { users: [] })
 })
 
@@ -180,7 +180,7 @@ for (const id of sizeIds) {
   node.value = sharedPlan
   node.addEventListener('change', (event) => {
     sharedPlan = (event as CustomEvent).detail
-    // Mirror onto the peers so all three stay in lockstep — one value, three
+    // Mirror onto the peers so all three stay in lockstep  one value, three
     // renderings, which is the whole point of the demo.
     for (const peer of sizeIds) {
       if (peer !== id) select(peer).value = sharedPlan
@@ -251,7 +251,7 @@ const accentCode = el('accent-code')
 function applyAccent(name: AccentName): void {
   const { accent, soft } = ACCENTS[name]
 
-  // Setting the tokens on an ancestor is the whole theming API — the variables
+  // Setting the tokens on an ancestor is the whole theming API  the variables
   // are scoped to `.vselect` but inherit, so any wrapper can override them.
   accentScope.style.setProperty('--vselect-accent', accent)
   accentScope.style.setProperty('--vselect-accent-soft', soft)
@@ -302,7 +302,7 @@ const FRAMEWORKS: FrameworkDemo[] = [
   {
     slug: 'element',
     label: 'Web Component',
-    desc: '<a-select> for Angular, Lit, Alpine, Astro, Qwik or plain HTML — no framework required.',
+    desc: '<a-select> for Angular, Lit, Alpine, Astro, Qwik or plain HTML  no framework required.',
   },
 ]
 

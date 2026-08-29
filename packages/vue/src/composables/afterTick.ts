@@ -4,8 +4,8 @@ import { getCurrentInstance, nextTick } from 'vue'
  * `nextTick(cb)` with the rejection routed back into Vue's error handling.
  *
  * Vue's `nextTick(fn)` returns `promise.then(fn)` and does NOT wrap `fn` in
- * `callWithAsyncErrorHandling`. Discarding that promise — which every call site
- * here used to do — meant a throw inside the callback became an unhandled
+ * `callWithAsyncErrorHandling`. Discarding that promise  which every call site
+ * here used to do  meant a throw inside the callback became an unhandled
  * rejection that bypassed Vue entirely: `app.config.errorHandler` was called
  * zero times, so an app doing error reporting through the Vue integration was
  * blind to it. Under a Node runner with `--unhandled-rejections=strict` it

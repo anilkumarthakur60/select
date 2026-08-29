@@ -43,13 +43,13 @@ Read them on the server as an array (most server frameworks already do).
 When a value is an object (rare, but supported), it serialises via
 `JSON.stringify`. Decode on the server side. For the common case of "the
 value is an id and the label comes from a join", point `option-value` at
-the id field — primitives serialise cleanly.
+the id field  primitives serialise cleanly.
 
 ## Required fields
 
 `required` renders a visually-hidden but **validatable** input, so the
 browser's native form validation kicks in and an empty selection blocks
-submission. The component itself doesn't render the red ring — that's a
+submission. The component itself doesn't render the red ring  that's a
 styling concern; key off `:invalid` or your form library's state.
 
 ::: tip Why not `type="hidden"`?

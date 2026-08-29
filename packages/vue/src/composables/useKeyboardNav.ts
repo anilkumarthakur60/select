@@ -16,7 +16,7 @@ export interface UseKeyboardNavOptions<T> {
 
 /**
  * Keyboard handler for the combobox. Centralised so the search input and the
- * trigger button share the same key map — typing "ArrowDown" feels the same
+ * trigger button share the same key map  typing "ArrowDown" feels the same
  * regardless of which element holds focus.
  */
 export function useKeyboardNav<T>(opts: UseKeyboardNavOptions<T>) {
@@ -29,7 +29,7 @@ export function useKeyboardNav<T>(opts: UseKeyboardNavOptions<T>) {
     }
     // Step from the current position until we land on an enabled option,
     // or fail after one full lap. Avoids allocating a per-keypress index
-    // map — large option lists hit this on every Arrow press.
+    // map  large option lists hit this on every Arrow press.
     let i = opts.activeIndex.value
     if (i < 0) i = delta > 0 ? -1 : len
     for (let step = 0; step < len; step += 1) {
@@ -43,7 +43,7 @@ export function useKeyboardNav<T>(opts: UseKeyboardNavOptions<T>) {
 
   /**
    * @param fromSearch whether the event originated on the search input. Only
-   * Backspace cares — see the case below.
+   * Backspace cares  see the case below.
    */
   function onKeydown(event: KeyboardEvent, fromSearch = true) {
     switch (event.key) {
@@ -99,8 +99,8 @@ export function useKeyboardNav<T>(opts: UseKeyboardNavOptions<T>) {
       case 'Backspace':
         // Gated on `fromSearch` to match the core machine, which threads the
         // same flag (machine.ts: `if (fromSearch && !state.query)`). Without
-        // it, a keyboard user tabbing to a NON-searchable multi-select — where
-        // the control itself is the focusable element — pressed Backspace and
+        // it, a keyboard user tabbing to a NON-searchable multi-select  where
+        // the control itself is the focusable element  pressed Backspace and
         // silently destroyed the last selection, while every other adapter
         // did nothing. Backspace-to-delete is a search-input affordance and is
         // surprising on a plain trigger.

@@ -17,7 +17,7 @@ export interface UseOptionFilterOptions<T> {
 
 /**
  * Filters the option list against the active search query. Returns the
- * filtered list plus a `hasMatches` flag — useful for menu empty states and
+ * filtered list plus a `hasMatches` flag  useful for menu empty states and
  * the "Create '<query>'" row when `taggable` is on.
  */
 export function useOptionFilter<T>(opts: UseOptionFilterOptions<T>): {

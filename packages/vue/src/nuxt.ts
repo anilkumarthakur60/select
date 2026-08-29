@@ -8,7 +8,7 @@ export interface ModuleOptions {
    */
   components?: boolean
   /**
-   * Optional prefix applied to the auto-registered component names — useful
+   * Optional prefix applied to the auto-registered component names  useful
    * for projects that already have a `<VSelect>` component. With `prefix: 'My'`
    * the components become `<MySelect>`, `<MyTreeSelect>`, etc.
    * Default: no prefix.
@@ -17,7 +17,7 @@ export interface ModuleOptions {
   /**
    * Auto-import the headless composables (`useSelection`, `useTreeSelection`,
    * `useOptionFilter`, `useKeyboardNav`, `useStableId`, `useDebounced`).
-   * Default: `false` — opt in if you build custom UI on top of the primitives.
+   * Default: `false`  opt in if you build custom UI on top of the primitives.
    */
   composables?: boolean
   /**
@@ -28,15 +28,15 @@ export interface ModuleOptions {
   css?: boolean
 }
 
-// Resolved against the consumer's node_modules — must match the published
+// Resolved against the consumer's node_modules  must match the published
 // package name in package.json so Nuxt's bundler can find the entry.
 // The components and composables live HERE, in the Vue package. They were all
 // registered against `@anil-labs/select-core`, which is the framework-agnostic
-// package and exports none of them — so the documented one-liner setup failed
+// package and exports none of them  so the documented one-liner setup failed
 // three independent ways: `<VSelect>` auto-imported from a package with no such
 // export, `composables: true` auto-imported nothing that exists, and the
 // stylesheet resolved to a subpath that does not exist (core exports
-// `./styles.css`, plural — this asked for `style.css`).
+// `./styles.css`, plural  this asked for `style.css`).
 const PKG = '@anil-labs/select-vue'
 // The stylesheet is deliberately the CORE package: every adapter shares one
 // copy instead of each shipping its own.
@@ -60,7 +60,7 @@ const COMPOSABLE_NAMES = [
 ] as const
 
 /**
- * Nuxt 3 / 4 module — opt-in via `nuxt.config.ts`:
+ * Nuxt 3 / 4 module  opt-in via `nuxt.config.ts`:
  *
  *     export default defineNuxtConfig({
  *       modules: ['@anil-labs/select-vue/nuxt'],

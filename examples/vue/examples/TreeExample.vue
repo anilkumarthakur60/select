@@ -11,7 +11,7 @@ interface Category {
   children: Category[]
 }
 
-// Three-level tree — the exact shape the user is feeding the component.
+// Three-level tree  the exact shape the user is feeding the component.
 const categories: Category[] = [
   {
     id: 1,
@@ -112,7 +112,7 @@ const categories: Category[] = [
   },
 ]
 
-// Same data, but flat (the user's first example) — every node has children: [].
+// Same data, but flat (the user's first example)  every node has children: [].
 const flatCategories: Category[] = [
   { id: 3, name: 'HTML, CSS & UI Frameworks', slug: 'html-css-ui-frameworks', children: [] },
   {
@@ -135,7 +135,7 @@ const selectedFlat = ref<number[]>([])
 
 <template>
   <article class="card">
-    <h2>Tree — checkbox select</h2>
+    <h2>Tree  checkbox select</h2>
     <p>
       Multi-level categories. Tick a parent to select all leaves under it, tick leaves individually
       for partial coverage. Search filters across every level and reveals matches.
@@ -154,9 +154,9 @@ const selectedFlat = ref<number[]>([])
   </article>
 
   <article class="card">
-    <h2>Tree — flat (children: [])</h2>
+    <h2>Tree  flat (children: [])</h2>
     <p>
-      The same component handles your flat list — when no node has children, it renders as a plain
+      The same component handles your flat list  when no node has children, it renders as a plain
       checkbox list.
     </p>
     <VTreeSelect

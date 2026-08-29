@@ -37,7 +37,7 @@ export default defineComponent({
   props: {
     modelValue: { type: Array as PropType<unknown[]>, default: () => [] },
     options: { type: Array as PropType<TreeOptionLike[]>, default: () => [] },
-    // Loosened from `keyof T | (...)` for the same reason as VSelect — TSX
+    // Loosened from `keyof T | (...)` for the same reason as VSelect  TSX
     // can't keep the SFC's `<T extends TreeOptionLike>` generic, so the
     // runtime prop accepts any string or accessor; the public
     // `VTreeSelectProps<T>` type still narrows.
@@ -117,7 +117,7 @@ export default defineComponent({
       force: forceSearch,
     } = useDebounced(query, debounceMs)
 
-    // `reactive(new Set(...))` makes Vue track reads/writes — `watch(... { deep })`
+    // `reactive(new Set(...))` makes Vue track reads/writes  `watch(... { deep })`
     // in the node component picks up id-level mutations without us emitting.
     const expanded = reactive(new Set<string>())
 
@@ -133,7 +133,7 @@ export default defineComponent({
     )
 
     // Re-seed the expansion set to the `defaultExpandAll` baseline. We
-    // deliberately don't preserve old ids — they become invalid the moment the
+    // deliberately don't preserve old ids  they become invalid the moment the
     // underlying option array changes identity.
     function seedExpansion(nodes: NormalizedTreeNode<T>[]) {
       expanded.clear()
@@ -148,7 +148,7 @@ export default defineComponent({
 
     // Clearing the search collapses back to that baseline. This is what the
     // search-time auto-expand below always CLAIMED happened, and what the docs
-    // promise — but the only re-seed was keyed on `tree` identity, and a query
+    // promise  but the only re-seed was keyed on `tree` identity, and a query
     // change never touches `props.options`. So ids added during a search just
     // accumulated: every query permanently opened more of the tree until it was
     // effectively fully expanded, leaving an expansion state the user never
@@ -230,7 +230,7 @@ export default defineComponent({
 
     // Drop values that are no longer selectable leaves.
     //
-    // v-model holds leaf values only — that invariant was enforced when a value
+    // v-model holds leaf values only  that invariant was enforced when a value
     // was picked but never re-checked when `options` changed. Lazy-loading is
     // the canonical tree pattern: a node ships with `children: []`, so it is
     // legitimately a selectable leaf; once its children arrive the value in
@@ -276,7 +276,7 @@ export default defineComponent({
     // not be opened, navigated, or dismissed without a mouse, and no element
     // ever carried `aria-activedescendant`, so nothing identified a current
     // node to assistive tech. This is the tree-pattern equivalent of what
-    // `useKeyboardNav` does for VSelect — kept local because the tree needs
+    // `useKeyboardNav` does for VSelect  kept local because the tree needs
     // ArrowLeft/ArrowRight expand/collapse semantics that the flat key map has
     // no concept of.
 
@@ -402,7 +402,7 @@ export default defineComponent({
             return
           }
           // Act on the tree the QUERY implies, not the stale one still on
-          // screen — same class as VSelect.selectActive(). With `debounce`
+          // screen  same class as VSelect.selectActive(). With `debounce`
           // set, Enter before the trailing edge would toggle a node the
           // typed query had already filtered out.
           const target = resolveActiveAfterFlush()
@@ -483,7 +483,7 @@ export default defineComponent({
 
     function onToggle(node: NormalizedTreeNode<T>) {
       // canonical(): rows come from the filtered tree, but toggling must act on
-      // the whole branch — see the note on `canonical`.
+      // the whole branch  see the note on `canonical`.
       toggle(canonical(node))
       if (props.closeOnSelect) close()
     }
@@ -557,7 +557,7 @@ export default defineComponent({
       open,
       toggle: toggleOpen,
       // The clear button stops propagation in `onClearClick`, so we don't need
-      // to ignore `.vselect-indicator` here — and ignoring it would also swallow
+      // to ignore `.vselect-indicator` here  and ignoring it would also swallow
       // chevron clicks, leaving users with no way to toggle the menu by icon.
       ignoreSelectors: ['.vselect-tag-remove'],
     })
@@ -752,7 +752,7 @@ export default defineComponent({
             controlEl.value = el as HTMLElement | null
           }}
           class="vselect-control"
-          // Combobox semantics follow the element that actually takes focus —
+          // Combobox semantics follow the element that actually takes focus 
           // the search input when searchable, this div otherwise. Same
           // WAI-ARIA 1.2 rationale as VSelect.
           role={props.searchable ? undefined : 'combobox'}
@@ -825,7 +825,7 @@ export default defineComponent({
                 value={query.value}
                 placeholder={hasSelection.value ? undefined : props.placeholder}
                 disabled={props.disabled}
-                // This input is the combobox when searchable — it is what
+                // This input is the combobox when searchable  it is what
                 // takes focus. It previously had no role, no aria-expanded,
                 // no aria-activedescendant and NO keydown handler at all.
                 role="combobox"

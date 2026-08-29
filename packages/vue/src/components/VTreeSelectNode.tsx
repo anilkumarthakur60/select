@@ -7,7 +7,7 @@ const VTreeSelectNode = defineComponent({
   inheritAttrs: false,
   props: {
     node: { type: Object as PropType<NormalizedTreeNode<TreeOptionLike>>, required: true },
-    /** Set of expanded node ids — passed in for shared state across the tree. */
+    /** Set of expanded node ids  passed in for shared state across the tree. */
     expanded: { type: Object as PropType<Set<string>>, required: true },
     /** Resolver for the tri-state of any node, leaf or parent. */
     getCheckState: {
@@ -51,7 +51,7 @@ const VTreeSelectNode = defineComponent({
 
     const checkboxRef = ref<HTMLInputElement | null>(null)
 
-    // Native checkboxes don't accept `:indeterminate` as an attribute — it has
+    // Native checkboxes don't accept `:indeterminate` as an attribute  it has
     // to be set imperatively on the DOM element.
     watch(
       indeterminate,

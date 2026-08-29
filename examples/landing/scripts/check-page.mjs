@@ -3,7 +3,7 @@
 //
 // The landing page has no unit suite, and a broken demo here fails silently:
 // the HTML still renders, the headings still read correctly, and only the
-// controls — the entire point of the page — come up empty. Typechecking cannot
+// controls  the entire point of the page  come up empty. Typechecking cannot
 // catch it either, since every wiring bug worth having (a renamed id, an
 // option list never assigned, a listener bound to the wrong element) is
 // type-correct.
@@ -74,7 +74,7 @@ for (const key of [
   })
 }
 
-// The bundle's top-level code runs on import — that IS the wiring under test.
+// The bundle's top-level code runs on import  that IS the wiring under test.
 await import(pathToFileURL(resolve(outDir, scriptSrc.replace(/^\.?\//, ''))).href)
 
 const doc = dom.window.document
@@ -95,7 +95,7 @@ for (const el of selects) {
   const id = el.id || '(unnamed)'
   check(
     el.querySelector('.vselect-control') !== null,
-    `#${id}: rendered no .vselect-control — the custom element never upgraded.`,
+    `#${id}: rendered no .vselect-control  the custom element never upgraded.`,
   )
   // An empty option list is the signature failure of a broken wiring: the
   // control paints, but there is nothing to pick.
@@ -115,7 +115,7 @@ check(text('#d-tree-out').includes('4'), '#d-tree-out: initial tree selection no
 
 // ------------------------------------------------------------- interactivity
 
-// Selecting must update the bound output pane — this is the whole contract
+// Selecting must update the bound output pane  this is the whole contract
 // between the component's `change` event and the demo.
 const before = text('#d-single-out')
 mousedown($('#d-single .vselect-menu [data-action="select"]'))

@@ -2,7 +2,7 @@ const seen = new Set<string>()
 
 function isProduction(): boolean {
   // `process` does not exist in a plain browser bundle, and bundlers replace
-  // `process.env.NODE_ENV` textually — so this has to survive both the
+  // `process.env.NODE_ENV` textually  so this has to survive both the
   // substituted and the entirely-absent case.
   try {
     return typeof process !== 'undefined' && process.env?.NODE_ENV === 'production'

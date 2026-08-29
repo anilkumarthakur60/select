@@ -7,7 +7,7 @@ export default function BasicExample({ theme }: { theme: 'light' | 'dark' | 'aut
 
   return (
     <article className="card">
-      <h2>Single — primitives</h2>
+      <h2>Single  primitives</h2>
       <p>Pass an array of strings; controlled via React state.</p>
       <Select
         modelValue={fruit}

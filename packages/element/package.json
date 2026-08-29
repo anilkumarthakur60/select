@@ -1,7 +1,7 @@
 {
   "name": "@anil-labs/select-element",
   "version": "0.1.0",
-  "description": "Web Component (<a-select>) for @anil-labs/select — works in Angular, Lit, Alpine, Astro, Qwik or plain HTML with no framework dependency.",
+  "description": "Web Component (<a-select>) for @anil-labs/select  works in Angular, Lit, Alpine, Astro, Qwik or plain HTML with no framework dependency.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

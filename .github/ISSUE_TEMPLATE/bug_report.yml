@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to file a bug report. A minimal, runnable
-        reproduction is by far the most useful thing you can include — a
+        reproduction is by far the most useful thing you can include  a
         StackBlitz / CodeSandbox link beats a code snippet, which beats a
         prose description.
 
@@ -78,4 +78,4 @@ body:
     id: extra
     attributes:
       label: Anything else?
-      description: Browser version, error stack, screenshots, related issues — whatever feels relevant.
+      description: Browser version, error stack, screenshots, related issues  whatever feels relevant.

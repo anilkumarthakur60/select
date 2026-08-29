@@ -23,7 +23,7 @@ const themeFg = computed(() => (theme.value === 'dark' ? '#e2e8f0' : '#0f172a'))
       </div>
       <p class="lead">
         A typed, accessible, headless-friendly select for Vue 3. Single, multi, tags, async, grouped
-        — one component, zero surprises.
+         one component, zero surprises.
       </p>
       <label class="theme-switch">
         Theme

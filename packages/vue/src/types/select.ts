@@ -36,7 +36,7 @@ export interface VSelectProps<T extends OptionLike = OptionLike> {
   maxSelections?: number
   /** Permit creating new options from the search query (tags mode default). */
   taggable?: boolean
-  /** Custom filter function — overrides the default substring match. */
+  /** Custom filter function  overrides the default substring match. */
   filter?: FilterFn<T>
   caseSensitive?: boolean
 
@@ -62,7 +62,7 @@ export interface VSelectProps<T extends OptionLike = OptionLike> {
   /** Mount the menu in a different element ('body', a selector, or false). */
   teleportTo?: string | HTMLElement | false
 
-  /** Form integration — emits hidden inputs under this name. */
+  /** Form integration  emits hidden inputs under this name. */
   name?: string
   /** Marks the hidden input as required. */
   required?: boolean

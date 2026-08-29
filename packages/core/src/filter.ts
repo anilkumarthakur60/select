@@ -2,7 +2,7 @@ import type { NormalizedOption } from '@/types/option'
 
 /**
  * Default substring matcher. We intentionally don't ship a fuzzy ranker by
- * default — most consumers want "label contains query", and shipping a 4kb
+ * default  most consumers want "label contains query", and shipping a 4kb
  * fuzzy library would surprise people. Pass a custom `filter` prop for fuzzy.
  */
 export function defaultFilter<T>(

@@ -60,7 +60,7 @@ function setup(initial: number[] = []) {
   return { ...api, modelValue, tree, findById, emitUpdate, emitSelect, emitDeselect }
 }
 
-describe('useTreeSelection — leaves', () => {
+describe('useTreeSelection  leaves', () => {
   it('toggles a leaf into v-model', () => {
     const { toggle, findById, emitUpdate, emitSelect } = setup([])
     toggle(findById(3))
@@ -82,7 +82,7 @@ describe('useTreeSelection — leaves', () => {
   })
 })
 
-describe('useTreeSelection — parents', () => {
+describe('useTreeSelection  parents', () => {
   it('selects every leaf below an unchecked parent', () => {
     const { toggle, findById, emitUpdate } = setup([])
     toggle(findById(2)) // Frontend → CSS, JS
@@ -117,7 +117,7 @@ describe('useTreeSelection — parents', () => {
   })
 })
 
-describe('useTreeSelection — caps and clear', () => {
+describe('useTreeSelection  caps and clear', () => {
   it('respects maxSelections when toggling a leaf', () => {
     const modelValue = ref<unknown>([3, 4])
     const tree = ref<NormalizedTreeNode<Cat>[]>(
@@ -136,7 +136,7 @@ describe('useTreeSelection — caps and clear', () => {
     walkTree(tree.value, (n) => {
       if (n.value === 7) target = n
     })
-    toggle(target!) // would push to 3 — over the cap
+    toggle(target!) // would push to 3  over the cap
     expect(emitUpdate).not.toHaveBeenCalled()
   })
 

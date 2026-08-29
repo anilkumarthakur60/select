@@ -29,7 +29,7 @@ const options = ['apple', 'banana', 'cherry']
 ```
 
 The stylesheet lives in `@anil-labs/select-core` so every adapter shares one
-copy — importing it from this package will not work.
+copy  importing it from this package will not work.
 
 ### Modes
 

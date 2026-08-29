@@ -43,7 +43,7 @@ describe('toggleValue', () => {
 
 describe('equality relation (SameValueZero)', () => {
   // valuesEqual used strict ===, but the machine's isSelected() used
-  // `new Set(selected).has(value)` — SameValueZero. They disagreed on NaN, and
+  // `new Set(selected).has(value)`  SameValueZero. They disagreed on NaN, and
   // that made selection a one-way door: isSelected reported true so a click
   // took the deselect branch, but the removal filter matched nothing. Every
   // subsequent click fired onDeselect (running consumer handlers, analytics,

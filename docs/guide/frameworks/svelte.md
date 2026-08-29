@@ -1,6 +1,6 @@
 # Svelte 5
 
-The Svelte adapter is **headless** — it ships `createSelectAdapter`, a
+The Svelte adapter is **headless**  it ships `createSelectAdapter`, a
 primitive that wraps the framework-agnostic state machine and exposes
 `subscribe()` so you can bridge it into Svelte 5's runes. The npm package
 deliberately doesn't ship a `.svelte` component because Svelte components
@@ -25,7 +25,7 @@ import '@anil-labs/select-core/styles.css'
 
 ## Reactivity bridge
 
-Svelte 5's reactivity is fine-grained — but the machine mutates internal
+Svelte 5's reactivity is fine-grained  but the machine mutates internal
 state that `$state` can't observe. The pattern: subscribe once, bump a
 `tick` counter on every notify, and read `void tick` inside any
 `$derived` that should re-run on machine state change.
@@ -86,7 +86,7 @@ Copy it into your project as a starting point.
 
 ## Limitations
 
-- No tree-select component — use the Vue adapter or build on
+- No tree-select component  use the Vue adapter or build on
   `useTreeSelection` from the core.
 - No SSR-only build; `createSelectAdapter` is browser-only because the
   machine attaches DOM listeners on first read.
@@ -94,4 +94,4 @@ Copy it into your project as a starting point.
 ## What's next
 
 - [Theming](../theming)
-- [Composables API reference](/api/composables) — the underlying primitives
+- [Composables API reference](/api/composables)  the underlying primitives

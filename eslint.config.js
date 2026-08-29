@@ -17,7 +17,7 @@ export default tseslint.config(
       'examples/env.d.ts',
       // Hand-written type stub shipped alongside the CSS export. It lives
       // outside src/, so it is covered by no tsconfig and no projectService
-      // block — type-aware rules crash on it, and there is nothing to lint.
+      // block  type-aware rules crash on it, and there is nothing to lint.
       'packages/*/styles.css.d.ts',
     ],
   },
@@ -49,7 +49,7 @@ export default tseslint.config(
       // These three were set to 'warn' during the monorepo split, when
       // type-aware linting first surfaced 11 pre-existing defects that the old
       // non-type-checked setup could not see. All 11 are now fixed or
-      // explicitly refuted, so they are back to 'error' — the warn tier existed
+      // explicitly refuted, so they are back to 'error'  the warn tier existed
       // to keep a known backlog visible, and there is no backlog left.
       //
       //   no-base-to-string    fixed: labels route through core's safeLabel(),

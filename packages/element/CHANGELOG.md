@@ -22,7 +22,7 @@
 
   **Also in this release**
   - `ClearButtonProps` is now exported from the core package. Adapters could previously only reach it through a deep `core/machine` import, which the package split makes impossible.
-  - `toSolidProps` and `toSvelteProps` are generic over `object` instead of taking `Record<string, unknown>`. The machine's prop bags are interfaces, and interfaces have no implicit index signature — so the usage shown in each adapter's own documentation did not typecheck.
+  - `toSolidProps` and `toSvelteProps` are generic over `object` instead of taking `Record<string, unknown>`. The machine's prop bags are interfaces, and interfaces have no implicit index signature  so the usage shown in each adapter's own documentation did not typecheck.
   - The Vue adapter no longer imports the stylesheet as a side effect. Styles live in the core package and every adapter shares them, so Vue consumers were getting CSS automatically while React/Svelte/Solid consumers had to opt in. Import `@anil-labs/select-core/styles.css` explicitly.
 
 - 2b4767a: Fix ten defects in `<VTreeSelect>` and `<a-select>`, including an XSS sink and a
@@ -31,7 +31,7 @@
   **`<VTreeSelect>` had no keyboard support at all.** No keydown handler was bound
   anywhere: the popup could not be opened, navigated, selected or dismissed from
   the keyboard, no element ever carried `aria-activedescendant`, and the
-  `role="treeitem"` rows had no active state — so nothing identified a current
+  `role="treeitem"` rows had no active state  so nothing identified a current
   node to assistive technology. It now implements the tree pattern:
   ArrowDown/ArrowUp to move, ArrowRight/ArrowLeft to expand/collapse (and step
   into/out of a branch), Home/End, Enter/Space to toggle, Escape to close, and
@@ -40,7 +40,7 @@
   onto whichever element actually takes focus, matching `<VSelect>`.
 
   **`<a-select>` had an HTML injection sink.** Option labels were escaped but the
-  option `id` was interpolated raw into an attribute — and ids embed the option
+  option `id` was interpolated raw into an attribute  and ids embed the option
   value, so a value containing a quote broke out and injected markup. An
   `<img src=x onerror=…>` was genuinely constructed in the DOM. Option lists
   routinely come from an API or CMS. Every interpolated attribute is now escaped.
@@ -48,14 +48,14 @@
   affected.
 
   **`<a-select>` could not hold focus.** `render()` replaces the whole subtree on
-  every state change, including the focused input — so focus fell to
+  every state change, including the focused input  so focus fell to
   `document.body` on first focus, on every keystroke (the second character went to
   `<body>` and the query stuck at one) and on every arrow key. Focus and caret are
   now preserved across re-render.
 
   **`<a-select>` was permanently dead after unmount + re-append.**
   `disconnectedCallback` tore down the subscription unconditionally, but
-  `connectedCallback` re-established it only behind `if (!this.machine)` — still
+  `connectedCallback` re-established it only behind `if (!this.machine)`  still
   truthy on reconnect. The machine kept working while the DOM stopped updating, so
   state and UI silently desynced. Triggered by `v-if`, list reordering, or moving
   a node into a portal.
@@ -75,14 +75,14 @@
   **Search expansion was never reverted.** The auto-expand watcher claimed
   clearing the query restored the baseline, but the only re-seed keyed on tree
   identity, which a query never changes. Every search permanently opened more of
-  the tree until it was effectively fully expanded — contradicting
+  the tree until it was effectively fully expanded  contradicting
   `default-expand-all="false"`.
 
   **A parent id could get stuck in `v-model`.** With lazily-loaded children a node
   ships with `children: []`, so it is a legitimate leaf and selectable; once its
   children arrive the stored value is a parent id. No tag rendered, so the user
   could not remove it, its own row showed unchecked so clicking added children
-  instead — yet the toolbar counted it and the hidden input still submitted it.
+  instead  yet the toolbar counted it and the hidden input still submitted it.
   Stale values are now dropped when the tree rebuilds, guarded so an async load
   that briefly passes `[]` cannot wipe the selection.
 
@@ -92,7 +92,7 @@
   before emitting, so the two paths in the same composable disagreed.
 
   **`autofocus` focused the wrong element**, the same `a?.focus() ?? b?.focus()`
-  misuse fixed in `<VSelect>` — `focus()` returns `undefined`, so both ran and the
+  misuse fixed in `<VSelect>`  `focus()` returns `undefined`, so both ran and the
   control wrapper won.
 
   Lint is now clean at `error` level: all 11 type-aware findings from the split are
@@ -103,13 +103,13 @@
 - 19be8cd: Fix the published Vue bundle, and make every package installable and documented.
 
   **`@anil-labs/select-vue` was unusable when built.** The bundle was compiled with
-  the classic React JSX factory, so every component — `VSelect`, `VSelectTag`,
-  `VTreeSelect`, `VSelectOption` — threw `ReferenceError: React is not defined` on
+  the classic React JSX factory, so every component  `VSelect`, `VSelectTag`,
+  `VTreeSelect`, `VSelectOption`  threw `ReferenceError: React is not defined` on
   first render, in both the ESM and the CJS (Nuxt/SSR) entry.
 
   The cause was a split between test and build config: vitest compiles the `.tsx`
   sources through `@vitejs/plugin-vue-jsx`, but tsup registered no JSX plugin, and
-  esbuild only honours `jsxImportSource` under the _automatic_ runtime — with
+  esbuild only honours `jsxImportSource` under the _automatic_ runtime  with
   `jsx: "preserve"` it silently fell back to `React.createElement`. No test
   imported `dist`, so the whole suite stayed green.
 
@@ -145,7 +145,7 @@
   indefinitely. Only passing a _different_ value recovered.
 
   **The highlight was never reconciled when the option list changed.** After an
-  async response replaced a longer list — the documented pattern — `activeIndex`
+  async response replaced a longer list  the documented pattern  `activeIndex`
   pointed past the end: no row rendered active, `aria-activedescendant` was
   `undefined` so screen readers announced nothing, and Enter still called
   `preventDefault()` (swallowing form submission) before selecting nothing. Enter
@@ -169,13 +169,13 @@
   use; `isSelected` (SameValueZero, via `Set`) disagreed with the removal path
   (strict `!==`), so clicking a `NaN`-valued option fired `onDeselect` on every
   click while it stayed selected forever. Everything now routes through
-  `valuesEqual`, which is SameValueZero — matching the `Set`/`Map` lookups the
+  `valuesEqual`, which is SameValueZero  matching the `Set`/`Map` lookups the
   machine already used. `toggleValue([NaN], NaN)` returns `[]` instead of
   `[NaN, NaN]`.
 
   **Non-primitive labels no longer render as `"[object Object]"`.** An
   i18n-shaped label reached the row text, the collapsed control's accessible name,
-  and the tag remove button's `aria-label` — and, because `label` is the only
+  and the tag remove button's `aria-label`  and, because `label` is the only
   field search matches against, made the option unreachable by typing. Labels now
   go through `safeLabel()`, which falls back to the option value and warns once in
   dev telling you to supply an `optionLabel` accessor.
@@ -188,7 +188,7 @@
   and React no longer warns about duplicate keys.
 
   **`filterTree` pruned a matched parent's entire subtree.** Searching a branch
-  label produced a node with `isLeaf: false` and zero children — a row that
+  label produced a node with `isLeaf: false` and zero children  a row that
   rendered a checkbox and an expand chevron but had nothing to select or expand.
   Clicking it emitted no model update while the checkbox stayed visually ticked. A
   node that matches on its own label now keeps its whole subtree.
@@ -198,7 +198,7 @@
   the component tree down. Cycles arrive easily from graph-shaped server data; the
   repeated node is now dropped with a dev warning.
 
-  Every fix ships with a regression test that fails against the previous release —
+  Every fix ships with a regression test that fails against the previous release 
   23 of them.
 
 - Updated dependencies [37025db]

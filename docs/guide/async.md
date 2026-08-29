@@ -2,7 +2,7 @@
 
 `<VSelect>` was designed for remote-source pickers. The `@search` event
 emits the (debounced) query, `:loading` flips the spinner, and `:options`
-takes the result list — no extra wiring.
+takes the result list  no extra wiring.
 
 ```vue
 <script setup lang="ts">
@@ -90,7 +90,7 @@ async function onSearch(query: string) {
   }
   loading.value = true
   await new Promise((r) => setTimeout(r, 400))
-  if (myToken !== lastToken) return // stale request — drop
+  if (myToken !== lastToken) return // stale request  drop
   const q = query.toLowerCase()
   results.value = allCities.filter((c) => c.name.toLowerCase().includes(q))
   loading.value = false

@@ -11,7 +11,7 @@ cd select
 npm install
 ```
 
-That's it — no submodules, no codegen step.
+That's it  no submodules, no codegen step.
 
 ## Day-to-day commands
 
@@ -34,12 +34,12 @@ That's it — no submodules, no codegen step.
 src/
   components/    SFCs that ship to consumers
   composables/   Headless primitives (also exported)
-  core/          Pure helpers — no Vue, no DOM
+  core/          Pure helpers  no Vue, no DOM
   styles/        SCSS partials, CSS custom properties, theme presets
   types/         Public TypeScript surface
   nuxt.ts        Nuxt module
   plugin.ts      Optional Vue plugin entry
-  index.ts       Package entry — every public export lives here
+  index.ts       Package entry  every public export lives here
 tests/           vitest specs (composables, core, components)
 docs/            VitePress docs site
 playground/      Standalone dev playground (vite.config.dev.ts)
@@ -62,7 +62,7 @@ CI runs all of the above automatically on every PR.
 ## Style
 
 - Prettier handles formatting; run `npm run format` if your editor doesn't
-- ESLint config is intentionally conservative — most "rules" are encoded as
+- ESLint config is intentionally conservative  most "rules" are encoded as
   conventions in the existing code, so reading the surrounding file is the
   best style guide
 - For SFCs: `<script setup lang="ts">` with `defineProps` / `defineEmits` /
@@ -96,7 +96,7 @@ Allowed `<type>` values:
 | `feat`     | A user-facing new feature                       |
 | `fix`      | A user-facing bug fix                           |
 | `docs`     | README / CHANGELOG / docs site                  |
-| `style`    | Formatting, whitespace — no code change         |
+| `style`    | Formatting, whitespace  no code change         |
 | `refactor` | Code change that's neither feat nor fix         |
 | `perf`     | Performance improvement                         |
 | `test`     | Adding or correcting tests                      |
@@ -135,7 +135,7 @@ spec-revision document.
 Husky installs hooks automatically on `npm install` via the `prepare` script.
 Two hooks fire locally:
 
-- **`pre-commit`** runs `npm run lint` (oxlint + cached eslint — typically
+- **`pre-commit`** runs `npm run lint` (oxlint + cached eslint  typically
   under 1 s). Skip with `git commit --no-verify` for WIP commits.
 - **`commit-msg`** runs `commitlint --edit` against your message, so PR
   reviewers see consistent commit subjects. Bypass with `--no-verify` if you
@@ -183,5 +183,5 @@ provenance.
 
 ## Questions?
 
-Open an [issue](https://github.com/anilkumarthakur60/select/issues) — happy to
+Open an [issue](https://github.com/anilkumarthakur60/select/issues)  happy to
 discuss before you write code.

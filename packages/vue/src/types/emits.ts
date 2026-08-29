@@ -2,7 +2,7 @@ import type { NormalizedOption } from '@anil-labs/select-core'
 import type { NormalizedTreeNode } from '@anil-labs/select-core'
 
 /**
- * Public emits surface for `<VSelect>`. Mirrors the runtime `emits` block —
+ * Public emits surface for `<VSelect>`. Mirrors the runtime `emits` block 
  * exported so consumers can type their own event handlers without re-deriving.
  */
 export interface VSelectEmits<T = unknown> {
@@ -20,7 +20,7 @@ export interface VSelectEmits<T = unknown> {
 
 /**
  * Public emits surface for `<VTreeSelect>`. Tree mode only emits leaves into
- * v-model — `select` / `deselect` fire once per affected leaf even when the
+ * v-model  `select` / `deselect` fire once per affected leaf even when the
  * user toggles a parent checkbox.
  */
 export interface VTreeSelectEmits<T = unknown> {

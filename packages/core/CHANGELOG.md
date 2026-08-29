@@ -22,7 +22,7 @@
 
   **Also in this release**
   - `ClearButtonProps` is now exported from the core package. Adapters could previously only reach it through a deep `core/machine` import, which the package split makes impossible.
-  - `toSolidProps` and `toSvelteProps` are generic over `object` instead of taking `Record<string, unknown>`. The machine's prop bags are interfaces, and interfaces have no implicit index signature — so the usage shown in each adapter's own documentation did not typecheck.
+  - `toSolidProps` and `toSvelteProps` are generic over `object` instead of taking `Record<string, unknown>`. The machine's prop bags are interfaces, and interfaces have no implicit index signature  so the usage shown in each adapter's own documentation did not typecheck.
   - The Vue adapter no longer imports the stylesheet as a side effect. Styles live in the core package and every adapter shares them, so Vue consumers were getting CSS automatically while React/Svelte/Solid consumers had to opt in. Import `@anil-labs/select-core/styles.css` explicitly.
 
 - b586bd9: Fix twelve state-machine, normalisation and tree defects in the core. Every
@@ -36,7 +36,7 @@
   indefinitely. Only passing a _different_ value recovered.
 
   **The highlight was never reconciled when the option list changed.** After an
-  async response replaced a longer list — the documented pattern — `activeIndex`
+  async response replaced a longer list  the documented pattern  `activeIndex`
   pointed past the end: no row rendered active, `aria-activedescendant` was
   `undefined` so screen readers announced nothing, and Enter still called
   `preventDefault()` (swallowing form submission) before selecting nothing. Enter
@@ -60,13 +60,13 @@
   use; `isSelected` (SameValueZero, via `Set`) disagreed with the removal path
   (strict `!==`), so clicking a `NaN`-valued option fired `onDeselect` on every
   click while it stayed selected forever. Everything now routes through
-  `valuesEqual`, which is SameValueZero — matching the `Set`/`Map` lookups the
+  `valuesEqual`, which is SameValueZero  matching the `Set`/`Map` lookups the
   machine already used. `toggleValue([NaN], NaN)` returns `[]` instead of
   `[NaN, NaN]`.
 
   **Non-primitive labels no longer render as `"[object Object]"`.** An
   i18n-shaped label reached the row text, the collapsed control's accessible name,
-  and the tag remove button's `aria-label` — and, because `label` is the only
+  and the tag remove button's `aria-label`  and, because `label` is the only
   field search matches against, made the option unreachable by typing. Labels now
   go through `safeLabel()`, which falls back to the option value and warns once in
   dev telling you to supply an `optionLabel` accessor.
@@ -79,7 +79,7 @@
   and React no longer warns about duplicate keys.
 
   **`filterTree` pruned a matched parent's entire subtree.** Searching a branch
-  label produced a node with `isLeaf: false` and zero children — a row that
+  label produced a node with `isLeaf: false` and zero children  a row that
   rendered a checkbox and an expand chevron but had nothing to select or expand.
   Clicking it emitted no model update while the checkbox stayed visually ticked. A
   node that matches on its own label now keeps its whole subtree.
@@ -89,7 +89,7 @@
   the component tree down. Cycles arrive easily from graph-shaped server data; the
   repeated node is now dropped with a dev warning.
 
-  Every fix ships with a regression test that fails against the previous release —
+  Every fix ships with a regression test that fails against the previous release 
   23 of them.
 
 ### Patch Changes
@@ -97,13 +97,13 @@
 - 19be8cd: Fix the published Vue bundle, and make every package installable and documented.
 
   **`@anil-labs/select-vue` was unusable when built.** The bundle was compiled with
-  the classic React JSX factory, so every component — `VSelect`, `VSelectTag`,
-  `VTreeSelect`, `VSelectOption` — threw `ReferenceError: React is not defined` on
+  the classic React JSX factory, so every component  `VSelect`, `VSelectTag`,
+  `VTreeSelect`, `VSelectOption`  threw `ReferenceError: React is not defined` on
   first render, in both the ESM and the CJS (Nuxt/SSR) entry.
 
   The cause was a split between test and build config: vitest compiles the `.tsx`
   sources through `@vitejs/plugin-vue-jsx`, but tsup registered no JSX plugin, and
-  esbuild only honours `jsxImportSource` under the _automatic_ runtime — with
+  esbuild only honours `jsxImportSource` under the _automatic_ runtime  with
   `jsx: "preserve"` it silently fell back to `React.createElement`. No test
   imported `dist`, so the whole suite stayed green.
 
@@ -132,7 +132,7 @@
 
   **The single-select menu never closed.** `closeOnSelect` was declared as
   `{ type: Boolean }` with no default, and Vue coerces an absent Boolean prop to
-  `false` rather than `undefined` — so the resolver `props.closeOnSelect ??
+  `false` rather than `undefined`  so the resolver `props.closeOnSelect ??
 props.mode === 'single'` could never reach its documented fallback. After a pick
   the listbox stayed mounted over the page and `aria-expanded` stayed `"true"`
   forever. Every other adapter closed correctly, because the core machine sees a
@@ -141,7 +141,7 @@ props.mode === 'single'` could never reach its documented fallback. After a pick
   **`role="combobox"` sat on an element that can never be focused.** Under the
   WAI-ARIA 1.2 combobox pattern the focused element _is_ the combobox. When
   `searchable` (the default) that is the search input, but the role,
-  `aria-expanded` and `aria-label` were all on a `tabindex="-1"` wrapper div — so
+  `aria-expanded` and `aria-label` were all on a `tabindex="-1"` wrapper div  so
   a screen reader announced the focused element as a plain edit field and was
   never told the popup opened or closed. The semantics now live on whichever
   element is actually focusable. The input also keeps its `aria-label` after a
@@ -155,7 +155,7 @@ props.mode === 'single'` could never reach its documented fallback. After a pick
   path to clear a value at all.
 
   **`focus()` and `autofocus` focused the wrong element.** `a?.focus() ??
-b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
+b?.focus()`  `HTMLElement.focus()` returns `undefined`, so the `??` always
   evaluated its right-hand side and the control div won. That div ignores keydown
   when searchable, so the user was left somewhere that accepted neither text nor
   arrow keys.
@@ -177,8 +177,8 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   returned nothing precisely when the user had deselected everything.
 
   **A non-serialisable value crashed the render.** `JSON.stringify` was unguarded
-  inside a computed read during render, so a circular object value — ordinary in
-  ORM-shaped data — took the whole component down, but only when `name` was set.
+  inside a computed read during render, so a circular object value  ordinary in
+  ORM-shaped data  took the whole component down, but only when `name` was set.
 
   **SSR ids desynced from client ids.** `useStableId` used Vue's global instance
   counter, which keeps climbing across requests on a long-lived server while the
@@ -194,7 +194,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   arrow keypress. Ids are now looked up directly instead of through a selector.
 
   **The `filter` prop is reactive.** It was read once during setup, so swapping
-  matching strategy at runtime had no effect — while `caseSensitive` beside it was
+  matching strategy at runtime had no effect  while `caseSensitive` beside it was
   already reactive.
 
   **Backspace parity.** On a non-searchable control Vue deselected the last tag
@@ -202,6 +202,6 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   flag the core machine uses.
 
   **Docs:** `VSelectProps<T>` was documented as a narrowing escape hatch it cannot
-  deliver — the snippet did not compile (missing `extends OptionLike`) and the
+  deliver  the snippet did not compile (missing `extends OptionLike`) and the
   resulting type is not assignable to the shipped component, whose generic is
   erased. The docs now say so and show the required cast.

@@ -28,7 +28,7 @@ export default defineComponent({
   }>,
   setup(props, { emit, slots }) {
     function onMousedown(event: MouseEvent) {
-      // Mousedown rather than click — fires before blur, keeping focus inside.
+      // Mousedown rather than click  fires before blur, keeping focus inside.
       event.preventDefault()
       if (props.option.disabled) return
       emit('pick', props.option, event)

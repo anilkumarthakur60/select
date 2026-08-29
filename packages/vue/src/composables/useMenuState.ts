@@ -21,7 +21,7 @@ export interface UseMenuStateReturn {
 /**
  * Owns the open/close + active-row state for a combobox-style menu. Pulled
  * out of `useSelection` so selection logic and menu UI state aren't entangled
- * in the same composable — callers building a headless variant can mix and
+ * in the same composable  callers building a headless variant can mix and
  * match.
  */
 export function useMenuState(opts: UseMenuStateOptions): UseMenuStateReturn {

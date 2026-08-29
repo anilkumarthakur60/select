@@ -25,7 +25,7 @@
     adapter.machine.update(config as SelectMachineConfig<T>)
   })
 
-  // $derived.by re-runs whenever any reactive read inside changes —
+  // $derived.by re-runs whenever any reactive read inside changes 
   // `void tick` is the explicit (lint-friendly) way to register that
   // dependency without producing an "unused expression" warning.
   const state = $derived.by(() => {

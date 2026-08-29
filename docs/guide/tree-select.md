@@ -2,7 +2,7 @@
 
 `<VTreeSelect>` mirrors `<VSelect>`'s API surface but renders a hierarchy.
 
-- v-model holds **leaf** values only — parent state is always derived
+- v-model holds **leaf** values only  parent state is always derived
 - Tri-state checkboxes for parents (`checked` / `indeterminate` / `unchecked`)
 - Toggling a parent toggles every selectable leaf under it
 - Search auto-expands matching subtrees so hits are visible without an extra click
@@ -113,7 +113,7 @@ const picked = ref<number[]>([])
 | ----------------- | ----------------- | -------------------------------------------------------- |
 | `option-value`    | `value` ?? `id`   | The value emitted into v-model when this leaf is checked |
 | `option-label`    | `label` ?? `name` | The visible label                                        |
-| `option-children` | `children`        | The children array — return `[]` for leaves              |
+| `option-children` | `children`        | The children array  return `[]` for leaves              |
 | `option-disabled` | `disabled`        | Skip the node from selection / count                     |
 
 All four accept either a string (property name) or a function `(node) => …`.
@@ -132,9 +132,9 @@ from reaching `checked`.
 
 By default a small toolbar sits above the tree with three actions:
 
-- **Expand all** / **Collapse all** — toggles based on the current state, hidden if the tree has no parent nodes
-- **Select all** — pick every selectable leaf (skips disabled leaves and respects `max-selections`)
-- **Clear** — only visible when there's a selection
+- **Expand all** / **Collapse all**  toggles based on the current state, hidden if the tree has no parent nodes
+- **Select all**  pick every selectable leaf (skips disabled leaves and respects `max-selections`)
+- **Clear**  only visible when there's a selection
 
 Hide the whole bar with `:show-toolbar="false"` if you want a minimalist
 surface, or replace its contents with the `toolbar` slot:
@@ -170,7 +170,7 @@ that matches on its **own** label keeps its entire subtree, so you can search
 for a category and then pick freely inside it. Matching subtrees auto-expand,
 and clearing the query collapses back to the `default-expand-all` state.
 
-Selection state is always derived from the full tree, not the filtered view —
+Selection state is always derived from the full tree, not the filtered view 
 a parent that is only partially selected still renders as indeterminate while
 you are searching, and toggling it acts on the whole branch rather than just
 the rows you can currently see.
@@ -201,5 +201,5 @@ first selected leaf when there is one, otherwise the first selectable node.
 - Categories, taxonomies, file/folder pickers, org charts
 - Any picker where parent / child relationships matter for the UX
 
-For non-hierarchical multi-pick, use `<VSelect mode="multiple">` — it's
+For non-hierarchical multi-pick, use `<VSelect mode="multiple">`  it's
 lighter and the trigger renders inline tags rather than a chip list.

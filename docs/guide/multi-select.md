@@ -57,7 +57,7 @@ When you don't want the trigger to grow unboundedly, cap visible tags with
 
 ## Selection cap
 
-`max-selections` is a hard limit — picks past the cap silently no-op. Pair
+`max-selections` is a hard limit  picks past the cap silently no-op. Pair
 with `:disabled` on a "you've reached the limit" hint slot if you want a
 visible state.
 
@@ -79,7 +79,7 @@ visible state.
 ## Removing tags
 
 - Click the × button on the tag
-- Press <kbd>Backspace</kbd> when the search input is empty — pops the last tag
+- Press <kbd>Backspace</kbd> when the search input is empty  pops the last tag
 - Programmatically: bind to `@deselect` or call `instance.clear()`
 
 ## Closing on each pick
@@ -94,7 +94,7 @@ to grab another one). Override with `:close-on-select="true"`:
 ## Checkbox-style menu
 
 Out of the box, selected options get a check glyph on the right of the row.
-Some designs prefer a leading **checkbox** for each option — a familiar
+Some designs prefer a leading **checkbox** for each option  a familiar
 "pick from a list" affordance. Use the `option` slot to render one:
 
 ```vue
@@ -145,16 +145,16 @@ const channels = ['Email', 'Push', 'SMS', 'Slack', 'Webhook']
 
 A few small but important details:
 
-- **`pointer-events: none` on the checkbox** — the row's `mousedown` already
+- **`pointer-events: none` on the checkbox**  the row's `mousedown` already
   handles toggle. Letting the native checkbox process clicks would cause a
   double-toggle (input fires, then row fires).
-- **`tabindex="-1"`** — the row is the focus target via
+- **`tabindex="-1"`**  the row is the focus target via
   `aria-activedescendant`; the checkbox shouldn't steal Tab order.
-- **`readonly`** — visual reflection only. The component is the source of
+- **`readonly`**  visual reflection only. The component is the source of
   truth.
-- **No keyboard `change` handler needed** — `useKeyboardNav` already maps
+- **No keyboard `change` handler needed**  `useKeyboardNav` already maps
   Space / Enter to "select active row".
 
 For a tree of checkboxes (categories with tri-state parents), use
-[`<VTreeSelect>`](./tree-select) — it ships native checkboxes and the
+[`<VTreeSelect>`](./tree-select)  it ships native checkboxes and the
 indeterminate state out of the box.

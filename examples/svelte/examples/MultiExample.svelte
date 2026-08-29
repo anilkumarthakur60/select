@@ -7,7 +7,7 @@
 </script>
 
 <article class="card">
-  <h2>Multi — grouped objects</h2>
+  <h2>Multi  grouped objects</h2>
   <p>Object options with custom value/label/group accessors.</p>
   <Select
     modelValue={selected}

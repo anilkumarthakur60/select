@@ -45,7 +45,7 @@ describe('useDebounced', () => {
     expect(debounced.value).toBe('b')
   })
 
-  it('coalesces rapid changes — only the last value lands', async () => {
+  it('coalesces rapid changes  only the last value lands', async () => {
     const source = ref('')
     const { debounced } = useDebounced(source, 100)
 
@@ -91,11 +91,11 @@ describe('useDebounced', () => {
     force('reset')
     expect(debounced.value).toBe('reset')
     vi.advanceTimersByTime(1000)
-    // Pending 'b' was cancelled — does not overwrite our forced reset.
+    // Pending 'b' was cancelled  does not overwrite our forced reset.
     expect(debounced.value).toBe('reset')
   })
 
-  it('honours a reactive delay — flushes pending when delay drops to 0', async () => {
+  it('honours a reactive delay  flushes pending when delay drops to 0', async () => {
     const source = ref('a')
     const delay = ref<number | undefined>(500)
     const { debounced } = useDebounced(source, delay)

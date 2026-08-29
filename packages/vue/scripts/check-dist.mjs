@@ -5,8 +5,8 @@
 // imports dist, so it cannot see a broken build. It didn't: the published
 // bundle was once compiled with the classic React JSX factory and every
 // component threw `ReferenceError: React is not defined` on first render while
-// all 66 tests stayed green. This script mounts the real artifact — both the
-// ESM and the CJS entry, since Nuxt/SSR consumers take the require path — and
+// all 66 tests stayed green. This script mounts the real artifact  both the
+// ESM and the CJS entry, since Nuxt/SSR consumers take the require path  and
 // fails the build if it cannot render.
 //
 // Run automatically as part of `pnpm build`.
@@ -31,13 +31,13 @@ for (const file of ['dist/index.js', 'dist/index.cjs']) {
   const reactFactoryCalls = (src.match(/React\.createElement/g) ?? []).length
   if (reactFactoryCalls > 0) {
     fail(
-      `${file}: ${reactFactoryCalls} React.createElement call(s) — the JSX ` +
+      `${file}: ${reactFactoryCalls} React.createElement call(s)  the JSX ` +
         `transform fell back to the classic React factory. Check ` +
         `esbuildOptions in tsup.config.ts.`,
     )
   }
   if (!src.includes('vue/jsx-runtime')) {
-    fail(`${file}: does not import vue/jsx-runtime — JSX is not compiling through Vue.`)
+    fail(`${file}: does not import vue/jsx-runtime  JSX is not compiling through Vue.`)
   }
 }
 
@@ -82,7 +82,7 @@ async function mountAll(label, mod) {
 
     if (renderError) {
       fail(
-        `${label}: ${name} threw on render — ${renderError.constructor.name}: ${renderError.message}`,
+        `${label}: ${name} threw on render  ${renderError.constructor.name}: ${renderError.message}`,
       )
     } else if (host.innerHTML === '' || host.innerHTML === '<!---->') {
       fail(`${label}: ${name} rendered nothing (${JSON.stringify(host.innerHTML)}).`)

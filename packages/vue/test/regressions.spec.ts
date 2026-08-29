@@ -36,7 +36,7 @@ describe('closeOnSelect', () => {
   // Boolean prop to `false`, never `undefined`, so the resolver
   // `props.closeOnSelect ?? props.mode === 'single'` could not reach its
   // fallback. A default single-select never closed, leaving the listbox
-  // mounted and aria-expanded="true" — while every other adapter closed.
+  // mounted and aria-expanded="true"  while every other adapter closed.
   it('closes a default single-select after a pick', async () => {
     wrapper = mount(VSelect, { props: { options: FRUITS }, attachTo: document.body })
     await open(wrapper)
@@ -64,7 +64,7 @@ describe('closeOnSelect', () => {
 })
 
 describe('focus()', () => {
-  // `a?.focus() ?? b?.focus()` — HTMLElement.focus() returns undefined, so the
+  // `a?.focus() ?? b?.focus()`  HTMLElement.focus() returns undefined, so the
   // ?? ALWAYS evaluated its right side: both ran and the control div won. The
   // control has tabindex={-1} when searchable and ignores keydown in that
   // mode, so the user was left on an element accepting neither text nor arrows.
@@ -91,7 +91,7 @@ describe('focus()', () => {
 
 describe('keyboard-operable clear and tag remove', () => {
   // Both were tabindex={-1} with mousedown-only handlers. Keyboard activation
-  // of a <button> arrives as `click`, never `mousedown`, so they were inert —
+  // of a <button> arrives as `click`, never `mousedown`, so they were inert 
   // and in single mode there was no keyboard path to clear at all.
   it('clears via a keyboard-synthesised click', async () => {
     wrapper = mount(VSelect, {
@@ -134,7 +134,7 @@ describe('keyboard-operable clear and tag remove', () => {
 
 describe('empty-string option value', () => {
   // `if (value == null || value === '') return []` treated '' as "nothing
-  // selected", but select() happily emitted '' — so the classic
+  // selected", but select() happily emitted ''  so the classic
   // <option value="">None</option> appeared to do nothing. 0 and false always
   // worked, marking '' as an accidental over-broad emptiness test.
   it('renders a selection whose value is the empty string', () => {
@@ -174,7 +174,7 @@ describe('useFormBinding', () => {
   })
 
   // hiddenInputs is a computed read during render, so an unguarded
-  // JSON.stringify throw took the whole component down — and only when `name`
+  // JSON.stringify throw took the whole component down  and only when `name`
   // was set. Circular values are ordinary in ORM-shaped data.
   it('survives a circular object value instead of crashing the render', () => {
     const circular: Record<string, unknown> = { name: 'Grace' }
@@ -225,7 +225,7 @@ describe('native validation', () => {
 
 describe('useOptionFilter', () => {
   // `filter` was read once during setup, so the computed closed over the
-  // setup-time function forever — a UI that swaps matching strategy at runtime
+  // setup-time function forever  a UI that swaps matching strategy at runtime
   // silently kept the first one. Every neighbouring option was already reactive.
   it('picks up a filter swapped at runtime', () => {
     const options = ref(

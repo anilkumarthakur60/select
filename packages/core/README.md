@@ -2,7 +2,7 @@
 
 Framework-agnostic state machine, option normalisation and styles behind
 [`@anil-labs/select`](https://github.com/anilkumarthakur60/select). No
-framework dependency — this is the package every adapter is built on.
+framework dependency  this is the package every adapter is built on.
 
 Reach for it directly when you are writing your own adapter, or driving a select
 from a framework that has no published adapter yet.
@@ -31,7 +31,7 @@ machine.setActiveIndex(1)
 machine.selectActive()
 ```
 
-The machine owns all behaviour — open/close, keyboard navigation, filtering,
+The machine owns all behaviour  open/close, keyboard navigation, filtering,
 single/multiple/tags modes, and the ARIA attribute bags. An adapter's job is
 only to bind those bags to the host framework's DOM and re-render on notify.
 

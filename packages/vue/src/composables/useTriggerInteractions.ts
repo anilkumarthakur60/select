@@ -4,9 +4,9 @@ export interface UseTriggerInteractionsOptions {
   disabled: Ref<boolean>
   searchable: Ref<boolean>
   isOpen: Ref<boolean>
-  /** Search input element — focused on toggle so typing keeps working. */
+  /** Search input element  focused on toggle so typing keeps working. */
   searchEl: Ref<HTMLInputElement | null>
-  /** Live query ref — written to on every keystroke. */
+  /** Live query ref  written to on every keystroke. */
   query: Ref<string>
   open: () => void
   toggle: () => void
@@ -47,7 +47,7 @@ export function useTriggerInteractions(
 
     // Clicking the search input *should* open the menu (otherwise the trigger
     // feels half-broken in single mode where the input covers most of the
-    // control). We don't preventDefault — let the browser place the caret —
+    // control). We don't preventDefault  let the browser place the caret 
     // and use `open()` rather than `toggle()` so clicking inside an
     // already-open input doesn't snap the menu shut.
     if (target.tagName === 'INPUT') {

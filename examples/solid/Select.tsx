@@ -3,7 +3,7 @@ import { createSelect, toSolidProps } from '@anil-labs/select-solid'
 import type { NormalizedOption, OptionLike, SelectMachineConfig } from '@anil-labs/select-solid'
 
 // Idiomatic Solid Select component built on the headless `createSelect`
-// primitive. Solid's reactivity is fine-grained — wrapping every machine
+// primitive. Solid's reactivity is fine-grained  wrapping every machine
 // read in a `createMemo` keeps the JSX subscribed via `select.tick()`.
 //
 // This file ships with the playground as a copy-paste reference; the npm
@@ -39,7 +39,7 @@ export default function Select<T extends OptionLike = OptionLike>(
   const isMulti = createMemo(() => (select.tick(), select.machine.isMulti()))
   const hasSelection = createMemo(() => (select.tick(), select.machine.hasSelection()))
 
-  // Callback refs — explicit assignment keeps lint happy and makes the
+  // Callback refs  explicit assignment keeps lint happy and makes the
   // capture visible without relying on Solid's `ref={var}` JSX transform.
   let rootEl: HTMLDivElement | undefined
   let menuEl: HTMLDivElement | undefined

@@ -4,7 +4,7 @@ layout: home
 hero:
   name: '@anil-labs/select-core'
   text: One typed, accessible select. Every framework.
-  tagline: Vue 3 · React · Svelte 5 · Solid · Web Components — single, multi, tags, async, grouped, tree. One core, idiomatic adapters.
+  tagline: Vue 3 · React · Svelte 5 · Solid · Web Components  single, multi, tags, async, grouped, tree. One core, idiomatic adapters.
   actions:
     - theme: brand
       text: Get Started
@@ -22,13 +22,13 @@ features:
     details: A pure-TS state machine drives every adapter. Vue, React, Svelte, Solid, and a Web Component all import from `@anil-labs/select-core/<framework>` and share one set of behaviour, semantics, and tests.
   - icon: 🎯
     title: TypeScript-native
-    details: Full generics over your option type. Accessors, slots/render props, and emits/handlers are all typed against `T` — no `any` escape hatches in any adapter.
+    details: Full generics over your option type. Accessors, slots/render props, and emits/handlers are all typed against `T`  no `any` escape hatches in any adapter.
   - icon: ♿
     title: Accessible by default
-    details: ARIA-1.2 combobox + listbox / tree semantics, full keyboard nav, focus management across menu open / close / tag removal — implemented once in the core.
+    details: ARIA-1.2 combobox + listbox / tree semantics, full keyboard nav, focus management across menu open / close / tag removal  implemented once in the core.
   - icon: 🌳
     title: Tree mode included (Vue)
-    details: '`<VTreeSelect>` ships in the Vue adapter — tri-state parents derived from leaf v-model, search auto-expansion, optional toolbar.'
+    details: '`<VTreeSelect>` ships in the Vue adapter  tri-state parents derived from leaf v-model, search auto-expansion, optional toolbar.'
   - icon: 🎨
     title: Themeable
     details: All design tokens are CSS custom properties under the `.vselect` scope. Light / dark / auto themes plus accent presets, shared across every adapter.

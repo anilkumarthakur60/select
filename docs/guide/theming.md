@@ -1,7 +1,7 @@
 # Theming
 
 Every visual decision in the component is exposed as a CSS custom property
-on `.vselect`. Override them anywhere in your stylesheet — no SCSS
+on `.vselect`. Override them anywhere in your stylesheet  no SCSS
 recompile required.
 
 ## The big picture
@@ -19,11 +19,11 @@ recompile required.
 ```
 
 The default stylesheet is wrapped in `@layer vselect`, so consumer rules
-written outside any layer always win the cascade — you don't need
+written outside any layer always win the cascade  you don't need
 specificity hacks like `.vselect.vselect`.
 
 ```css
-/* Outside any @layer — beats @layer vselect automatically. */
+/* Outside any @layer  beats @layer vselect automatically. */
 .my-form .vselect {
   --vselect-accent: #ec4899;
   --vselect-radius: 12px;

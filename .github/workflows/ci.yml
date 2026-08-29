@@ -27,7 +27,7 @@ jobs:
 
       # Build runs FIRST and must stay first: the Vue package's build invokes
       # scripts/check-dist.mjs, which mounts the emitted bundle. The unit suite
-      # only ever compiles src, so a broken artifact is invisible to it — that
+      # only ever compiles src, so a broken artifact is invisible to it  that
       # is exactly how a bundle compiled with the React JSX factory shipped
       # while all 125 tests were green.
       - name: Build

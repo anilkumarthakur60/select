@@ -6,7 +6,7 @@ import { defineConfig } from 'tsup'
 // carry no internal relative specifiers. That matters: extensionless relative
 // specifiers are illegal under `moduleResolution: "node16"`, and because
 // consumers usually run `skipLibCheck: true` the diagnostic is swallowed while
-// resolution still fails — silently degrading the public API to `any`.
+// resolution still fails  silently degrading the public API to `any`.
 export default defineConfig({
   entry: { index: 'src/index.ts', nuxt: 'src/nuxt.ts' },
   format: ['esm', 'cjs'],
@@ -19,11 +19,11 @@ export default defineConfig({
   outDir: 'dist',
   external: ['@anil-labs/select-core', ...['vue', 'vue/jsx-runtime', '@nuxt/kit', 'nuxt']],
 
-  // REQUIRED — do not remove. tsconfig.json keeps `jsx: "preserve"` because
+  // REQUIRED  do not remove. tsconfig.json keeps `jsx: "preserve"` because
   // Vue's jsx-runtime declares no `ElementChildrenAttribute`, so under the
   // automatic runtime TypeScript checks `children` as a prop and every element
   // with children fails against `HTMLAttributes & ReservedProps`. But esbuild
-  // only honours `jsxImportSource` when the runtime IS automatic — left alone
+  // only honours `jsxImportSource` when the runtime IS automatic  left alone
   // it emitted the classic `React.createElement` factory, so every published
   // component threw `ReferenceError: React is not defined` on first render.
   // That stayed invisible because vitest compiles src through

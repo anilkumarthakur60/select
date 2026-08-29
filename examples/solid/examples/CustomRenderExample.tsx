@@ -8,7 +8,7 @@ export default function CustomRenderExample(props: { theme: Theme }) {
 
   return (
     <article class="card">
-      <h2>Custom render — flags &amp; meta</h2>
+      <h2>Custom render  flags &amp; meta</h2>
       <p>Override option and selection rendering for richer UI.</p>
       <Select
         modelValue={country()}

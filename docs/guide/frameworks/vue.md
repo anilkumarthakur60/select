@@ -1,6 +1,6 @@
 # Vue 3
 
-The Vue adapter is the most batteries-included of the bunch — it ships
+The Vue adapter is the most batteries-included of the bunch  it ships
 both `<VSelect>` and `<VTreeSelect>` SFCs, a global plugin, and the full
 set of composables that power them.
 

@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- 4b7b45e: Drop the `@floating-ui/vue` dependency — menu positioning is now implemented
+- 4b7b45e: Drop the `@floating-ui/vue` dependency  menu positioning is now implemented
   in-house. `@anil-labs/select-vue` has no runtime dependency other than
   `@anil-labs/select-core`.
 
@@ -12,7 +12,7 @@
   is **opt-in and off by default**. It cost consumers ~7.6 KB gzipped after
   tree-shaking, plus three transitive packages in the lockfile.
 
-  More importantly, `useFloating()` was called _unconditionally_ — the teleport
+  More importantly, `useFloating()` was called _unconditionally_  the teleport
   check only gated whether the resulting styles were applied. A
   default-configured `<VSelect>` therefore constructed a `ResizeObserver`,
   attached four window scroll/resize listeners, computed a position, and then
@@ -31,8 +31,8 @@
   positioning usually goes wrong. The trade-off: if you teleport into a container
   that has a `transform`, `filter`, `perspective`, `backdrop-filter` or
   `will-change`, that ancestor becomes the containing block for fixed elements and
-  the menu will be offset. Teleporting to `body` — the normal case, and the
-  default target — is unaffected. If you need a transformed container, give it
+  the menu will be offset. Teleporting to `body`  the normal case, and the
+  default target  is unaffected. If you need a transformed container, give it
   `position: relative` and teleport there instead.
 
   Positioning is now covered by tests (placement, flip, viewport clamping,
@@ -57,14 +57,14 @@
 
   **Also in this release**
   - `ClearButtonProps` is now exported from the core package. Adapters could previously only reach it through a deep `core/machine` import, which the package split makes impossible.
-  - `toSolidProps` and `toSvelteProps` are generic over `object` instead of taking `Record<string, unknown>`. The machine's prop bags are interfaces, and interfaces have no implicit index signature — so the usage shown in each adapter's own documentation did not typecheck.
+  - `toSolidProps` and `toSvelteProps` are generic over `object` instead of taking `Record<string, unknown>`. The machine's prop bags are interfaces, and interfaces have no implicit index signature  so the usage shown in each adapter's own documentation did not typecheck.
   - The Vue adapter no longer imports the stylesheet as a side effect. Styles live in the core package and every adapter shares them, so Vue consumers were getting CSS automatically while React/Svelte/Solid consumers had to opt in. Import `@anil-labs/select-core/styles.css` explicitly.
 
 - eed4401: Fix fourteen Vue-adapter defects across accessibility, forms, Nuxt and focus.
 
   **The single-select menu never closed.** `closeOnSelect` was declared as
   `{ type: Boolean }` with no default, and Vue coerces an absent Boolean prop to
-  `false` rather than `undefined` — so the resolver `props.closeOnSelect ??
+  `false` rather than `undefined`  so the resolver `props.closeOnSelect ??
 props.mode === 'single'` could never reach its documented fallback. After a pick
   the listbox stayed mounted over the page and `aria-expanded` stayed `"true"`
   forever. Every other adapter closed correctly, because the core machine sees a
@@ -73,7 +73,7 @@ props.mode === 'single'` could never reach its documented fallback. After a pick
   **`role="combobox"` sat on an element that can never be focused.** Under the
   WAI-ARIA 1.2 combobox pattern the focused element _is_ the combobox. When
   `searchable` (the default) that is the search input, but the role,
-  `aria-expanded` and `aria-label` were all on a `tabindex="-1"` wrapper div — so
+  `aria-expanded` and `aria-label` were all on a `tabindex="-1"` wrapper div  so
   a screen reader announced the focused element as a plain edit field and was
   never told the popup opened or closed. The semantics now live on whichever
   element is actually focusable. The input also keeps its `aria-label` after a
@@ -87,7 +87,7 @@ props.mode === 'single'` could never reach its documented fallback. After a pick
   path to clear a value at all.
 
   **`focus()` and `autofocus` focused the wrong element.** `a?.focus() ??
-b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
+b?.focus()`  `HTMLElement.focus()` returns `undefined`, so the `??` always
   evaluated its right-hand side and the control div won. That div ignores keydown
   when searchable, so the user was left somewhere that accepted neither text nor
   arrow keys.
@@ -109,8 +109,8 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   returned nothing precisely when the user had deselected everything.
 
   **A non-serialisable value crashed the render.** `JSON.stringify` was unguarded
-  inside a computed read during render, so a circular object value — ordinary in
-  ORM-shaped data — took the whole component down, but only when `name` was set.
+  inside a computed read during render, so a circular object value  ordinary in
+  ORM-shaped data  took the whole component down, but only when `name` was set.
 
   **SSR ids desynced from client ids.** `useStableId` used Vue's global instance
   counter, which keeps climbing across requests on a long-lived server while the
@@ -126,7 +126,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   arrow keypress. Ids are now looked up directly instead of through a selector.
 
   **The `filter` prop is reactive.** It was read once during setup, so swapping
-  matching strategy at runtime had no effect — while `caseSensitive` beside it was
+  matching strategy at runtime had no effect  while `caseSensitive` beside it was
   already reactive.
 
   **Backspace parity.** On a non-searchable control Vue deselected the last tag
@@ -134,7 +134,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   flag the core machine uses.
 
   **Docs:** `VSelectProps<T>` was documented as a narrowing escape hatch it cannot
-  deliver — the snippet did not compile (missing `extends OptionLike`) and the
+  deliver  the snippet did not compile (missing `extends OptionLike`) and the
   resulting type is not assignable to the shipped component, whose generic is
   erased. The docs now say so and show the required cast.
 
@@ -144,7 +144,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   **`<VTreeSelect>` had no keyboard support at all.** No keydown handler was bound
   anywhere: the popup could not be opened, navigated, selected or dismissed from
   the keyboard, no element ever carried `aria-activedescendant`, and the
-  `role="treeitem"` rows had no active state — so nothing identified a current
+  `role="treeitem"` rows had no active state  so nothing identified a current
   node to assistive technology. It now implements the tree pattern:
   ArrowDown/ArrowUp to move, ArrowRight/ArrowLeft to expand/collapse (and step
   into/out of a branch), Home/End, Enter/Space to toggle, Escape to close, and
@@ -153,7 +153,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   onto whichever element actually takes focus, matching `<VSelect>`.
 
   **`<a-select>` had an HTML injection sink.** Option labels were escaped but the
-  option `id` was interpolated raw into an attribute — and ids embed the option
+  option `id` was interpolated raw into an attribute  and ids embed the option
   value, so a value containing a quote broke out and injected markup. An
   `<img src=x onerror=…>` was genuinely constructed in the DOM. Option lists
   routinely come from an API or CMS. Every interpolated attribute is now escaped.
@@ -161,14 +161,14 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   affected.
 
   **`<a-select>` could not hold focus.** `render()` replaces the whole subtree on
-  every state change, including the focused input — so focus fell to
+  every state change, including the focused input  so focus fell to
   `document.body` on first focus, on every keystroke (the second character went to
   `<body>` and the query stuck at one) and on every arrow key. Focus and caret are
   now preserved across re-render.
 
   **`<a-select>` was permanently dead after unmount + re-append.**
   `disconnectedCallback` tore down the subscription unconditionally, but
-  `connectedCallback` re-established it only behind `if (!this.machine)` — still
+  `connectedCallback` re-established it only behind `if (!this.machine)`  still
   truthy on reconnect. The machine kept working while the DOM stopped updating, so
   state and UI silently desynced. Triggered by `v-if`, list reordering, or moving
   a node into a portal.
@@ -188,14 +188,14 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   **Search expansion was never reverted.** The auto-expand watcher claimed
   clearing the query restored the baseline, but the only re-seed keyed on tree
   identity, which a query never changes. Every search permanently opened more of
-  the tree until it was effectively fully expanded — contradicting
+  the tree until it was effectively fully expanded  contradicting
   `default-expand-all="false"`.
 
   **A parent id could get stuck in `v-model`.** With lazily-loaded children a node
   ships with `children: []`, so it is a legitimate leaf and selectable; once its
   children arrive the stored value is a parent id. No tag rendered, so the user
   could not remove it, its own row showed unchecked so clicking added children
-  instead — yet the toolbar counted it and the hidden input still submitted it.
+  instead  yet the toolbar counted it and the hidden input still submitted it.
   Stale values are now dropped when the tree rebuilds, guarded so an async load
   that briefly passes `[]` cannot wipe the selection.
 
@@ -205,7 +205,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   before emitting, so the two paths in the same composable disagreed.
 
   **`autofocus` focused the wrong element**, the same `a?.focus() ?? b?.focus()`
-  misuse fixed in `<VSelect>` — `focus()` returns `undefined`, so both ran and the
+  misuse fixed in `<VSelect>`  `focus()` returns `undefined`, so both ran and the
   control wrapper won.
 
   Lint is now clean at `error` level: all 11 type-aware findings from the split are
@@ -215,7 +215,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
 
 - 6bdef2d: **`<VSelect>` / `<VTreeSelect>`: Enter now commits against the query you typed.**
 
-  With `debounce` set, the rendered list lags the query — so pressing Enter before
+  With `debounce` set, the rendered list lags the query  so pressing Enter before
   the trailing edge acted on the _stale_ list. Typing `"Gam"` into a
   `['Alpha', 'Beta', 'Gamma']` select and hitting Enter committed **`"Alpha"`**,
   the first row of the not-yet-filtered list. Type-then-Enter is the ordinary
@@ -234,13 +234,13 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
 - 19be8cd: Fix the published Vue bundle, and make every package installable and documented.
 
   **`@anil-labs/select-vue` was unusable when built.** The bundle was compiled with
-  the classic React JSX factory, so every component — `VSelect`, `VSelectTag`,
-  `VTreeSelect`, `VSelectOption` — threw `ReferenceError: React is not defined` on
+  the classic React JSX factory, so every component  `VSelect`, `VSelectTag`,
+  `VTreeSelect`, `VSelectOption`  threw `ReferenceError: React is not defined` on
   first render, in both the ESM and the CJS (Nuxt/SSR) entry.
 
   The cause was a split between test and build config: vitest compiles the `.tsx`
   sources through `@vitejs/plugin-vue-jsx`, but tsup registered no JSX plugin, and
-  esbuild only honours `jsxImportSource` under the _automatic_ runtime — with
+  esbuild only honours `jsxImportSource` under the _automatic_ runtime  with
   `jsx: "preserve"` it silently fell back to `React.createElement`. No test
   imported `dist`, so the whole suite stayed green.
 
@@ -276,7 +276,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   indefinitely. Only passing a _different_ value recovered.
 
   **The highlight was never reconciled when the option list changed.** After an
-  async response replaced a longer list — the documented pattern — `activeIndex`
+  async response replaced a longer list  the documented pattern  `activeIndex`
   pointed past the end: no row rendered active, `aria-activedescendant` was
   `undefined` so screen readers announced nothing, and Enter still called
   `preventDefault()` (swallowing form submission) before selecting nothing. Enter
@@ -300,13 +300,13 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   use; `isSelected` (SameValueZero, via `Set`) disagreed with the removal path
   (strict `!==`), so clicking a `NaN`-valued option fired `onDeselect` on every
   click while it stayed selected forever. Everything now routes through
-  `valuesEqual`, which is SameValueZero — matching the `Set`/`Map` lookups the
+  `valuesEqual`, which is SameValueZero  matching the `Set`/`Map` lookups the
   machine already used. `toggleValue([NaN], NaN)` returns `[]` instead of
   `[NaN, NaN]`.
 
   **Non-primitive labels no longer render as `"[object Object]"`.** An
   i18n-shaped label reached the row text, the collapsed control's accessible name,
-  and the tag remove button's `aria-label` — and, because `label` is the only
+  and the tag remove button's `aria-label`  and, because `label` is the only
   field search matches against, made the option unreachable by typing. Labels now
   go through `safeLabel()`, which falls back to the option value and warns once in
   dev telling you to supply an `optionLabel` accessor.
@@ -319,7 +319,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   and React no longer warns about duplicate keys.
 
   **`filterTree` pruned a matched parent's entire subtree.** Searching a branch
-  label produced a node with `isLeaf: false` and zero children — a row that
+  label produced a node with `isLeaf: false` and zero children  a row that
   rendered a checkbox and an expand chevron but had nothing to select or expand.
   Clicking it emitted no model update while the checkbox stayed visually ticked. A
   node that matches on its own label now keeps its whole subtree.
@@ -329,7 +329,7 @@ b?.focus()` — `HTMLElement.focus()` returns `undefined`, so the `??` always
   the component tree down. Cycles arrive easily from graph-shaped server data; the
   repeated node is now dropped with a dev warning.
 
-  Every fix ships with a regression test that fails against the previous release —
+  Every fix ships with a regression test that fails against the previous release 
   23 of them.
 
 - Updated dependencies [37025db]

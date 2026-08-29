@@ -9,7 +9,7 @@ import type { OptionLike } from '@anil-labs/select-core'
 /**
  * React hook that owns a select machine for the lifetime of the component.
  * Re-renders are driven by `useSyncExternalStore` reading from the machine's
- * subscribe/getState pair — no component-local state, no stale closures.
+ * subscribe/getState pair  no component-local state, no stale closures.
  *
  * Pass props each render; the hook diffs and `update()`s the machine. Pass
  * `modelValue` to run controlled, omit to run uncontrolled (the machine then
@@ -29,7 +29,7 @@ export function useSelect<T extends OptionLike = OptionLike>(
 
   // Push every render's config into the machine. The machine compares
   // observable fields (options, modelValue, mode, disabled, loading) and
-  // skips its notify() unless one actually changed — which means the
+  // skips its notify() unless one actually changed  which means the
   // useSyncExternalStore re-render → useEffect → update() chain breaks
   // cleanly when nothing has happened, instead of looping forever.
   useEffect(() => {

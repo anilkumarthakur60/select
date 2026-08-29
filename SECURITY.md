@@ -32,7 +32,7 @@ In scope:
 Out of scope:
 
 - Vulnerabilities in `vue`, `@nuxt/kit`, or any other
-  upstream dependency — please report those to the respective project
+  upstream dependency  please report those to the respective project
 - Issues only reproducible with substantially modified forks of the source
 - Self-XSS via consumer-controlled markup passed into slots (consumers are
   responsible for sanitising HTML they render through the `option` /

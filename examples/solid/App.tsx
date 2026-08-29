@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
           <span class="tag">v0.0.1</span>
         </div>
         <p class="lead">
-          Headless Solid adapter — drop-in <code>Select.tsx</code> example included. Backed by the
+          Headless Solid adapter  drop-in <code>Select.tsx</code> example included. Backed by the
           framework-agnostic core.
         </p>
         <label class="theme-switch">

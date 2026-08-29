@@ -22,7 +22,7 @@
 
   **Also in this release**
   - `ClearButtonProps` is now exported from the core package. Adapters could previously only reach it through a deep `core/machine` import, which the package split makes impossible.
-  - `toSolidProps` and `toSvelteProps` are generic over `object` instead of taking `Record<string, unknown>`. The machine's prop bags are interfaces, and interfaces have no implicit index signature — so the usage shown in each adapter's own documentation did not typecheck.
+  - `toSolidProps` and `toSvelteProps` are generic over `object` instead of taking `Record<string, unknown>`. The machine's prop bags are interfaces, and interfaces have no implicit index signature  so the usage shown in each adapter's own documentation did not typecheck.
   - The Vue adapter no longer imports the stylesheet as a side effect. Styles live in the core package and every adapter shares them, so Vue consumers were getting CSS automatically while React/Svelte/Solid consumers had to opt in. Import `@anil-labs/select-core/styles.css` explicitly.
 
 ### Patch Changes
@@ -30,13 +30,13 @@
 - 19be8cd: Fix the published Vue bundle, and make every package installable and documented.
 
   **`@anil-labs/select-vue` was unusable when built.** The bundle was compiled with
-  the classic React JSX factory, so every component — `VSelect`, `VSelectTag`,
-  `VTreeSelect`, `VSelectOption` — threw `ReferenceError: React is not defined` on
+  the classic React JSX factory, so every component  `VSelect`, `VSelectTag`,
+  `VTreeSelect`, `VSelectOption`  threw `ReferenceError: React is not defined` on
   first render, in both the ESM and the CJS (Nuxt/SSR) entry.
 
   The cause was a split between test and build config: vitest compiles the `.tsx`
   sources through `@vitejs/plugin-vue-jsx`, but tsup registered no JSX plugin, and
-  esbuild only honours `jsxImportSource` under the _automatic_ runtime — with
+  esbuild only honours `jsxImportSource` under the _automatic_ runtime  with
   `jsx: "preserve"` it silently fell back to `React.createElement`. No test
   imported `dist`, so the whole suite stayed green.
 
@@ -72,7 +72,7 @@
   indefinitely. Only passing a _different_ value recovered.
 
   **The highlight was never reconciled when the option list changed.** After an
-  async response replaced a longer list — the documented pattern — `activeIndex`
+  async response replaced a longer list  the documented pattern  `activeIndex`
   pointed past the end: no row rendered active, `aria-activedescendant` was
   `undefined` so screen readers announced nothing, and Enter still called
   `preventDefault()` (swallowing form submission) before selecting nothing. Enter
@@ -96,13 +96,13 @@
   use; `isSelected` (SameValueZero, via `Set`) disagreed with the removal path
   (strict `!==`), so clicking a `NaN`-valued option fired `onDeselect` on every
   click while it stayed selected forever. Everything now routes through
-  `valuesEqual`, which is SameValueZero — matching the `Set`/`Map` lookups the
+  `valuesEqual`, which is SameValueZero  matching the `Set`/`Map` lookups the
   machine already used. `toggleValue([NaN], NaN)` returns `[]` instead of
   `[NaN, NaN]`.
 
   **Non-primitive labels no longer render as `"[object Object]"`.** An
   i18n-shaped label reached the row text, the collapsed control's accessible name,
-  and the tag remove button's `aria-label` — and, because `label` is the only
+  and the tag remove button's `aria-label`  and, because `label` is the only
   field search matches against, made the option unreachable by typing. Labels now
   go through `safeLabel()`, which falls back to the option value and warns once in
   dev telling you to supply an `optionLabel` accessor.
@@ -115,7 +115,7 @@
   and React no longer warns about duplicate keys.
 
   **`filterTree` pruned a matched parent's entire subtree.** Searching a branch
-  label produced a node with `isLeaf: false` and zero children — a row that
+  label produced a node with `isLeaf: false` and zero children  a row that
   rendered a checkbox and an expand chevron but had nothing to select or expand.
   Clicking it emitted no model update while the checkbox stayed visually ticked. A
   node that matches on its own label now keeps its whole subtree.
@@ -125,7 +125,7 @@
   the component tree down. Cycles arrive easily from graph-shaped server data; the
   repeated node is now dropped with a dev warning.
 
-  Every fix ships with a regression test that fails against the previous release —
+  Every fix ships with a regression test that fails against the previous release 
   23 of them.
 
 - Updated dependencies [37025db]

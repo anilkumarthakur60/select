@@ -48,7 +48,7 @@ import type {
 } from '@anil-labs/select-vue'
 ```
 
-The composables expose their own option / return types — see the
+The composables expose their own option / return types  see the
 [Composables reference](./composables) for those. They're all importable
 from the same package root.
 
@@ -56,7 +56,7 @@ from the same package root.
 
 ```ts
 interface NormalizedOption<T = unknown> {
-  /** Stable, unique key — used by Vue's v-for and ARIA wiring. */
+  /** Stable, unique key  used by Vue's v-for and ARIA wiring. */
   id: string
   /** Value emitted via v-model. */
   value: unknown
@@ -108,12 +108,12 @@ interface FilterContext<T> {
 }
 ```
 
-Custom filter — return `true` to keep the option in the menu.
+Custom filter  return `true` to keep the option in the menu.
 
 ## `VSelectProps<T>`
 
 The full prop surface for `<VSelect>`. Use it to describe your own wrapper's
-props — note the `extends OptionLike` constraint, which `VSelectProps`
+props  note the `extends OptionLike` constraint, which `VSelectProps`
 requires and the previous version of this snippet omitted:
 
 ```ts
@@ -139,7 +139,7 @@ Forwarding a typed prop bag therefore needs a cast at the hand-off:
 <VSelect v-bind="(props as unknown) as VSelectProps<OptionLike>" />
 ```
 
-This is a TSX limitation — it cannot carry the `<T extends OptionLike>` generic
+This is a TSX limitation  it cannot carry the `<T extends OptionLike>` generic
 the SFC form supports. Your own wrapper API stays fully typed; only the
 hand-off to `<VSelect>` needs the cast.
 :::
@@ -183,7 +183,7 @@ interface VSelectInstance {
 
 ## `VSelectSlots<T>`
 
-Aggregate map of every slot `<VSelect>` exposes — useful for typing wrappers
+Aggregate map of every slot `<VSelect>` exposes  useful for typing wrappers
 that forward children through. Each entry is keyed by slot name and resolves
 to a render function with the matching props. See [Slot prop shapes](#slot-prop-shapes-vselect)
 below for the individual interfaces.
@@ -279,7 +279,7 @@ What `getCheckState(node)` returns from `useTreeSelection`.
 
 ## `VTreeSelectProps<T>`
 
-Full prop surface for `<VTreeSelect>` — see the
+Full prop surface for `<VTreeSelect>`  see the
 [`<VTreeSelect>` reference](./v-tree-select#props) for the complete table.
 
 ## `VTreeSelectEmits<T>`

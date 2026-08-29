@@ -9,7 +9,7 @@ export interface UseOutsideClickOptions {
   onOutside: (event: PointerEvent) => void
 }
 
-// SSR-safe DOM check — `document` is undefined on the server, and the
+// SSR-safe DOM check  `document` is undefined on the server, and the
 // `immediate: true` watcher below would crash if it tried to detach a
 // listener it never had a chance to attach.
 const hasDocument = typeof document !== 'undefined'
@@ -17,7 +17,7 @@ const hasDocument = typeof document !== 'undefined'
 /**
  * Listens for `pointerdown` events outside a set of elements while `active`
  * is true. We use `pointerdown` rather than `click` so menus close before
- * focus transitions complete — clicking outside an open select feels
+ * focus transitions complete  clicking outside an open select feels
  * sluggish if you wait for the trailing click. The listener is attached
  * with `capture: true` so a stopPropagation inside the menu doesn't shadow
  * us (the floating menu is a sibling once teleported).

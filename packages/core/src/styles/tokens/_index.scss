@@ -1,10 +1,10 @@
 // Design tokens exposed as CSS custom properties on the component root.
-// Consumers override at any cascade level — no SCSS recompile required.
+// Consumers override at any cascade level  no SCSS recompile required.
 // Every token is `--vselect-*` so it never collides with consumer styles.
 //
 // Color strategy: surfaces stay solid for legibility, but borders and rings
 // are tuned to feel at home on neutral, tinted, and inverted page
-// backgrounds — neither too washed-out on warm grays nor too heavy on
+// backgrounds  neither too washed-out on warm grays nor too heavy on
 // cool whites. Accent colors are isolated to focus, selection, and the
 // check glyph, so swapping the accent in a preset (`emerald`, `rose`,
 // custom) is a one-line change.
@@ -33,7 +33,7 @@
   --vselect-bg-disabled: #f1f5f9;
   --vselect-menu-bg: #ffffff;
 
-  // Border colors — slate-300 at rest reads cleanly on white *and* on
+  // Border colors  slate-300 at rest reads cleanly on white *and* on
   // tinted page backgrounds (warm grays, soft blues) without looking
   // smudged. Hover/focus step up in contrast, not saturation.
   --vselect-border: #cbd5e1;
@@ -64,7 +64,7 @@
   --vselect-tag-remove: #64748b;
   --vselect-tag-remove-hover: #ef4444;
 
-  // Focus ring — rgba so it glows cleanly over any background tint.
+  // Focus ring  rgba so it glows cleanly over any background tint.
   --vselect-focus-ring: 0 0 0 1px rgba(99, 102, 241, 0.22);
 
   // Elevation
@@ -81,7 +81,7 @@
 @mixin dark-tokens {
   color-scheme: dark;
 
-  // Surface — slate-800 instead of slate-900. The previous near-black
+  // Surface  slate-800 instead of slate-900. The previous near-black
   // surface read as a hole on every dark page that wasn't pure black;
   // slate-800 sits naturally on slate/zinc/gray dark backgrounds.
   --vselect-bg: #1e293b;

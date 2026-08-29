@@ -17,7 +17,7 @@ const vueUseId = (vue as { useId?: () => string }).useId
  * The previous implementation used `instance.uid`, a module-level counter over
  * *every* component instance in the process. On a long-lived SSR server that
  * keeps climbing across requests while the client's counter restarts at zero,
- * so server and client disagreed — two consecutive server renders already
+ * so server and client disagreed  two consecutive server renders already
  * disagreed with each other. Vue does not repair mismatched attributes, so
  * after hydration the DOM kept the server's `aria-controls` while the menu
  * (rendered client-side on open) got the client's id: the combobox→listbox
@@ -25,7 +25,7 @@ const vueUseId = (vue as { useId?: () => string }).useId
  * hydration warning is compiled out. This package ships a Nuxt module, so SSR
  * is a first-class path.
  *
- * The `uid` fallback remains for Vue 3.3/3.4, where it is the best available —
+ * The `uid` fallback remains for Vue 3.3/3.4, where it is the best available 
  * those versions have no hydration-stable id primitive. Consumers on <3.5 who
  * need SSR-stable ids should pass an explicit `id` prop.
  */

@@ -49,7 +49,7 @@ export default function TreeSelect<T extends TreeOptionLike = TreeOptionLike>(
   const filtered = useMemo(() => searchTree(tree, query), [tree, query])
   const selectedSet = useMemo(() => new Set(modelValue), [modelValue])
 
-  // Flat lookup for tag labels — selected leaves render as tags in the control.
+  // Flat lookup for tag labels  selected leaves render as tags in the control.
   const labelByValue = useMemo(() => {
     const m = new Map<unknown, string>()
     for (const n of flattenTree(tree)) if (n.isLeaf) m.set(n.value, n.label)

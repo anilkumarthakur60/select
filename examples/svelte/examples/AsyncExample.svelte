@@ -32,8 +32,8 @@
 </script>
 
 <article class="card">
-  <h2>Async — debounced search</h2>
-  <p>Manual debounce in onSearch — adapters stay neutral about timing.</p>
+  <h2>Async  debounced search</h2>
+  <p>Manual debounce in onSearch  adapters stay neutral about timing.</p>
   <Select
     modelValue={selected}
     options={results}

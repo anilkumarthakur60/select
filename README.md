@@ -1,13 +1,13 @@
 # @anil-labs/select
 
 A typed, accessible select/combobox for **Vue, React, Svelte, Solid, and Web
-Components**. Single, multi, tags, async, grouped, tree — one framework-agnostic
+Components**. Single, multi, tags, async, grouped, tree  one framework-agnostic
 core, framework-idiomatic adapters.
 
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![types](https://img.shields.io/badge/types-included-3178c6)](#)
 
-- ✅ One state machine drives every adapter — same behaviour, semantics and tests
+- ✅ One state machine drives every adapter  same behaviour, semantics and tests
 - ✅ Single, multiple, and tags modes (with create-on-Enter)
 - ✅ Tree variant `<VTreeSelect>` with tri-state parents, search, "select all"
 - ✅ Searchable with custom filter functions, debouncing, async loading
@@ -22,7 +22,7 @@ core, framework-idiomatic adapters.
 
 ## Packages
 
-Install the adapter for your framework — it pulls the core in for you.
+Install the adapter for your framework  it pulls the core in for you.
 
 | Package                                         | For                                           | Notes                                     |
 | ----------------------------------------------- | --------------------------------------------- | ----------------------------------------- |
@@ -166,7 +166,7 @@ async function onSearch(q: string) {
 ### Tree select
 
 `<VTreeSelect>` mirrors the API surface of `<VSelect>` but renders a
-hierarchy with tri-state parents. Only **leaf** values flow through v-model —
+hierarchy with tri-state parents. Only **leaf** values flow through v-model 
 parent state is always derived, so you never have to reconcile it manually.
 
 ```vue
@@ -218,7 +218,7 @@ import {
   // Option list pipeline
   useOptionFilter,
   useDebounced,
-  // Combobox plumbing — same primitives the SFCs use
+  // Combobox plumbing  same primitives the SFCs use
   useKeyboardNav,
   useFloatingMenu,
   useOutsideClick,
@@ -240,7 +240,7 @@ export default defineNuxtConfig({
 })
 ```
 
-That's it — `<VSelect>` and `<VTreeSelect>` are auto-imported as global
+That's it  `<VSelect>` and `<VTreeSelect>` are auto-imported as global
 components and the stylesheet is injected. SSR is supported out of the box;
 the menu mounts to the DOM client-side via `<Teleport>` when configured.
 
@@ -252,7 +252,7 @@ export default defineNuxtConfig({
   vue3Select: {
     /** Disable to keep tree-shaken named imports only. Default: true */
     components: true,
-    /** Prefix the auto-registered tags — e.g. 'My' → <MySelect /> */
+    /** Prefix the auto-registered tags  e.g. 'My' → <MySelect /> */
     prefix: '',
     /** Auto-import the headless composables too. Default: false */
     composables: false,
@@ -281,12 +281,12 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 | Prop             | Type                               | Default                   | Description                          |
 | ---------------- | ---------------------------------- | ------------------------- | ------------------------------------ |
-| `modelValue`     | `unknown \| unknown[]`             | —                         | v-model — single value or array      |
+| `modelValue`     | `unknown \| unknown[]`             |                          | v-model  single value or array      |
 | `options`        | `T[]`                              | `[]`                      | Source list of options               |
 | `mode`           | `'single' \| 'multiple' \| 'tags'` | `'single'`                | Selection mode                       |
 | `optionValue`    | `keyof T \| (o: T) => unknown`     | `'value'`                 | Value accessor                       |
 | `optionLabel`    | `keyof T \| (o: T) => string`      | `'label'`                 | Label accessor                       |
-| `optionGroup`    | `keyof T \| (o: T) => string`      | —                         | Group key accessor                   |
+| `optionGroup`    | `keyof T \| (o: T) => string`      |                          | Group key accessor                   |
 | `optionDisabled` | `keyof T \| (o: T) => boolean`     | `'disabled'`              | Disabled flag                        |
 | `placeholder`    | `string`                           | `'Select…'`               | Placeholder text                     |
 | `searchable`     | `boolean`                          | `true`                    | Show search input                    |
@@ -295,8 +295,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 | `loading`        | `boolean`                          | `false`                   | Show loading spinner                 |
 | `closeOnSelect`  | `boolean`                          | `mode === 'single'`       | Close menu after a pick              |
 | `taggable`       | `boolean`                          | `false`                   | Allow creating new options           |
-| `maxVisibleTags` | `number`                           | —                         | Collapse to "+N" beyond this count   |
-| `maxSelections`  | `number`                           | —                         | Hard cap on multi-select             |
+| `maxVisibleTags` | `number`                           |                          | Collapse to "+N" beyond this count   |
+| `maxSelections`  | `number`                           |                          | Hard cap on multi-select             |
 | `filter`         | `FilterFn<T>`                      | substring                 | Custom filter function               |
 | `caseSensitive`  | `boolean`                          | `false`                   | Case-sensitive matching              |
 | `emptyText`      | `string`                           | `'No options'`            | Menu text when there are no options  |
@@ -305,7 +305,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 | `size`           | `'sm' \| 'md' \| 'lg'`             | `'md'`                    | Control size                         |
 | `theme`          | `'light' \| 'dark' \| 'auto'`      | `'light'`                 | Theme                                |
 | `teleportTo`     | `string \| HTMLElement \| false`   | `false`                   | Teleport menu target                 |
-| `name`           | `string`                           | —                         | Hidden input name for native forms   |
+| `name`           | `string`                           |                          | Hidden input name for native forms   |
 | `required`       | `boolean`                          | `false`                   | Native form required marker          |
 | `id`             | `string`                           | auto                      | Override generated id                |
 
@@ -319,14 +319,14 @@ export default defineNuxtPlugin((nuxtApp) => {
 | `select`                            | `NormalizedOption<T>` |
 | `deselect`                          | `NormalizedOption<T>` |
 | `create`                            | `string`              |
-| `open` / `close` / `focus` / `blur` | —                     |
+| `open` / `close` / `focus` / `blur` |                      |
 
 ### Slots
 
 | Slot           | Props                                           | Replaces                                      |
 | -------------- | ----------------------------------------------- | --------------------------------------------- |
-| `prefix`       | —                                               | The leading edge of the control               |
-| `suffix`       | —                                               | The trailing edge of the control              |
+| `prefix`       |                                                | The leading edge of the control               |
+| `suffix`       |                                                | The trailing edge of the control              |
 | `value`        | `{ selected, isMulti }`                         | The full value display area                   |
 | `tag`          | `{ option, remove, disabled }`                  | A single tag in multi mode                    |
 | `option`       | `{ option, selected, active, disabled }`        | One row in the menu                           |

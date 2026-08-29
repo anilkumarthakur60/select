@@ -8,7 +8,7 @@ body:
       value: |
         Before opening a feature request, please check that an existing prop,
         slot, or composable doesn't already cover what you need. The library
-        leans toward "give consumers primitives, don't add prop-explosion" —
+        leans toward "give consumers primitives, don't add prop-explosion" 
         if your use case can be solved by an existing slot or by reusing one
         of the headless composables, that's usually the answer.
 
@@ -24,7 +24,7 @@ body:
     id: proposal
     attributes:
       label: Proposed solution
-      description: API sketch — props, events, slots, composable shape. TypeScript signatures appreciated.
+      description: API sketch  props, events, slots, composable shape. TypeScript signatures appreciated.
     validations:
       required: true
 

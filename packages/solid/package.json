@@ -1,7 +1,7 @@
 {
   "name": "@anil-labs/select-solid",
   "version": "0.1.0",
-  "description": "Solid headless adapter for @anil-labs/select — a primitive wiring the core machine to Solid signals.",
+  "description": "Solid headless adapter for @anil-labs/select  a primitive wiring the core machine to Solid signals.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

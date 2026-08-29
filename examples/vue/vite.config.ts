@@ -10,7 +10,7 @@ export default defineConfig({
   root: here('.'),
   base: process.env.BASE_URL ?? '/',
 
-  // Per-playground cacheDir — without this all 5 vite servers (`npm run dev`)
+  // Per-playground cacheDir  without this all 5 vite servers (`npm run dev`)
   // share node_modules/.vite/ and clobber each other's optimized deps,
   // producing 504 Outdated Optimize Dep errors at runtime.
   cacheDir: here('../../node_modules/.vite-vue'),

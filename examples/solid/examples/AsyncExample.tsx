@@ -35,7 +35,7 @@ export default function AsyncExample(props: { theme: Theme }) {
 
   return (
     <article class="card">
-      <h2>Async — debounced search</h2>
+      <h2>Async  debounced search</h2>
       <p>Manual debounce in onSearch.</p>
       <Select
         modelValue={selected()}

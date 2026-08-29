@@ -6,7 +6,7 @@ import { defineConfig } from 'tsup'
 // carry no internal relative specifiers. That matters: extensionless relative
 // specifiers are illegal under `moduleResolution: "node16"`, and because
 // consumers usually run `skipLibCheck: true` the diagnostic is swallowed while
-// resolution still fails — silently degrading the public API to `any`.
+// resolution still fails  silently degrading the public API to `any`.
 export default defineConfig({
   entry: { index: 'src/index.ts' },
   format: ['esm', 'cjs'],

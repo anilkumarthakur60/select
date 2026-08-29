@@ -9,7 +9,7 @@
 //
 // The landing page used to be a hardcoded HTML string generated right here.
 // It is now a real Vite app under examples/landing so that it is typechecked,
-// linted and formatted like everything else, and — more importantly — so its
+// linted and formatted like everything else, and  more importantly  so its
 // demos are the actual components rather than screenshots of them.
 //
 // Run from the repo root:  node scripts/build-demos.mjs
@@ -50,7 +50,7 @@ for (const { slug, filter } of demos) {
 //
 //    `--emptyOutDir` is deliberately omitted: dist-demo already holds the five
 //    demo builds at this point, and Vite would wipe them. Vite warns when the
-//    outDir sits outside its root and it isn't emptying it — that warning is
+//    outDir sits outside its root and it isn't emptying it  that warning is
 //    the expected outcome here, not a problem.
 run(`pnpm --filter example-landing exec vite build --base=/ --outDir=${outDir}`)
 

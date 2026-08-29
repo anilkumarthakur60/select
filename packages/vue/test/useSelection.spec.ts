@@ -22,7 +22,7 @@ function setup(initial: unknown, mode: 'single' | 'multiple' | 'tags' = 'single'
   return { ...api, options, modelValue, emitUpdate, emitSelect, emitDeselect }
 }
 
-describe('useSelection — single mode', () => {
+describe('useSelection  single mode', () => {
   it('selects a value and emits update + select', () => {
     const { select, options, emitUpdate, emitSelect } = setup(null)
     select(options.value[0]!)
@@ -50,7 +50,7 @@ describe('useSelection — single mode', () => {
   })
 })
 
-describe('useSelection — multiple mode', () => {
+describe('useSelection  multiple mode', () => {
   it('toggles values into an array', () => {
     const { select, options, emitUpdate } = setup([], 'multiple')
     select(options.value[0]!)
