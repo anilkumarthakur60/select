@@ -1,5 +1,13 @@
 @mixin styles {
   .vselect-menu {
+    // `.vselect` (the root) is `position: relative` specifically so this can
+    // float over the page instead of participating in normal flow — without
+    // this, toggling the `hidden` attribute open pushes every element below
+    // the control down the page.
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
     background: var(--vselect-menu-bg);
     border: var(--vselect-border-width) solid var(--vselect-border);
     border-radius: var(--vselect-radius);
