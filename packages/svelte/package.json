@@ -70,7 +70,7 @@
     "typescript": "~6.0.0",
     "vitest": "^4.1.11",
     "svelte": "5.56.10",
-    "jsdom": "^29.0.2",
+    "jsdom": "^30.0.1",
     "@types/node": "^24.12.2"
   },
   "peerDependencies": {
