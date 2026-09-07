@@ -75,10 +75,10 @@
     "@anil-labs/select-core": "workspace:^"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.0",
     "tsup": "^8.5.1",
     "typescript": "~6.0.0",
-    "vitest": "^4.1.11",
+    "vitest": "^5.0.0",
     "vue": "^3.5.42",
     "@vue/test-utils": "^2.5.0",
     "@vitejs/plugin-vue": "^6.0.6",
